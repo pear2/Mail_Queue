@@ -279,7 +279,7 @@ class Mail_Queue_Container_mdb extends Mail_Queue_Container {
 
         }
 
-        echo $this->_last_item = count($this->queue_data);
+        $this->_last_item = count($this->queue_data);
         $this->queue_data[$this->_last_item] = new Mail_Queue_Body(
                     $id, date("d-m-y G:i:s"),
                     $time_to_send, null, $id_user,
