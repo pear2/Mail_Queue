@@ -142,7 +142,7 @@ require_once 'Mail/Queue/Error.php';
 * @package  Mail_Queue
 * @access   public
 */
-class Mail_Queue extends Pear {
+class Mail_Queue extends PEAR {
 
     /**
     * Mail options: smtp, mail etc. see Mail::factory
@@ -172,7 +172,7 @@ class Mail_Queue extends Pear {
      * @param  array $container_options  Mail_Queue container options
      * @param  array $mail_options  How send mails.
      * 
-     * @return mixed  True on success else pear error class.
+     * @return mixed  True on success else PEAR error class.
      * 
      * @access public
      */
