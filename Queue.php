@@ -28,6 +28,75 @@
 * container waiting to be fed to the MTA (Mail Transport Agent)
 * and send them later (eg. every few minutes) by crontab or in other way. 
 *
+* -------------------------------------------------------------------------
+* A basic usage example:
+* -------------------------------------------------------------------------
+*
+* $container_options = array(
+*   'type'        => 'db',
+*   'database'    => 'dbname',
+*   'phptype'     => 'mysql',
+*   'username'    => 'root',
+*   'password'    => '',
+*   'mail_table'  => 'mail_queue'
+* );
+*   //optionally, a 'dns' string can be provided instead of db parameters.
+*   //look at DB::connect() method or at DB or MDB docs for details.
+*   //you could also use mdb container instead db
+*
+* $mail_options = array(
+*   'driver'   => 'smtp',
+*   'host'     => 'your_smtp_server.com',
+*   'port'     => 25,
+*   'auth'     => false,
+*   'username' => '',
+*   'password' => ''
+* );
+*
+* $mail_queue =& new Mail_Queue($container_options, $mail_options);
+* *****************************************************************
+* // Here the code differentiates wrt you want to add an email to the queue
+* // or you want to send the emails that already are in the queue.
+* *****************************************************************
+* // TO ADD AN EMAIL TO THE QUEUE
+* *****************************************************************
+* $from             = 'user@server.com';
+* $from_name        = 'admin';
+* $recipient        = 'recipient@other_server.com';
+* $recipient_name   = 'recipient';
+* $message          = 'Test message';
+* $from_params      = empty($from_name) ? '"'.$from_name.'" <'.$from.'>' : '<'.$from.'>';
+* $recipient_params = empty($recipient_name) ? '"'.$recipient_name.'" <'.$recipient.'>' : '<'.$recipient.'>';
+* $hdrs = array( 'From'    => $from_params,
+*                'To'      => $recipient_params,
+*                'Subject' => "test message body"  );
+* $mime =& new Mail_mime();
+* $mime->setTXTBody($message);
+* $body = $mime->get();
+* $hdrs = $mime->headers($hdrs);
+*
+* // Put message to queue
+* $mail_queue->put( $from, $recipient, $hdrs, $body );
+* //Also you could put this msg in more advanced mode [look at Mail_Queue docs for details]
+* $seconds_to_send = 3600;
+* $delete_after_send = false;
+* $id_user = 7;
+* $mail_queue->put( $from, $recipient, $hdrs, $body, $seconds_to_send, $delete_after_send, $id_user );
+*
+* *****************************************************************
+* // TO SEND EMAILS IN THE QUEUE
+* *****************************************************************
+* // How many mails could we send each time
+* $max_ammount_mails = 50;
+* $mail_queue =& new Mail_Queue($container_options, $mail_options);
+* $mail_queue->sendMailsInQueue($max_ammount_mails);
+* *****************************************************************
+*
+* // for more examples look to docs directory
+*
+* // end usage example
+* -------------------------------------------------------------------------
+*
 * @version $Revision$
 * $Id$
 * @author Radek Maciaszek <chief@php.net>
@@ -58,12 +127,12 @@ define('MAILQUEUE_UNKNOWN', -2);
  */
 define('MAILQUEUE_TRY', 25);
 
-require_once "PEAR.php";
+require_once 'PEAR.php';
 
-require_once "Mail.php";
-require_once "Mail/mime.php";
+require_once 'Mail.php';
+require_once 'Mail/mime.php';
 
-require_once "Mail/Queue/Error.php";
+require_once 'Mail/Queue/Error.php';
 
 /**
 * Mail_Queue - base class for mail queue managment.
@@ -122,7 +191,7 @@ class Mail_Queue extends Pear {
         $container_class = 'Mail_Queue_Container_' . $container_type;
         $container_classfile = $container_type . '.php';
 
-        include_once "Mail/Queue/Container/" . $container_classfile;
+        include_once 'Mail/Queue/Container/' . $container_classfile;
         $this->container = new $container_class($container_options);
         if(PEAR::isError($this->container)) {
             return new Mail_Queue_Error('Cannot initialize container!', __FILE__, __LINE__);
