@@ -309,14 +309,19 @@ class Mail_Queue extends PEAR
      * Send Mail by $id identifier. (bypass Mail_Queue)
      *
      * @param integer $id  Mail identifier
-     * @return bool  True on success else false
+     * @param  bool   $set_as_sent
+     * @return bool   true on success else false
      *
      * @access public
      */
-    function sendMailById($id)
+    function sendMailById($id, $set_as_sent=true)
     {
-        $mail =& $this->container->getMailById($id);
-        return $this->sendMail($mail);
+        $mail =& $this->container->getMailById($id);
+        $sent = $this->sendMail($mail);
+        if ($sent and $set_as_sent) {
+            $this->container->setAsSent($mail);
+        }
+        return $sent;
     }
 
     // }}}
@@ -371,7 +376,8 @@ class Mail_Queue extends PEAR
      * @param string $to  Reciepient e-mail
      * @param string $hdrs  Mail headers (in RFC)
      * @param string $body  Mail body (in RFC)
-     * @return bool True on success
+     * @return mixed  ID of the record where this mail has been put
+     *                or Mail_Queue_Error on error
      *
      * @access public
      **/
