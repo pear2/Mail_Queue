@@ -265,11 +265,18 @@ class Mail_Queue_Body {
      *
      * Mail_Queue_Body::getHeaders()
      *
-     * @return string headers
+     * @return array headers
      * @access public
      **/
     function getHeaders()
     {
+        if (is_array($this->headers)) {
+            $tmp_headers = array();
+            foreach ($this->headers as $key => $value) {
+                $tmp_headers[$key] = stripslashes($value);
+            }
+            return $tmp_headers;
+        }
         return stripslashes($this->headers);
     }
 
