@@ -305,23 +305,6 @@ class Mail_Queue_Container_mdb extends Mail_Queue_Container
             }
 
         }
-/*
-        $this->_last_item++;
-        $this->queue_data[$this->_last_item] = new Mail_Queue_Body(
-            $id,
-            date('d-m-y G:i:s'),
-            $time_to_send,
-            null,
-            $id_user,
-            $ip,
-            $sender,
-            $recipient,
-            unserialize($headers),
-            unserialize($body),
-            $delete_after_send,
-            0
-        );
-*/
         return $id;
     }
 
@@ -400,6 +383,23 @@ class Mail_Queue_Container_mdb extends Mail_Queue_Container
      */
     function getMailById($id)
     {
+        $query = 'SELECT * FROM ' . $this->mail_table
+                .' WHERE id = '   . $this->db->getTextValue($id);
+        $res = $this->db->query($query);
+        if (MDB::isError($res)) {
+            return new Mail_Queue_Error(MAILQUEUE_ERROR_QUERY_FAILED,
+                $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
+                'MDB: query failed - "'.$query.'" - '.$res->getMessage());
+        }
+        $row = $this->db->fetchRow($res, MDB_FETCHMODE_ASSOC);
+        if (!is_array($row)) {
+            return new Mail_Queue_Error(MAILQUEUE_ERROR_QUERY_FAILED,
+                $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
+                'MDB: query failed - "'.$query.'" - '.$res->getMessage());
+        }
+/*
+//DISABLED (using a standard query, without LOBs special management:
+//it does not work with pgsql (there's probably a problem in the MDB pgsql driver)
         $query = 'SELECT id, create_time, time_to_send, sent_time'
                 .', id_user, ip, sender, recipient, delete_after_send'
                 .', try_sent FROM ' . $this->mail_table
@@ -430,7 +430,7 @@ class Mail_Queue_Container_mdb extends Mail_Queue_Container
                     //no rows returned
                     $row[$field] = '';
                 } else {
-                    $clob = $this->db->fetchClob($res,0,$field);
+                    $clob = $this->db->fetchClob($res, 0, $field);
                     if (MDB::isError($clob)) {
                         return new Mail_Queue_Error(MAILQUEUE_ERROR_QUERY_FAILED,
                             $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
@@ -452,7 +452,7 @@ class Mail_Queue_Container_mdb extends Mail_Queue_Container
                 }
             }
         }
-
+*/
         return new Mail_Queue_Body(
             $row['id'],
             $row['create_time'],
