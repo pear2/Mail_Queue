@@ -134,7 +134,7 @@ class Mail_Queue_Container_db extends Mail_Queue_Container
                 'DB::query failed - "'.$query.'" - '.DB::errorMessage($res));
         }
 
-        $i = 0;
+        $this->_last_item = 0;
         $this->queue_data = array(); //reset buffer
         while ($row = $res->fetchRow(DB_FETCHMODE_ASSOC)) {
             if (!is_array($row)) {
@@ -142,7 +142,7 @@ class Mail_Queue_Container_db extends Mail_Queue_Container
                     $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
                     'DB::query failed - "'.$query.'" - '.DB::errorMessage($res));
             }
-            $this->queue_data[$i] = new Mail_Queue_Body(
+            $this->queue_data[$this->_last_item] = new Mail_Queue_Body(
                 $row['id'],
                 $row['create_time'],
                 $row['time_to_send'],
@@ -156,8 +156,9 @@ class Mail_Queue_Container_db extends Mail_Queue_Container
                 $row['delete_after_send'],
                 $row['try_sent']
             );
+            $this->_last_item++;
         }
-        $i++;
+
         return true;
     }
 
