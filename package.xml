@@ -6,14 +6,14 @@
   <name>Mail_Queue</name>
   <summary>Class for put mails in queue and send them later in background.</summary>
   <description>
-Class for handle mail queue managment.
+Class to handle mail queue managment.
 Wrapper for PEAR::Mail and PEAR::DB (or PEAR::MDB).
-Could load, save and send saved mails in background
+It can load, save and send saved mails in background
 and also backup some mails.
 
-Mail queue class put mails in a temporary
+The Mail_Queue class puts mails in a temporary
 container waiting to be fed to the MTA (Mail Transport Agent)
-and send them later (eg. every few minutes) by crontab or in other way. 
+and send them later (eg. every few minutes) by crontab or in other way.
   </description>
 
   <maintainers>
@@ -32,17 +32,24 @@ and send them later (eg. every few minutes) by crontab or in other way.
   </maintainers>
 
   <release>
-    <version>1.x</version>
-    <date>2003-xx-xx</date>
+    <version>1.1</version>
+    <date>2004-03-xx</date>
     <state>stable</state>
     <license>PHP</license>
     <notes>
-        - Error management has been rewritten. New error constants are used,
-        so custom error mgmt is now possible.
-        - Added a "pearErrorMode" option to specify what to do with Pear_Error 
-        (was: PEAR_ERROR_PRINT by default)
-        - Added a "sequence" container option to specify the name of the sequence table.
-        - Moved Mail_Queue_Error class from Mail/Queue/Error.php to Mail/Queue.php.
+- Error management has been rewritten. New error constants are used,
+  so custom error mgmt is now possible.
+- Added a "pearErrorMode" option to specify what to do with Pear_Error
+  (was: PEAR_ERROR_PRINT by default)
+- Added a "sequence" container option to specify the name of the sequence table.
+- Moved Mail_Queue_Error class from Mail/Queue/Error.php to Mail/Queue.php.
+- Preloading management has been rewritten. The amount of memory used by the
+  internal buffer can be limited to any chosen value via the setBufferSize() method.
+- The put() methods now returns last_inserted_id instead of true
+- Fixed error in factorySendMail()
+- Fixed: mails weren't set as send when bypassing the queue using sendMailById()
+- Fixed: Mail_Queue_Container_mdb didn't accept a 'dsn' as option
+- PHP 5 fixes
     </notes>
     <filelist>
       <dir name="/" baseinstalldir="Mail">
@@ -76,7 +83,7 @@ and send them later (eg. every few minutes) by crontab or in other way.
 	    <date>2002-12-13</date>
 	    <state>stable</state>
 	    <notes>
-	      First stable release. Added Lorenzo Alberton to the list of contributors. 
+	      First stable release. Added Lorenzo Alberton to the list of contributors.
           Fixed getMailById() in db.php.
           Added new container: Mail_Queue_Container_mdb - Storage driver for fetching mail
           queue data from a PEAR_MDB database.
