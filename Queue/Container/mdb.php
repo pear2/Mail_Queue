@@ -184,7 +184,7 @@ class Mail_Queue_Container_mdb extends Mail_Queue_Container
             $dsn = $options;
         }
         $this->db = &MDB::Connect($dsn);
-        if (MDB::isError($this->db)) {
+        if (PEAR::isError($this->db)) {
             return new Mail_Queue_Error(MAILQUEUE_ERROR_CANNOT_CONNECT,
                 $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
                 'MDB::connect failed: '. $this->db->getMessage());
@@ -211,7 +211,7 @@ class Mail_Queue_Container_mdb extends Mail_Queue_Container
                 .' ORDER BY time_to_send';
         $res = $this->db->limitQuery($query, null, $this->offset, $this->limit);
 
-        if (MDB::isError($res)) {
+        if (PEAR::isError($res)) {
             return new Mail_Queue_Error(MAILQUEUE_ERROR_QUERY_FAILED,
                 $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
                 'MDB: query failed - "'.$query.'" - '.$res->getMessage());
@@ -221,7 +221,7 @@ class Mail_Queue_Container_mdb extends Mail_Queue_Container
         $this->queue_data = array(); //reset buffer
         while ($row = $this->db->fetchInto($res, MDB_FETCHMODE_ASSOC)) {
             $this->queue_data[$this->_last_item] = $this->getMailById($row['id']);
-            if (Mail_Queue::isError($this->queue_data[$this->_last_item])) {
+            if (PEAR::isError($this->queue_data[$this->_last_item])) {
                 return $this->queue_data[$this->_last_item];
             }
             $this->_last_item++;
@@ -272,7 +272,7 @@ class Mail_Queue_Container_mdb extends Mail_Queue_Container
                 .', ' . ($delete_after_send ? 1 : 0)
                 .')';
         $res = $this->db->query($query);
-        if (MDB::isError($res)) {
+        if (PEAR::isError($res)) {
             return new Mail_Queue_Error(MAILQUEUE_ERROR_QUERY_FAILED,
                 $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
                 'MDB: query failed - "'.$query.'" - '.$res->getMessage());
@@ -284,13 +284,13 @@ class Mail_Queue_Container_mdb extends Mail_Queue_Container
                 $char_lob = array('Error' => '',
                                   'Type'  => 'data',
                                   'Data'  => $$field);
-                if (MDB::isError($clob = $this->db->createLob($char_lob))) {
+                if (PEAR::isError($clob = $this->db->createLob($char_lob))) {
                     return new Mail_Queue_Error(MAILQUEUE_ERROR_QUERY_FAILED,
                         $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
                         'MDB: query failed - "'.$query.'" - '.$clob->getMessage());
                 }
                 $this->db->setParamClob($prepared_query,1,$clob,$field);
-                if (MDB::isError($error = $this->db->executeQuery($prepared_query))) {
+                if (PEAR::isError($error = $this->db->executeQuery($prepared_query))) {
                     return new Mail_Queue_Error(MAILQUEUE_ERROR_QUERY_FAILED,
                         $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
                         'MDB: query failed - "'.$query.'" - '.$res->getMessage());
@@ -331,7 +331,7 @@ class Mail_Queue_Container_mdb extends Mail_Queue_Container
                 .' WHERE id = '     . $this->db->getIntegerValue($mail->getId());
         $res = $this->db->query($query);
 
-        if (MDB::isError($res)) {
+        if (PEAR::isError($res)) {
             return new Mail_Queue_Error(MAILQUEUE_ERROR_QUERY_FAILED,
                 $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
                 'MDB: query failed - "'.$query.'" - '.$res->getMessage());
@@ -362,7 +362,7 @@ class Mail_Queue_Container_mdb extends Mail_Queue_Container
 
         $res = $this->db->query($query);
 
-        if (MDB::isError($res)) {
+        if (PEAR::isError($res)) {
             return new Mail_Queue_Error(MAILQUEUE_ERROR_QUERY_FAILED,
                 $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
                 'MDB: query failed - "'.$query.'" - '.$res->getMessage());
@@ -386,7 +386,7 @@ class Mail_Queue_Container_mdb extends Mail_Queue_Container
         $query = 'SELECT * FROM ' . $this->mail_table
                 .' WHERE id = '   . $this->db->getTextValue($id);
         $res = $this->db->query($query);
-        if (MDB::isError($res)) {
+        if (PEAR::isError($res)) {
             return new Mail_Queue_Error(MAILQUEUE_ERROR_QUERY_FAILED,
                 $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
                 'MDB: query failed - "'.$query.'" - '.$res->getMessage());
@@ -483,7 +483,7 @@ class Mail_Queue_Container_mdb extends Mail_Queue_Container
         $query = 'DELETE FROM ' . $this->mail_table
                 .' WHERE id = ' . $this->db->getTextValue($id);
         $res = $this->db->query($query);
-        if (MDB::isError($res)) {
+        if (PEAR::isError($res)) {
             return new Mail_Queue_Error(MAILQUEUE_ERROR_QUERY_FAILED,
                 $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
                 'MDB: query failed - "'.$query.'" - '.$res->getMessage());
