@@ -6,9 +6,9 @@ sent_time timestamp default NULL,
 id_user INT NOT NULL default 0,
 ip varchar(20) NOT NULL default 'unknown',
 sender varchar(50) NOT NULL default '',
-recipient varchar(50) NOT NULL default '',
-headers text NOT NULL,
-body text NOT NULL,
+recipient text NOT NULL,
+headers text,
+body text,
 try_sent INT NOT NULL default 0,
 delete_after_send INT NOT NULL default 1
 );
