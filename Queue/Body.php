@@ -36,94 +36,94 @@
 class Mail_Queue_Body {
 
     /**
-    * Ident
-    *
-    * @var integer
-    */
+     * Ident
+     *
+     * @var integer
+     */
     var $id;
-    
+
     /**
-    * Create time
-    *
-    * @var string
-    */
+     * Create time
+     *
+     * @var string
+     */
     var $create_time;
-    
+
     /**
-    * Time to send mail
-    *
-    * @var string
-    */
+     * Time to send mail
+     *
+     * @var string
+     */
     var $time_to_send;
-    
+
     /**
-    * Time when mail was sent
-    *
-    * @var string
-    */
+     * Time when mail was sent
+     *
+     * @var string
+     */
     var $sent_time = null;
-    
+
     /**
-    * User id - who send mail 
-    * MAILQUEUE_UNKNOWN - not login user (guest)
-    * MAILQUEUE_SYSTEM - mail send by system
-    *
-    * @var string
-    */
+     * User id - who send mail
+     * MAILQUEUE_UNKNOWN - not login user (guest)
+     * MAILQUEUE_SYSTEM - mail send by system
+     *
+     * @var string
+     */
     var $id_user = MAILQUEUE_SYSTEM;
-    
+
     /**
-    * use IP
-    *
-    * @var string
-    */
+     * use IP
+     *
+     * @var string
+     */
     var $ip;
-    
+
     /**
-    * Sender email
-    *
-    * @var string
-    */
+     * Sender email
+     *
+     * @var string
+     */
     var $sender;
-    
+
     /**
-    * Reciepient email
-    *
-    * @var string
-    */
+     * Reciepient email
+     *
+     * @var string
+     */
     var $recipient;
-    
+
     /**
-    * Email headers (in RFC)
-    *
-    * @var string
-    */
+     * Email headers (in RFC)
+     *
+     * @var string
+     */
     var $headers;
-    
+
     /**
-    * Email body (in RFC) - could have attachments etc
-    *
-    * @var string
-    */
+     * Email body (in RFC) - could have attachments etc
+     *
+     * @var string
+     */
     var $body;
 
     /**
-    * How many times mail was sent
-    *
-    * @var integer
-    */
+     * How many times mail was sent
+     *
+     * @var integer
+     */
     var $try_sent = 0;
 
     /**
-    * Delete mail from database after success send
-    *
-    * @var bool
-    */
+     * Delete mail from database after success send
+     *
+     * @var bool
+     */
     var $delete_after_send = true;
 
     /**
      * Mail_Queue_Body::Mail_Queue_Body() constructor
-     * 
+     *
      * @param integer $id Mail ident
      * @param string $create_time  Create time
      * @param strine $time_to_send  Time to send
@@ -135,97 +135,97 @@ class Mail_Queue_Body {
      * @param string $headers Mail headers (in RFC)
      * @param string $body Mail body (in RFC)
      * @param integer $try_sent  How many times mail was sent
-     * 
+     *
      * @return void
-     * 
+     *
      * @access public
      **/
-    function Mail_Queue_Body( $id, $create_time, $time_to_send, $sent_time, $id_user, 
-                       $ip, $sender, $recipient, $headers, $body, 
-                       $delete_after_send = true, $try_sent = 0 ) 
+    function Mail_Queue_Body($id, $create_time, $time_to_send, $sent_time, $id_user,
+                       $ip, $sender, $recipient, $headers, $body,
+                       $delete_after_send=true, $try_sent=0)
     {
-        $this->id = $id;
-        $this->create_time = $create_time;
-        $this->time_to_send = $time_to_send;
-        $this->sent_time = $sent_time;
-        $this->id_user = $id_user;
-        $this->ip = $ip;
-        $this->sender = $sender;
-        $this->recipient = $recipient;
-        $this->headers = $headers;
-        $this->body = $body;
+        $this->id                = $id;
+        $this->create_time       = $create_time;
+        $this->time_to_send      = $time_to_send;
+        $this->sent_time         = $sent_time;
+        $this->id_user           = $id_user;
+        $this->ip                = $ip;
+        $this->sender            = $sender;
+        $this->recipient         = $recipient;
+        $this->headers           = $headers;
+        $this->body              = $body;
         $this->delete_after_send = $delete_after_send;
-        $this->try_sent = $try_sent;
+        $this->try_sent          = $try_sent;
     }
-    
+
     /**
      * Mail_Queue_Body::getId()
-     * 
+     *
      * @return integer  Sender id
      * @access public
      **/
-    function getId() 
-    { 
-        return $this->id; 
+    function getId()
+    {
+        return $this->id;
     }
-    
+
     /**
      * Return mail create time.
-     * 
+     *
      * Mail_Queue_Body::getCreateTime()
-     * 
+     *
      * @return string  Mail create time
      * @access public
      **/
-    function getCreateTime() 
-    { 
-        return $this->create_time; 
+    function getCreateTime()
+    {
+        return $this->create_time;
     }
 
     /**
      * Return time to send mail.
-     * 
+     *
      * Mail_Queue_Body::getTimeToSend()
-     * 
+     *
      * @return string  Time to send
      * @access public
      **/
-    function getTimeToSend() 
-    { 
-        return $this->time_to_send; 
+    function getTimeToSend()
+    {
+        return $this->time_to_send;
     }
-    
+
     /**
      * Return mail sent time (if sended) else false.
-     * 
+     *
      * Mail_Queue_Body::getSentTime()
-     * 
+     *
      * @return mixed  String sent time or false if mail not was sent yet
      * @access public
      **/
-    function getSentTime() 
-    { 
+    function getSentTime()
+    {
         return empty($this->sent_time) ? false : $this->sent_time;
     }
-    
+
     /**
      * Return sender id.
-     * 
+     *
      * Mail_Queue_Body::getIdUser()
-     * 
+     *
      * @return integer  Sender id
      * @access public
      **/
-    function getIdUser() 
+    function getIdUser()
     {
-        return $this->id_user; 
+        return $this->id_user;
     }
-    
+
     /**
      * Return sender ip.
-     * 
+     *
      * Mail_Queue_Body::getIp()
-     * 
+     *
      * @return string  IP
      * @access public
      **/
@@ -233,12 +233,12 @@ class Mail_Queue_Body {
     {
         return $this->ip;
     }
-    
+
     /**
      * Return sender e-mail.
-     * 
+     *
      * Mail_Queue_Body::getSender()
-     * 
+     *
      * @return string E-mail
      * @access public
      **/
@@ -246,12 +246,12 @@ class Mail_Queue_Body {
     {
         return $this->sender;
     }
-    
+
     /**
      * Return recipient e-mail.
-     * 
+     *
      * Mail_Queue_Body::getRecipient()
-     * 
+     *
      * @return string E-mail
      * @access public
      **/
@@ -259,12 +259,12 @@ class Mail_Queue_Body {
     {
         return $this->recipient;
     }
-    
+
     /**
      * Return mail headers (in RFC)
-     * 
+     *
      * Mail_Queue_Body::getHeaders()
-     * 
+     *
      * @return string headers
      * @access public
      **/
@@ -272,12 +272,12 @@ class Mail_Queue_Body {
     {
         return $this->headers;
     }
-    
+
     /**
      * Return mail body (in RFC)
-     * 
+     *
      * Mail_Queue_Body::getBody()
-     * 
+     *
      * @return string  Body
      * @access public
      **/
@@ -285,12 +285,12 @@ class Mail_Queue_Body {
     {
         return $this->body;
     }
-    
+
     /**
      * Return how many times mail was try to sent.
-     * 
+     *
      * Mail_Queue_Body::getTrySent()
-     * 
+     *
      * @return integer  How many times mail was sent
      * @access public
      **/
@@ -301,9 +301,9 @@ class Mail_Queue_Body {
 
     /**
      * Return true if mail must be delete after send from db.
-     * 
+     *
      * MailBody::isDeleteAfterSend()
-     * 
+     *
      * @return bool  True if must be delete else false.
      * @access public
      **/
@@ -314,9 +314,9 @@ class Mail_Queue_Body {
 
     /**
      * Increase and return try_sent
-     * 
+     *
      * Mail_Queue_Body::try()
-     * 
+     *
      * @return integer  How many times mail was sent
      * @access public
      **/
@@ -325,5 +325,4 @@ class Mail_Queue_Body {
         return ++$this->try_sent;
     }
 }
-
 ?>

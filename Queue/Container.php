@@ -19,47 +19,49 @@
 // $Id$
 
 /**
-* Container base class for MTA queue.
-* Define methods for all storage containers.
-*
-* @version  $Revision$
-* @author   Radek Maciaszek <chief@php.net>
-*/
+ * Container base class for MTA queue.
+ * Define methods for all storage containers.
+ *
+ * @version  $Revision$
+ * @author   Radek Maciaszek <chief@php.net>
+ */
 
-require_once "Mail/Queue/Error.php";
-require_once "Mail/Queue/Body.php";
+//require_once 'Mail/Queue/Error.php';
+require_once 'Mail/Queue/Body.php';
 
 /**
-* Mail_Queue_Container - base class
-*
-* @author   Radek Maciaszek <chief@php.net>
-* @package  Mail_Queue
-* @access   public
-* @abstract
-*/
-class Mail_Queue_Container {
+ * Mail_Queue_Container - base class
+ *
+ * @author   Radek Maciaszek <chief@php.net>
+ * @package  Mail_Queue
+ * @access   public
+ * @abstract
+ */
+class Mail_Queue_Container
+{
+    // {{{ class vars
 
     /**
-    * Array for mails in queue
-    *
-    * @var array
-    */
+     * Array for mails in queue
+     *
+     * @var array
+     */
     var $queue_data = array();
 
     /**
-    * Key for current mail in queue
-    *
-    * @var integer
-    * @access private
-    */
+     * Key for current mail in queue
+     *
+     * @var integer
+     * @access private
+     */
     var $_current_item = 0;
 
     /**
-    * Key for last mail in queue
-    *
-    * @var integer
-    * @access private
-    */
+     * Key for last mail in queue
+     *
+     * @var integer
+     * @access private
+     */
 	var $_last_item = 0;
 
     /**
@@ -75,21 +77,33 @@ class Mail_Queue_Container {
     var $limit;
     var $offset;
     var $try;
-    var $forse_preload;
-    
-     /**
+    var $force_preload;
+
+    /**
+     * Pear error mode (see PEAR doc)
+     *
+     * @var int $pearErrorMode
+     * @access private
+     */
+    var $pearErrorMode = PEAR_ERROR_RETURN;
+
+    // }}}
+    // {{{ get()
+
+    /**
      * Get next mail from queue. When exclude first time preload all queue
      *
      * @return mixed  MailBody object on success else Mail_Queue_Error
      * @access    public
      */
-    function get() 
+    function get()
     {
         $this->_preload();
-        if( !empty($this->queue_data) && !$this->isEmpty() ) {
+        if(!empty($this->queue_data) && !$this->isEmpty()) {
             if(!isset($this->queue_data[$this->_current_item])) {
-                return new Mail_Queue_Error('No item: '.$this->_current_item
-                    . ' in queue!', __FILE__, __LINE__);
+                return new Mail_Queue_Error(MAILQUEUE_ERROR_CANNOT_INITIALIZE,
+                            $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
+                            'No item: '.$this->_current_item.' in queue!');
             }
 			$object = $this->queue_data[$this->_current_item];
 			unset($this->queue_data[$this->_current_item]);
@@ -100,11 +114,14 @@ class Mail_Queue_Container {
 		}
     }
 
+    // }}}
+    // {{{ put()
+
     /**
      * Put new mail in queue.
-     * 
+     *
      * Mail_Queue_Container::put()
-     * 
+     *
      * @param string $time_to_send  When mail have to be send
      * @param integer $id_user  Sender id
      * @param string $ip  Sender ip
@@ -115,122 +132,144 @@ class Mail_Queue_Container {
      * @return bool True on success
      * @access public
      **/
-    function put($time_to_send, $id_user, $ip, $from, $to, $hdrs, $body, $delete_after_send) 
+    function put($time_to_send, $id_user, $ip, $from, $to, $hdrs, $body, $delete_after_send)
     {
         $this->_last_item = count($this->queue_data);
-		$this->queue_data[$this->_last_item] = new Mail_Queue_Body( $id, date("d-m-y G:i:s"),
+		$this->queue_data[$this->_last_item] = new Mail_Queue_Body($id, date("d-m-y G:i:s"),
                     $time_to_send, null, $id_user,
                     $ip, $sender, $recipient, unserialize($headers),
-                    unserialize($body), $delete_after_send, 0 );
+                    unserialize($body), $delete_after_send, 0);
         return true;
     }
 
+    // }}}
+    // {{{ setOption()
+
     /**
      * Set common option
-     * 
+     *
      * Mail_Queue_Container::setOption()
-     * 
+     *
      * @param integer  $limit  Optional - Number of mails loaded to queue
      * @param integer  $offset  Optional - You could also specify offset
      * @param integer  $try  Optional - how many times should system try sent
      *                       each mail
      * @param boolean  $force_preload  Optional - FIXME
      * @return void
-     * 
+     *
      * @access public
      **/
     function setOption($limit = MAILQUEUE_ALL, $offset = MAILQUEUE_START,
-                        $try = MAILQUEUE_TRY, $forse_preload = false)
+                        $try = MAILQUEUE_TRY, $force_preload = false)
     {
         $this->limit = $limit;
         $this->offset = $offset;
         $this->try = $try;
-        $this->forse_preload = $forse_preload;
+        $this->force_preload = $force_preload;
     }
-    
-     /**
+
+    // }}}
+    // {{{ isEmpty()
+
+    /**
      * Check if queue is empty.
      *
      * @return boolean  True if empty else false.
      * @access public
      */
-    function isEmpty() 
+    function isEmpty()
     {
-		if($this->_current_item > $this->_last_item)
+		if($this->_current_item > $this->_last_item) {
 			return true;
-		else
+		} else {
 			return false;
+		}
     }
 
-     /**
+    // }}}
+    // {{{ countSend()
+
+    /**
      * Check how many times mail was sent.
      *
      * @param object   MailBody
      * @return mixed  Integer or false if error.
      * @access public
      */
-    function countSend( $mail ) 
+    function countSend($mail)
     {
         return false;
     }
 
-     /**
+    // }}}
+    // {{{ setAsSent()
+
+    /**
      * Set mail as already sent.
      *
      * @param object MailBody object
      * @return bool
      * @access public
      */
-    function setAsSent( $mail ) 
+    function setAsSent($mail)
     {
         return false;
     }
 
-     /**
+    // }}}
+    // {{{ getMailById()
+
+    /**
      * Return mail by id $id (bypass mail_queue)
      *
      * @param integer $id  Mail ID
      * @return mixed  Mail object or false on error.
      * @access public
      */
-    function getMailById( $id ) 
+    function getMailById($id)
     {
         return false;
     }
 
-     /**
+    // }}}
+    // {{{ deleteMail()
+
+    /**
      * Remove from queue mail with $id identifier.
      *
      * @param integer $id  Mail ID
      * @return bool  True on success ale false.
      * @access public
      */
-    function deleteMail( $id ) 
+    function deleteMail($id)
     {
         return false;
     }
 
-     /**
+    // }}}
+    // {{{ _preload()
+
+    /**
      * Preload mail to queue.
      *
      * @param integer  $limit  Optional - Number of mails loaded to queue
      * @param integer  $offset  Optional - You could also specify offset
      * @param boolean  $force_preload  Optional - FIXME
-     * 
+     *
      * @return mixed  True on success else Mail_Queue_Error object.
-     * 
+     *
      * @access private
      */
     function _preload($limit = MAILQUEUE_ALL, $offset = MAILQUEUE_START,
-                        $try = MAILQUEUE_TRY, $forse_preload = false) 
+                        $try = MAILQUEUE_TRY, $forse_preload = false)
     {
         if($this->_preloaded) return true;
-        
+
         $this->_preloaded = true;
         $this->_last_item = count($this->queue_data);
         return true;
     }
 
+    // }}}
 }
-
 ?>
