@@ -258,8 +258,9 @@ class Mail_Queue extends PEAR
      */
     function factorySendMail()
     {
-        $this->send_mail =& Mail::factory($this->mail_options['driver'],
-                                $this->mail_options);
+        $options = $this->mail_options;
+        unset($options['driver']);
+        $this->send_mail =& Mail::factory($this->mail_options['driver'], $options);
     }
 
     // }}}
