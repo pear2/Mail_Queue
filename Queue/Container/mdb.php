@@ -2,7 +2,7 @@
 // +----------------------------------------------------------------------+
 // | PEAR :: Mail :: Queue :: MDB Container                                       |
 // +----------------------------------------------------------------------+
-// | Copyright (c) 1997-2002 The PHP Group                                |
+// | Copyright (c) 1997-2003 The PHP Group                                |
 // +----------------------------------------------------------------------+
 // | This source file is subject to version 2.0 of the PHP license,       |
 // | that is bundled with this package in the file LICENSE, and is        |
