@@ -421,7 +421,7 @@ class Mail_Queue extends PEAR
     function isError($value)
     {
         return(is_object($value) &&
-            (get_class($value) == 'mail_queue_error' ||
+            (strtolower(get_class($value)) == 'mail_queue_error' ||
             is_subclass_of($value, 'pear_error')));
     }
 
