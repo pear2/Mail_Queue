@@ -7,13 +7,14 @@
   <summary>Class for put mails in queue and send them later in background.</summary>
   <description>
 Class to handle mail queue managment.
-Wrapper for PEAR::Mail and PEAR::DB (or PEAR::MDB).
+Wrapper for PEAR::Mail and PEAR::DB (or PEAR::MDB/MDB2).
 It can load, save and send saved mails in background
 and also backup some mails.
 
-The Mail_Queue class puts mails in a temporary
-container waiting to be fed to the MTA (Mail Transport Agent)
-and send them later (eg. every few minutes) by crontab or in other way.
+The Mail_Queue class puts mails in a temporary container,
+waiting to be fed to the MTA (Mail Transport Agent),
+and sends them later (e.g. a certain amount of mails
+every few minutes) by crontab or in other way.
   </description>
 
   <maintainers>
@@ -33,14 +34,15 @@ and send them later (eg. every few minutes) by crontab or in other way.
 
   <release>
     <version>1.1.1</version>
-    <date>2004-06-12</date>
+    <date>2004-07-18</date>
     <state>stable</state>
     <license>PHP</license>
     <notes>
 - Fixed a buggy implementation of the preload() method
   which was causing several problems
-- use DB::modifyLimitQuery() instead of a mysql-specific
+- Use DB::modifyLimitQuery() instead of a mysql-specific
   LIMIT clause in the DB container
+- Added a new MDB2 container
     </notes>
     <filelist>
       <dir name="/" baseinstalldir="Mail">
@@ -51,6 +53,7 @@ and send them later (eg. every few minutes) by crontab or in other way.
             <dir name="Container" role="php">
                 <file>db.php</file>
                 <file>mdb.php</file>
+                <file>mdb2.php</file>
             </dir>
         </dir>
         <dir name="docs" role="doc">
