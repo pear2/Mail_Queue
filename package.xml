@@ -7,7 +7,7 @@
   <summary>Class for put mails in queue and send them later in background.</summary>
   <description>
 Class for handle mail queue managment.
-Wrapper for Pear::Mail and Pear::DB.
+Wrapper for Pear::Mail and Pear::DB (or Pear::MDB).
 Could load, save and send saved mails in background
 and also backup some mails.
 
@@ -19,18 +19,28 @@ and send them later (eg. every few minutes) by crontab or in other way.
   <maintainers>
       <maintainer>
         <user>chief</user>
+        <role>lead</role>
         <name>Radek Maciaszek</name>
         <email>chief@php.net</email>
+      </maintainer>
+      <maintainer>
+        <user>quipo</user>
+        <role>contributor</role>
+        <name>Lorenzo Alberton</name>
+        <email>quipo@php.net</email>
       </maintainer>
   </maintainers>
 
   <release>
-    <version>0.9</version>
-    <date>2002-09-21</date>
-    <state>beta</state>
+    <version>1.0</version>
+    <date>2002-12-13</date>
+    <state>stable</state>
     <license>PHP</license>
     <notes>
-        This is the initial release of the Mail_Queue package.
+        First stable release. Added Lorenzo Alberton to the list of contributors. 
+        Fixed getMailById() in db.php.
+        Added new container: Mail_Queue_Container_mdb - Storage driver for fetching mail
+        queue data from a PEAR_MDB database.
     </notes>
     <filelist>
       <dir name="/" baseinstalldir="Mail">
@@ -41,6 +51,7 @@ and send them later (eg. every few minutes) by crontab or in other way.
           <file role="php">Error.php</file>
             <dir name="Container" role="php">
                 <file>db.php</file>
+                <file>mdb.php</file>
             </dir>
         </dir>
         <dir name="docs" role="doc">
@@ -58,6 +69,17 @@ and send them later (eg. every few minutes) by crontab or in other way.
   </release>
 
   <changelog>
+	  <release>
+	    <version>1.0</version>
+	    <date>2002-12-13</date>
+	    <state>stable</state>
+	    <notes>
+	      First stable release. Added Lorenzo Alberton to the list of contributors. 
+          Fixed getMailById() in db.php.
+          Added new container: Mail_Queue_Container_mdb - Storage driver for fetching mail
+          queue data from a PEAR_MDB database.
+	    </notes>
+	  </release>
 	  <release>
 	    <version>0.9</version>
 	    <date>2002-09-21</date>
