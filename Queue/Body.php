@@ -265,7 +265,7 @@ class Mail_Queue_Body {
      *
      * Mail_Queue_Body::getHeaders()
      *
-     * @return array headers
+     * @return mixed array|string headers
      * @access public
      **/
     function getHeaders()
