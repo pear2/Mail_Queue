@@ -33,11 +33,12 @@ and send them later (eg. every few minutes) by crontab or in other way.
 
   <release>
     <version>1.1.1</version>
-    <date>2004-05-29</date>
+    <date>2004-06-12</date>
     <state>stable</state>
     <license>PHP</license>
     <notes>
-- Fixed error in the preload() method of the DB container
+- Fixed a buggy implementation of the preload() method
+  which was causing several problems
     </notes>
     <filelist>
       <dir name="/" baseinstalldir="Mail">
