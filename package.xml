@@ -25,9 +25,9 @@ and send them later (eg. every few minutes) by crontab or in other way.
   </maintainers>
 
   <release>
-    <version>1.0</version>
+    <version>0.9</version>
     <date>2002-09-21</date>
-    <state>stable</state>
+    <state>beta</state>
     <license>PHP</license>
     <notes>
         This is the initial release of the Mail_Queue package.
@@ -56,9 +56,9 @@ and send them later (eg. every few minutes) by crontab or in other way.
 
   <changelog>
 	  <release>
-	    <version>1.0</version>
+	    <version>0.9</version>
 	    <date>2002-09-21</date>
-	    <state>stable</state>
+	    <state>beta</state>
 	    <notes>
 	      This is the initial release of the Mail_Queue package.
 	    </notes>
