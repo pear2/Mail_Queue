@@ -39,9 +39,9 @@ and send them later (eg. every few minutes) by crontab or in other way.
           <file role="php">Body.php</file>
           <file role="php">Container.php</file>
           <file role="php">Error.php</file>
-        </dir>
-        <dir name="Container" role="php">
-          <file>db.php</file>
+            <dir name="Container" role="php">
+                <file>db.php</file>
+            </dir>
         </dir>
         <dir name="docs" role="doc">
           <file>add_example.php</file>
