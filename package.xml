@@ -39,6 +39,8 @@ and send them later (eg. every few minutes) by crontab or in other way.
     <notes>
 - Fixed a buggy implementation of the preload() method
   which was causing several problems
+- use DB::modifyLimitQuery() instead of a mysql-specific
+  LIMIT clause in the DB container
     </notes>
     <filelist>
       <dir name="/" baseinstalldir="Mail">
