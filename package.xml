@@ -52,6 +52,9 @@ and send them later (eg. every few minutes) by crontab or in other way.
         </dir>
       </dir>
     </filelist>
+    <deps>
+      <dep type="pkg" rel="has">Mail</dep>
+    </deps>
   </release>
 
   <changelog>
