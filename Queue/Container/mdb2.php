@@ -99,12 +99,7 @@ class Mail_Queue_Container_mdb2 extends Mail_Queue_Container
     /**
      * Preload mail to queue.
      *
-     * @param integer  $limit  Optional - Number of mails loaded to queue
-     * @param integer  $offset  Optional - You could also specify offset
-     * @param boolean  $force_preload  Optional - FIXME
-     *
      * @return mixed  True on success else Mail_Queue_Error object.
-     *
      * @access private
      */
     function _preload()
