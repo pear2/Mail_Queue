@@ -210,11 +210,7 @@ class Mail_Queue_Container_mdb extends Mail_Queue_Container
                 .' WHERE sent_time IS NULL AND try_sent < '. $this->try
                 .' AND time_to_send < '.$this->db->getTimestampValue(date("Y-m-d H:i:s"))
                 .' ORDER BY time_to_send';
-        if ($this->limit != MAILQUEUE_ALL) {
-            $res = $this->db->limitQuery($query, null, $this->offset, $this->limit);
-        } else {
-            $res = $this->db->query($query);
-        }
+        $res = $this->db->limitQuery($query, null, $this->offset, $this->limit);
 
         if (MDB::isError($res)) {
             return new Mail_Queue_Error(MAILQUEUE_ERROR_QUERY_FAILED,

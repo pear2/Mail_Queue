@@ -238,36 +238,37 @@ class Mail_Queue_Container
      */
     function preload()
     {
-        //remember buffer offset
-        static $from = 0;
-
         if (!empty($this->queue_data)) {
             return true;
         }
 
-        $bkp = array(
-            'offset' => $this->offset,
-            'limit'  => $this->limit
-        );
+        if (!$this->limit) {
+            return true;   //limit reached
+        }
 
-        //set buffer size and offset
-        $this->offset = $from;
-        $this->limit = $this->buffer_size;
+        $bkp_limit = $this->limit;
+
+        //set buffer size
+        if ($bkp_limit == MAILQUEUE_ALL) {
+            $this->limit = $this->buffer_size;
+        } else {
+            $this->limit = min($this->buffer_size, $this->limit);
+        }
 
         if (Mail_Queue::isError($err = $this->_preload())) {
             return $err;
         }
 
-        //restore options
-        $this->offset = $bkp['offset'];
-        $this->limit  = $bkp['limit'];
+        //restore limit
+        if ($bkp_limit == MAILQUEUE_ALL) {
+            $this->limit = MAILQUEUE_ALL;
+        } else {
+            $this->limit = $bkp_limit - count($this->queue_data);
+        }
 
         //set buffer pointers
         $this->_current_item = 0;
         $this->_last_item = count($this->queue_data)-1;
-
-        //update buffer offset
-        $from += count($this->queue_data);
 
         return true;
     }

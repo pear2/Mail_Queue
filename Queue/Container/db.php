@@ -120,13 +120,13 @@ class Mail_Queue_Container_db extends Mail_Queue_Container
         $query = sprintf("SELECT * FROM %s WHERE sent_time IS NULL
                             AND try_sent < %d
                             AND now() > time_to_send
-                            ORDER BY time_to_send",
+                            ORDER BY time_to_send
+                            LIMIT %d, %d",   //THIS SYNTAX WORKS ON MYSQL ONLY!! FIX IT!
                          $this->mail_table,
-                         $this->try
+                         $this->try,
+                         $this->offset,
+                         $this->limit
                          );
-        if ($this->limit != MAILQUEUE_ALL) {
-            $query .= " LIMIT $this->offset, $this->limit";  //THIS SYNTAX WORKS ON MYSQL ONLY!! FIX IT!
-        }
         $res = $this->db->query($query);
         if (DB::isError($res)) {
             return new Mail_Queue_Error(MAILQUEUE_ERROR_QUERY_FAILED,
@@ -187,14 +187,14 @@ class Mail_Queue_Container_db extends Mail_Queue_Container
                 $recipient, $headers, $body, $delete_after_send=true)
     {
         $id = $this->db->nextId($this->sequence);
-        if (empty($id)) {
+        if (empty($id) || DB::isError($id)) {
             return new Mail_Queue_Error(MAILQUEUE_ERROR,
                 $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
                 'Cannot create id in: '.$this->sequence);
         }
         $query = sprintf("INSERT INTO %s (id, create_time, time_to_send, id_user, ip,
                         sender, recipient, headers, body, delete_after_send)
-                        VALUES('%s', now(), '%s', %d, '%s', '%s', '%s', '%s', '%s', %d )",
+                        VALUES('%s', now(), '%s', %d, '%s', '%s', '%s', '%s', '%s', %d)",
                          $this->mail_table,
                          $id,
                          addslashes($time_to_send),
