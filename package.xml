@@ -59,6 +59,7 @@ every few minutes) by crontab or in other way.
         <dir name="docs" role="doc">
           <file>add_example.php</file>
           <file>base.php</file>
+          <file>mdb_mail_queue_schema.xml</file>
           <file>mysql.sql</file>
           <file>send_example.php</file>
           <file>TODO</file>
