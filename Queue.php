@@ -97,6 +97,7 @@
 * // end usage example
 * -------------------------------------------------------------------------
 *
+* @version $Revision$
 * $Id$
 * @author Radek Maciaszek <chief@php.net>
 */
@@ -137,6 +138,7 @@ define('MAILQUEUE_ERROR_NO_OPTIONS',        -5);
 define('MAILQUEUE_ERROR_CANNOT_CONNECT',    -6);
 define('MAILQUEUE_ERROR_QUERY_FAILED',      -7);
 define('MAILQUEUE_ERROR_UNEXPECTED',        -8);
+define('MAILQUEUE_ERROR_CANNOT_SEND_MAIL',  -9);
 
 require_once 'PEAR.php';
 require_once 'Mail.php';
@@ -294,9 +296,9 @@ class Mail_Queue extends PEAR
                     $this->deleteMail($mail->getId());
                 }
             } else {
-                return new Mail_Queue_Error(MAILQUEUE_ERROR_CANNOT_INITIALIZE,
-                            $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
-                            'Error in sending mail: '.$result->getMessage());
+                PEAR::raiseError(
+                    MAILQUEUE_ERROR_CANNOT_SEND_MAIL, null, PEAR_ERROR_TRIGGER,
+                    E_USER_NOTICE, 'Error in sending mail: '.$result->getMessage());
             }
         }
         return true;
@@ -447,6 +449,7 @@ class Mail_Queue extends PEAR
                 MAILQUEUE_ERROR_CANNOT_CONNECT     => 'Cannot connect to database',
                 MAILQUEUE_ERROR_QUERY_FAILED       => 'db query failed',
                 MAILQUEUE_ERROR_UNEXPECTED         => 'Unexpected class',
+                MAILQUEUE_ERROR_CANNOT_SEND_MAIL   => 'Cannot send email',
             );
         }
 
@@ -459,7 +462,17 @@ class Mail_Queue extends PEAR
     }
 
     // }}}
-
+/*
+    function raiseError($msg, $code = null, $file = null, $line = null, $mode = null)
+    {
+        if ($file !== null) {
+            $err = PEAR::raiseError(sprintf("%s [%s on line %d].", $msg, $file, $line), $code, $mode);
+        } else {
+            $err = PEAR::raiseError(sprintf("%s", $msg), $code, $mode);
+        }
+        return $err;
+    }
+*/
 }
 
 
