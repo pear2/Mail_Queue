@@ -420,7 +420,7 @@ class Mail_Queue extends PEAR
     {
         return(is_object($value) &&
             (get_class($value) == 'mail_queue_error' ||
-            is_subclass_of($value, 'mail_queue_error')));
+            is_subclass_of($value, 'pear_error')));
     }
 
     // }}}
