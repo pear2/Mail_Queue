@@ -120,13 +120,16 @@ class Mail_Queue_Container_db extends Mail_Queue_Container
         $query = sprintf("SELECT * FROM %s WHERE sent_time IS NULL
                             AND try_sent < %d
                             AND now() > time_to_send
-                            ORDER BY time_to_send
-                            LIMIT %d, %d",   //THIS SYNTAX WORKS ON MYSQL ONLY!! FIX IT!
+                            ORDER BY time_to_send",
                          $this->mail_table,
-                         $this->try,
-                         $this->offset,
-                         $this->limit
+                         $this->try
                          );
+        $query = $this->db->modifyLimitQuery($query, $this->offset, $this->limit);
+        if (DB::isError($query)) {
+            return new Mail_Queue_Error(MAILQUEUE_ERROR_QUERY_FAILED,
+                $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
+                'DB::modifyLimitQuery failed - '.DB::errorMessage($query));
+        }
         $res = $this->db->query($query);
         if (DB::isError($res)) {
             return new Mail_Queue_Error(MAILQUEUE_ERROR_QUERY_FAILED,
