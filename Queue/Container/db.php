@@ -258,6 +258,7 @@ class Mail_Queue_Container_db extends Mail_Queue_Container {
             return new Mail_Queue_Error('DB::query failed: ' 
                 . DB::errorMessage($res), __FILE__, __LINE__);
         
+        $row = $res->fetchRow(DB_FETCHMODE_ASSOC);
         if(is_array($row)) {
             $this->_last_item = count($this->queue_data);
             return new Mail_Queue_Body( $row['id'], $row['create_time'],
