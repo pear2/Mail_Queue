@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE package SYSTEM "../package.dtd">
+
+<package version="1.0">
+
+  <name>Mail_Queue</name>
+  <summary>Class for put mails in queue and send them later in background.</summary>
+  <description>
+Class for handle mail queue managment.
+Wrapper for Pear::Mail and Pear::DB.
+Could load, save and send saved mails in background
+and also backup some mails.
+
+Mail queue class put mails in a temporary
+container waiting to be fed to the MTA (Mail Transport Agent)
+and send them later (eg. every few minutes) by crontab or in other way. 
+  </description>
+
+  <maintainers>
+      <maintainer>
+        <user>chief</user>
+        <name>Radek Maciaszek</name>
+        <email>chief@php.net</email>
+      </maintainer>
+  </maintainers>
+
+  <release>
+    <version>1.0</version>
+    <date>2002-09-21</date>
+    <state>stable</state>
+    <license>PHP</license>
+    <notes>
+        This is the initial release of the Mail_Queue package.
+    </notes>
+    <filelist>
+      <dir name="/" baseinstalldir="Mail">
+        <file role="php">Queue.php</file>
+        <dir name="Queue">
+          <file role="php">Body.php</file>
+          <file role="php">Container.php</file>
+          <file role="php">Error.php</file>
+        </dir>
+        <dir name="Container" role="php">
+          <file>db.php</file>
+        </dir>
+        <dir name="docs" role="doc">
+          <file>add_example.php</file>
+          <file>base.php</file>
+          <file>mysql.sql</file>
+          <file>send_example.php</file>
+          <file>TODO</file>
+        </dir>
+      </dir>
+    </filelist>
+  </release>
+
+  <changelog>
+	  <release>
+	    <version>1.0</version>
+	    <date>2002-09-21</date>
+	    <state>stable</state>
+	    <notes>
+	      This is the initial release of the Mail_Queue package.
+	    </notes>
+	  </release>
+  </changelog>
+
+</package>
