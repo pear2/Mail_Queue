@@ -33,8 +33,6 @@ require_once 'Mail/Queue/Container.php';
 * A XML MDB-compliant schema example for the table needed is provided.
 * Look at the file "mdb_mail_queue_schema.xml" for that.
 *
-* NB: Consider this first release as beta - YMMV!
-*
 * -------------------------------------------------------------------------
 * A basic usage example:
 * -------------------------------------------------------------------------
@@ -331,7 +329,7 @@ class Mail_Queue_Container_mdb extends Mail_Queue_Container
      */
     function countSend($mail)
     {
-        if (!is_object($mail) || get_class($mail) != 'mail_queue_body') {
+        if (!is_object($mail) || !is_a($mail, 'mail_queue_body')) {
             return new Mail_Queue_Error(MAILQUEUE_ERROR_UNEXPECTED,
                         $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
                         'Expected: Mail_Queue_Body class');
@@ -361,7 +359,7 @@ class Mail_Queue_Container_mdb extends Mail_Queue_Container
      * @access public
      */
     function setAsSent($mail) {
-        if (!is_object($mail) || get_class($mail) != 'mail_queue_body') {
+        if (!is_object($mail) || !is_a($mail, 'mail_queue_body')) {
             return new Mail_Queue_Error(MAILQUEUE_ERROR_UNEXPECTED,
                         $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
                         'Expected: Mail_Queue_Body class');

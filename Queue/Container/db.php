@@ -233,7 +233,7 @@ class Mail_Queue_Container_db extends Mail_Queue_Container
      */
     function countSend($mail)
     {
-        if (!is_object($mail) || get_class($mail) != 'mail_queue_body') {
+        if (!is_object($mail) || !is_a($mail, 'mail_queue_body')) {
             return new Mail_Queue_Error('Expected: Mail_Queue_Body class' , __FILE__, __LINE__);
         }
         $count = $mail->try();
@@ -265,7 +265,7 @@ class Mail_Queue_Container_db extends Mail_Queue_Container
      */
     function setAsSent($mail)
     {
-        if (!is_object($mail) || get_class($mail) != 'mail_queue_body') {
+        if (!is_object($mail) || !is_a($mail, 'mail_queue_body')) {
             return new Mail_Queue_Error(MAILQUEUE_ERROR_UNEXPECTED,
                         $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
                         'Expected: Mail_Queue_Body class');
