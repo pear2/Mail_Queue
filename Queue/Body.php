@@ -231,7 +231,7 @@ class Mail_Queue_Body {
      **/
     function getIp()
     {
-        return $this->ip;
+        return stripslashes($this->ip);
     }
 
     /**
@@ -244,7 +244,7 @@ class Mail_Queue_Body {
      **/
     function getSender()
     {
-        return $this->sender;
+        return stripslashes($this->sender);
     }
 
     /**
@@ -257,7 +257,7 @@ class Mail_Queue_Body {
      **/
     function getRecipient()
     {
-        return $this->recipient;
+        return stripslashes($this->recipient);
     }
 
     /**
@@ -270,7 +270,7 @@ class Mail_Queue_Body {
      **/
     function getHeaders()
     {
-        return $this->headers;
+        return stripslashes($this->headers);
     }
 
     /**
@@ -283,7 +283,7 @@ class Mail_Queue_Body {
      **/
     function getBody()
     {
-        return $this->body;
+        return stripslashes($this->body);
     }
 
     /**
