@@ -153,17 +153,23 @@ class Mail_Queue_Container_mdb extends Mail_Queue_Container
         }
         if (isset($options['mail_table'])) {
             $this->mail_table = $options['mail_table'];
+            unset($options['mail_table']);
         }
         if (isset($options['sequence'])) {
             $this->sequence = $options['sequence'];
+            unset($options['sequence']);
         } else {
             $this->sequence = $this->mail_table;
         }
         if (!empty($options['pearErrorMode'])) {
             $this->pearErrorMode = $options['pearErrorMode'];
         }
-
-        $this->db = &MDB::Connect($options);
+        if (isset($options['dsn'])) {
+            $dsn = $options['dsn'];
+        } else {
+            $dsn = $options;
+        }
+        $this->db = &MDB::Connect($dsn);
         if (MDB::isError($this->db)) {
             return new Mail_Queue_Error(MAILQUEUE_ERROR_CANNOT_CONNECT,
                         $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
