@@ -16,7 +16,6 @@ waiting to be fed to the MTA (Mail Transport Agent),
 and sends them later (e.g. a certain amount of mails
 every few minutes) by crontab or in other way.
   </description>
-
   <maintainers>
       <maintainer>
         <user>chief</user>
@@ -33,21 +32,16 @@ every few minutes) by crontab or in other way.
   </maintainers>
 
   <release>
-    <version>1.1.1</version>
-    <date>2004-07-20</date>
+    <version>1.1.2</version>
+    <date>2004-07-22</date>
     <state>stable</state>
     <license>PHP</license>
     <notes>
-- Fixed a buggy implementation of the preload() method
-  which was causing several problems
-- Use DB::modifyLimitQuery() instead of a mysql-specific
-  LIMIT clause in the DB container
 - Use PHP's date() function instead of a mysql-specific
   NOW() call in the DB container
 - Added pgsql schema in the /docs/ dir (thanks Alan Knowles)
 - Fixed integer quoting in the DB container (bug #1917) (thanks Alan Knowles)
 - DB error reporting now uses toString() (bug #1918) (thanks Alan Knowles)
-- Added a new MDB2 container
     </notes>
     <filelist>
       <dir name="/" baseinstalldir="Mail">
@@ -80,6 +74,19 @@ every few minutes) by crontab or in other way.
 
   <changelog>
 	<release>
+    <version>1.1.1</version>
+    <date>2004-07-22</date>
+    <state>stable</state>
+    <license>PHP</license>
+    <notes>
+- Fixed a buggy implementation of the preload() method
+  which was causing several problems
+- Use DB::modifyLimitQuery() instead of a mysql-specific
+  LIMIT clause in the DB container
+- Added a new MDB2 container
+    </notes>
+    </release>
+    <release>
       <version>1.1</version>
     <date>2004-03-05</date>
     <state>stable</state>
