@@ -32,24 +32,12 @@ and send them later (eg. every few minutes) by crontab or in other way.
   </maintainers>
 
   <release>
-    <version>1.1</version>
-    <date>2004-03-05</date>
+    <version>1.1.1</version>
+    <date>2004-05-29</date>
     <state>stable</state>
     <license>PHP</license>
     <notes>
-- Error management has been rewritten. New error constants are used,
-  so custom error mgmt is now possible.
-- Added a "pearErrorMode" option to specify what to do with Pear_Error
-  (was: PEAR_ERROR_PRINT by default)
-- Added a "sequence" container option to specify the name of the sequence table.
-- Moved Mail_Queue_Error class from Mail/Queue/Error.php to Mail/Queue.php.
-- Preloading management has been rewritten. The amount of memory used by the
-  internal buffer can be limited to any chosen value via the setBufferSize() method.
-- The put() methods now returns last_inserted_id instead of true
-- Fixed error in factorySendMail()
-- Fixed: mails weren't set as send when bypassing the queue using sendMailById()
-- Fixed: Mail_Queue_Container_mdb didn't accept a 'dsn' as option
-- PHP 5 fixes
+- Fixed error in the preload() method of the DB container
     </notes>
     <filelist>
       <dir name="/" baseinstalldir="Mail">
@@ -78,25 +66,46 @@ and send them later (eg. every few minutes) by crontab or in other way.
   </release>
 
   <changelog>
-	  <release>
-	    <version>1.0</version>
-	    <date>2002-12-13</date>
-	    <state>stable</state>
-	    <notes>
-	      First stable release. Added Lorenzo Alberton to the list of contributors.
-          Fixed getMailById() in db.php.
-          Added new container: Mail_Queue_Container_mdb - Storage driver for fetching mail
-          queue data from a PEAR_MDB database.
-	    </notes>
-	  </release>
-	  <release>
-	    <version>0.9</version>
-	    <date>2002-09-21</date>
-	    <state>beta</state>
-	    <notes>
-	      This is the initial release of the Mail_Queue package.
-	    </notes>
-	  </release>
+	<release>
+      <version>1.1</version>
+    <date>2004-03-05</date>
+    <state>stable</state>
+    <license>PHP</license>
+    <notes>
+- Error management has been rewritten. New error constants are used,
+  so custom error mgmt is now possible.
+- Added a "pearErrorMode" option to specify what to do with Pear_Error
+  (was: PEAR_ERROR_PRINT by default)
+- Added a "sequence" container option to specify the name of the sequence table.
+- Moved Mail_Queue_Error class from Mail/Queue/Error.php to Mail/Queue.php.
+- Preloading management has been rewritten. The amount of memory used by the
+  internal buffer can be limited to any chosen value via the setBufferSize() method.
+- The put() methods now returns last_inserted_id instead of true
+- Fixed error in factorySendMail()
+- Fixed: mails weren't set as send when bypassing the queue using sendMailById()
+- Fixed: Mail_Queue_Container_mdb didn't accept a 'dsn' as option
+- PHP 5 fixes
+        </notes>
+	</release>
+	<release>
+	  <version>1.0</version>
+	  <date>2002-12-13</date>
+	  <state>stable</state>
+	  <notes>
+First stable release. Added Lorenzo Alberton to the list of contributors.
+Fixed getMailById() in db.php.
+Added new container: Mail_Queue_Container_mdb - Storage driver for fetching mail
+queue data from a PEAR_MDB database.
+	  </notes>
+	</release>
+	<release>
+	  <version>0.9</version>
+	  <date>2002-09-21</date>
+	  <state>beta</state>
+	  <notes>
+	    This is the initial release of the Mail_Queue package.
+	  </notes>
+	</release>
   </changelog>
 
 </package>
