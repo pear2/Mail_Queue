@@ -265,9 +265,26 @@ class Mail_Queue extends PEAR
     }
 
     // }}}
-    // {{{ sendMailsInQueue()
+    // {{{ setBufferSize()
 
     /**
+     * Keep memory usage under control. You can set the max number
+     * of mails that can be in the preload buffer at any given time.
+     * It won't limit the number of mails you can send, just the
+     * internal buffer size.
+     *
+     * @param integer $size  Optional - internal preload buffer size
+     **/
+    function setBufferSize($size = 10)
+    {
+        $this->container->buffer_size = $size;
+    }
+
+
+    // }}}
+    // {{{ sendMailsInQueue()
+
+   /**
      * Send mails fom queue.
      *
      * Mail_Queue::sendMailsInQueue()
@@ -276,7 +293,7 @@ class Mail_Queue extends PEAR
      *                           This is the max number of emails send by
      *                           this function.
      * @param integer $offset    Optional - you could load mails from $offset (by id)
-    * @param integer $try       Optional - hoh many times mailqueu should try send
+     * @param integer $try       Optional - hoh many times mailqueu should try send
      *                           each mail. If mail was sent succesful it will be delete
      *                           from Mail_Queue.
      * @return mixed  True on success else MAILQUEUE_ERROR object.
@@ -285,12 +302,12 @@ class Mail_Queue extends PEAR
                               $try = MAILQUEUE_TRY)
     {
         $this->container->setOption($limit, $offset, $try);
-        while($mail = $this->get()) {
+        while ($mail = $this->get()) {
             $this->container->countSend($mail);
 
             $result = $this->sendMail($mail);
 
-            if(!PEAR::isError($result)) {
+            if (!PEAR::isError($result)) {
                 $this->container->setAsSent($mail);
                 if($mail->isDeleteAfterSend()) {
                     $this->deleteMail($mail->getId());
@@ -352,7 +369,8 @@ class Mail_Queue extends PEAR
     // {{{ get()
 
     /**
-     * Get next mail from queue. When run first time preload all queue
+     * Get next mail from queue. The emails are preloaded
+     * in a buffer for better performances.
      *
      * @return    object Mail_Queue_Container or error object
      * @throw     MAILQUEUE_ERROR
@@ -369,15 +387,15 @@ class Mail_Queue extends PEAR
     /**
      * Put new mail in queue.
      *
-     * Mail_Queue_Container::put()
+     * @see Mail_Queue_Container::put()
      *
-     * @param string $time_to_send  When mail have to be send
+     * @param string  $time_to_send  When mail have to be send
      * @param integer $id_user  Sender id
-     * @param string $ip  Sender ip
-     * @param string $from  Sender e-mail
-     * @param string $to  Reciepient e-mail
-     * @param string $hdrs  Mail headers (in RFC)
-     * @param string $body  Mail body (in RFC)
+     * @param string  $ip    Sender ip
+     * @param string  $from  Sender e-mail
+     * @param string  $to    Reciepient e-mail
+     * @param string  $hdrs  Mail headers (in RFC)
+     * @param string  $body  Mail body (in RFC)
      * @return mixed  ID of the record where this mail has been put
      *                or Mail_Queue_Error on error
      *
@@ -420,9 +438,7 @@ class Mail_Queue extends PEAR
      */
     function isError($value)
     {
-        return(is_object($value) &&
-            (strtolower(get_class($value)) == 'mail_queue_error' ||
-            is_subclass_of($value, 'pear_error')));
+        return (is_object($value) && is_a($value, 'pear_error'));
     }
 
     // }}}
@@ -489,7 +505,7 @@ class Mail_Queue_Error extends PEAR_Error
 {
     /**
      * Prefix for all error messages
-     *
+    *
      * @access private
      * @var    string
      */
