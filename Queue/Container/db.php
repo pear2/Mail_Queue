@@ -22,22 +22,22 @@
  * Storage driver for fetching mail queue data from a PEAR_DB database
  *
  * This storage driver can use all databases which are supported
- * by the PEAR DB abstraction layer to fetch login data.
+ * by the PEAR DB abstraction layer.
  *
- * @author   Radoslaw Maciaszek <chief@php.net>
+ * @author   Radek Maciaszek <chief@php.net>
  * @package  Mail_Queue
  * @version  $Revision$
  */
 
-require_once "DB.php";
-require_once "Mail/Queue/Container.php";
+require_once 'DB.php';
+require_once 'Mail/Queue/Container.php';
 
 /**
 * Mail_Queue_Container_db - Storage driver for fetching mail queue data 
 * from a PEAR_DB database
 *
 * @author   Radek Maciaszek <chief@php.net>
-* @version  $Id:
+* @version  $Id$
 * @package  Mail_Queue
 * @access   public
 */
