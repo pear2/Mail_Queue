@@ -97,7 +97,6 @@
 * // end usage example
 * -------------------------------------------------------------------------
 *
-* @version $Revision$
 * $Id$
 * @author Radek Maciaszek <chief@php.net>
 */
@@ -317,7 +316,7 @@ class Mail_Queue extends PEAR
      */
     function sendMailById($id, $set_as_sent=true)
     {
-        $mail =& $this->container->getMailById($id);
+        $mail =& $this->container->getMailById($id);
         $sent = $this->sendMail($mail);
         if ($sent and $set_as_sent) {
             $this->container->setAsSent($mail);
