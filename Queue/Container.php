@@ -14,25 +14,25 @@
 // | license@php.net so we can mail you a copy immediately.               |
 // +----------------------------------------------------------------------+
 // | Authors: Radek Maciaszek <wodzu@tonet.pl>                            |
+// |          Lorenzo Alberton <l dot alberton at quipo dot it>           |
 // +----------------------------------------------------------------------+
 //
 // $Id$
 
 /**
- * Container base class for MTA queue.
+ * File Container.php
+ *
+ * @package Mail_Queue
+ */
+require_once 'Mail/Queue/Body.php';
+
+/**
+ * Mail_Queue_Container - base class for MTA queue.
  * Define methods for all storage containers.
  *
  * @version  $Revision$
  * @author   Radek Maciaszek <chief@php.net>
- */
-
-//require_once 'Mail/Queue/Error.php';
-require_once 'Mail/Queue/Body.php';
-
-/**
- * Mail_Queue_Container - base class
- *
- * @author   Radek Maciaszek <chief@php.net>
+ * @author   Lorenzo Alberton <l dot alberton at quipo dot it>
  * @package  Mail_Queue
  * @access   public
  * @abstract
@@ -65,19 +65,13 @@ class Mail_Queue_Container
 	var $_last_item = 0;
 
     /**
-     * Variable to check if mails are loaded to queue
-     * @var  boolean
-     * @access private
-     */
-    var $_preloaded = false;
-
-    /**
      * Options
      */
     var $limit;
     var $offset;
     var $try;
     var $force_preload;
+    var $buffer_size = 10; //number of mails in the queue
 
     /**
      * Pear error mode (see PEAR doc)
@@ -98,20 +92,23 @@ class Mail_Queue_Container
      */
     function get()
     {
-        $this->_preload();
-        if(!empty($this->queue_data) && !$this->isEmpty()) {
-            if(!isset($this->queue_data[$this->_current_item])) {
-                return new Mail_Queue_Error(MAILQUEUE_ERROR_CANNOT_INITIALIZE,
-                            $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
-                            'No item: '.$this->_current_item.' in queue!');
-            }
-			$object = $this->queue_data[$this->_current_item];
-			unset($this->queue_data[$this->_current_item]);
-			$this->_current_item++;
-			return $object;
-		} else {
-			return false;
-		}
+        if (Mail_Queue::isError($err = $this->preload())) {
+            return $err;
+        }
+        if (empty($this->queue_data)) {
+            return false;
+        }
+        if (!isset($this->queue_data[$this->_current_item])) {
+            //unlikely...
+            return new Mail_Queue_Error(MAILQUEUE_ERROR_CANNOT_INITIALIZE,
+                $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
+                'No item: '.$this->_current_item.' in queue!');
+        }
+
+        $object = $this->queue_data[$this->_current_item];
+		unset($this->queue_data[$this->_current_item]);
+		$this->_current_item++;
+		return $object;
     }
 
     // }}}
@@ -132,6 +129,7 @@ class Mail_Queue_Container
      * @return bool True on success
      * @access public
      **/
+/*
     function put($time_to_send, $id_user, $ip, $from, $to, $hdrs, $body, $delete_after_send)
     {
         $this->_last_item = count($this->queue_data);
@@ -141,7 +139,7 @@ class Mail_Queue_Container
                     unserialize($body), $delete_after_send, 0);
         return true;
     }
-
+*/
     // }}}
     // {{{ setOption()
 
@@ -151,7 +149,7 @@ class Mail_Queue_Container
      * Mail_Queue_Container::setOption()
      *
      * @param integer  $limit  Optional - Number of mails loaded to queue
-     * @param integer  $offset  Optional - You could also specify offset
+     * @param integer  $offset Optional - You could also specify offset
      * @param integer  $try  Optional - how many times should system try sent
      *                       each mail
      * @param boolean  $force_preload  Optional - FIXME
@@ -166,24 +164,6 @@ class Mail_Queue_Container
         $this->offset = $offset;
         $this->try = $try;
         $this->force_preload = $force_preload;
-    }
-
-    // }}}
-    // {{{ isEmpty()
-
-    /**
-     * Check if queue is empty.
-     *
-     * @return boolean  True if empty else false.
-     * @access public
-     */
-    function isEmpty()
-    {
-		if($this->_current_item > $this->_last_item) {
-			return true;
-		} else {
-			return false;
-		}
     }
 
     // }}}
@@ -247,26 +227,48 @@ class Mail_Queue_Container
     }
 
     // }}}
-    // {{{ _preload()
+    // {{{ preload()
 
     /**
      * Preload mail to queue.
-     *
-     * @param integer  $limit  Optional - Number of mails loaded to queue
-     * @param integer  $offset  Optional - You could also specify offset
-     * @param boolean  $force_preload  Optional - FIXME
+     * The buffer size can be set in the options.
      *
      * @return mixed  True on success else Mail_Queue_Error object.
-     *
      * @access private
      */
-    function _preload($limit = MAILQUEUE_ALL, $offset = MAILQUEUE_START,
-                        $try = MAILQUEUE_TRY, $forse_preload = false)
+    function preload()
     {
-        if($this->_preloaded) return true;
+        //remember buffer offset
+        static $from = 0;
 
-        $this->_preloaded = true;
-        $this->_last_item = count($this->queue_data);
+        if (!empty($this->queue_data)) {
+            return true;
+        }
+
+        $bkp = array(
+            'offset' => $this->offset,
+            'limit'  => $this->limit
+        );
+
+        //set buffer size and offset
+        $this->offset = $from;
+        $this->limit = $this->buffer_size;
+
+        if (Mail_Queue::isError($err = $this->_preload())) {
+            return $err;
+        }
+
+        //restore options
+        $this->offset = $bkp['offset'];
+        $this->limit  = $bkp['limit'];
+
+        //set buffer pointers
+        $this->_current_item = 0;
+        $this->_last_item = count($this->queue_data)-1;
+
+        //update buffer offset
+        $from += count($this->queue_data);
+
         return true;
     }
 
