@@ -30,18 +30,15 @@ every few minutes) by crontab or in other way.
         <email>quipo@php.net</email>
       </maintainer>
   </maintainers>
-
   <release>
-    <version>1.1.2</version>
-    <date>2004-07-22</date>
+    <version>1.1.3</version>
+    <date>2004-07-27</date>
     <state>stable</state>
     <license>PHP</license>
     <notes>
-- Use PHP's date() function instead of a mysql-specific
-  NOW() call in the DB container
-- Added pgsql schema in the /docs/ dir (thanks Alan Knowles)
-- Fixed integer quoting in the DB container (bug #1917) (thanks Alan Knowles)
-- DB error reporting now uses toString() (bug #1918) (thanks Alan Knowles)
+- fix wrong parameter order for PEAR::raiseError() in sendMailsInQueue()
+  [bug #1990] - thanks Alan Knowles
+- some cleanup
     </notes>
     <filelist>
       <dir name="/" baseinstalldir="Mail">
@@ -73,6 +70,19 @@ every few minutes) by crontab or in other way.
   </release>
 
   <changelog>
+  <release>
+    <version>1.1.2</version>
+    <date>2004-07-22</date>
+    <state>stable</state>
+    <license>PHP</license>
+    <notes>
+- Use PHP's date() function instead of a mysql-specific
+  NOW() call in the DB container
+- Added pgsql schema in the /docs/ dir (thanks Alan Knowles)
+- Fixed integer quoting in the DB container (bug #1917) (thanks Alan Knowles)
+- DB error reporting now uses toString() (bug #1918) (thanks Alan Knowles)
+    </notes>
+	</release>
 	<release>
     <version>1.1.1</version>
     <date>2004-07-22</date>
