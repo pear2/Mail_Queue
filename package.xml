@@ -39,6 +39,7 @@ every few minutes) by crontab or in other way.
 - fix wrong parameter order for PEAR::raiseError() in sendMailsInQueue()
   [bug #1990] - thanks Alan Knowles
 - some cleanup
+- php5 fix: Mail_Queue_Body::try() => _try()  [bug #2098]
     </notes>
     <filelist>
       <dir name="/" baseinstalldir="Mail">
