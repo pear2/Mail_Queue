@@ -315,8 +315,9 @@ class Mail_Queue extends PEAR
                 }
             } else {
                 PEAR::raiseError(
-                    MAILQUEUE_ERROR_CANNOT_SEND_MAIL, null, PEAR_ERROR_TRIGGER,
-                    E_USER_NOTICE, 'Error in sending mail: '.$result->getMessage());
+                    'Error in sending mail: '.$result->getMessage(),
+                    MAILQUEUE_ERROR_CANNOT_SEND_MAIL, PEAR_ERROR_TRIGGER,
+                    E_USER_NOTICE);
             }
         }
         return true;
@@ -504,14 +505,6 @@ class Mail_Queue extends PEAR
  */
 class Mail_Queue_Error extends PEAR_Error
 {
-    /**
-     * Prefix for all error messages
-    *
-     * @access private
-     * @var    string
-     */
-    var $error_message_prefix = 'Mail Queue Error: ';
-
     // {{{ constructor
 
     /**
@@ -529,10 +522,10 @@ class Mail_Queue_Error extends PEAR_Error
 
         $debuginfo .= (empty($debuginfo) ? '' : ' - '). 'FILE: '.$file.', LINE: '.$line;
         if (is_int($code)) {
-            $this->PEAR_Error('Mail Queue Error: '.Mail_Queue::errorMessage($code),
+            $this->PEAR_Error('Mail Queue Error: ' . Mail_Queue::errorMessage($code),
                               $code, $mode, $level, $debuginfo);
         } else {
-            $this->PEAR_Error('Mail Queue Error: '.$code, MAILQUEUE_ERROR, $mode,
+            $this->PEAR_Error('Mail Queue Error: ' . $code, MAILQUEUE_ERROR, $mode,
                               $level, $debuginfo);
         }
     }
