@@ -322,12 +322,12 @@ class Mail_Queue_Body {
     /**
      * Increase and return try_sent
      *
-     * Mail_Queue_Body::try()
+     * Mail_Queue_Body::_try()
      *
      * @return integer  How many times mail was sent
      * @access public
      **/
-    function try()
+    function _try()
     {
         return ++$this->try_sent;
     }

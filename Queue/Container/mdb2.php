@@ -214,7 +214,7 @@ class Mail_Queue_Container_mdb2 extends Mail_Queue_Container
             return new Mail_Queue_Error('Expected: Mail_Queue_Body class',
                 __FILE__, __LINE__);
         }
-        $count = $mail->try();
+        $count = $mail->_try();
         $query = 'UPDATE ' . $this->mail_table
                 .' SET try_sent = ' . $this->db->quote($count, 'integer')
                 .' WHERE id = '     . $this->db->quote($mail->getId(), 'integer');

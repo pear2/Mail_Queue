@@ -232,7 +232,7 @@ class Mail_Queue_Container_db extends Mail_Queue_Container
             return new Mail_Queue_Error('Expected: Mail_Queue_Body class',
                 __FILE__, __LINE__);
         }
-        $count = $mail->try();
+        $count = $mail->_try();
         $query = sprintf("UPDATE %s SET try_sent = %d WHERE id = %d",
                          $this->mail_table,
                          $count,
