@@ -247,7 +247,8 @@ class Mail_Queue_Container_mdb extends Mail_Queue_Container
      * @param string  $hdrs  Mail headers (in RFC)
      * @param string  $body  Mail body (in RFC)
      * @param bool    $delete_after_send  Delete or not mail from db after send
-     * @return bool   True on success
+     * @return mixed  ID of the record where this mail has been put
+     *                or Mail_Queue_Error on error
      * @access public
      **/
     function put($time_to_send, $id_user, $ip, $sender,
@@ -315,7 +316,7 @@ class Mail_Queue_Container_mdb extends Mail_Queue_Container
                     $time_to_send, null, $id_user,
                     $ip, $sender, $recipient, unserialize($headers),
                     unserialize($body), $delete_after_send, 0 );
-        return true;
+        return $id;
     }
 
     // }}}
