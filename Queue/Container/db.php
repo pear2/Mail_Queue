@@ -122,13 +122,7 @@ class Mail_Queue_Container_db extends Mail_Queue_Container
                          $this->try,
                          $this->db->quote(date('Y-m-d H:i:s'))
                          );
-        $query = $this->db->modifyLimitQuery($query, $this->offset, $this->limit);
-        if (PEAR::isError($query)) {
-            return new Mail_Queue_Error(MAILQUEUE_ERROR_QUERY_FAILED,
-                $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
-                'DB::modifyLimitQuery failed - '.$query->toString());
-        }
-        $res = $this->db->query($query);
+        $res = $this->db->limitQuery($query, $this->offset, $this->limit);
         if (PEAR::isError($res)) {
             return new Mail_Queue_Error(MAILQUEUE_ERROR_QUERY_FAILED,
                 $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
