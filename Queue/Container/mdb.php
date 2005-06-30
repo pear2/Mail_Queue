@@ -114,6 +114,10 @@ require_once 'Mail/Queue/Container.php';
 * //given time
 * $mail_queue->setBufferSize(20);
 *
+* //set the queue size (i.e. the number of mails to send)
+* $limit = 50;
+* $mail_queue->setOption($limit);
+*
 * //loop through the stored emails and send them
 * while ($mail = $mail_queue->get()) {
 *     $result = $mail_queue->sendMail($mail);
