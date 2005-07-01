@@ -181,6 +181,14 @@ class Mail_Queue_Container_db extends Mail_Queue_Container
     function put($time_to_send, $id_user, $ip, $sender,
                 $recipient, $headers, $body, $delete_after_send=true)
     {
+        if (!is_object($this->db) || !is_a($this->db, 'DB_Common')) {
+            $msg = 'DB::connect failed';
+            if (PEAR::isError($this->db)) {
+                $msg .= ': '.DB::errorMessage($this->db);
+            }
+            return new Mail_Queue_Error(MAILQUEUE_ERROR_CANNOT_CONNECT,
+                $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__, $msg);
+        }
         $id = $this->db->nextId($this->sequence);
         if (empty($id) || PEAR::isError($id)) {
             return new Mail_Queue_Error(MAILQUEUE_ERROR,
