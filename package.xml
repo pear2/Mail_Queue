@@ -31,15 +31,17 @@ every few minutes) by crontab or in other way.
       </maintainer>
   </maintainers>
   <release>
-    <version>1.1.3</version>
-    <date>2004-11-04</date>
+    <version>1.1.4</version>
+    <date>2005-07-01</date>
     <state>stable</state>
     <license>PHP</license>
     <notes>
-- fix wrong parameter order for PEAR::raiseError() in sendMailsInQueue()
-  [bug #1990] - thanks Alan Knowles
-- some cleanup
-- php5 fix: Mail_Queue_Body::try() => _try()  [bug #2098]
+- fixed bug #2911: Using an invalid db account results 
+  in a call to undefined function
+- the DB container doesn't use DB protected methods anymore
+  (related to bug #4028)
+- removed any MySQL-specific functions from the SQL queries
+  in the DB container.
     </notes>
     <filelist>
       <dir name="/" baseinstalldir="Mail">
@@ -72,6 +74,18 @@ every few minutes) by crontab or in other way.
 
   <changelog>
   <release>
+    <version>1.1.3</version>
+    <date>2004-11-04</date>
+    <state>stable</state>
+    <license>PHP</license>
+    <notes>
+- fix wrong parameter order for PEAR::raiseError() in sendMailsInQueue()
+  [bug #1990] - thanks Alan Knowles
+- some cleanup
+- php5 fix: Mail_Queue_Body::try() => _try()  [bug #2098]
+    </notes>
+	</release>
+	<release>
     <version>1.1.2</version>
     <date>2004-07-22</date>
     <state>stable</state>
