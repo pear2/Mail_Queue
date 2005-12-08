@@ -62,8 +62,7 @@
 
    <field>
       <name>recipient</name>
-      <type>text</type>
-      <length>50</length>
+      <type>clob</type>
       <default></default>
       <notnull>1</notnull>
    </field>

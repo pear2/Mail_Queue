@@ -253,7 +253,7 @@ class Mail_Queue_Container_mdb extends Mail_Queue_Container
      * @return mixed  ID of the record where this mail has been put
      *                or Mail_Queue_Error on error
      * @access public
-     **/
+     */
     function put($time_to_send, $id_user, $ip, $sender,
                 $recipient, $headers, $body, $delete_after_send=true)
     {
@@ -473,7 +473,7 @@ class Mail_Queue_Container_mdb extends Mail_Queue_Container
             $row['id_user'],
             $row['ip'],
             $row['sender'],
-            $row['recipient'],
+            $this->_isSerialized($row['recipient']) ? unserialize($row['recipient']) : $row['recipient'],
             unserialize($row['headers']),
             unserialize($row['body']),
             $row['delete_after_send'],

@@ -395,7 +395,7 @@ class Mail_Queue extends PEAR
      * @param integer $id_user  Sender id
      * @param string  $ip    Sender ip
      * @param string  $from  Sender e-mail
-     * @param string  $to    Reciepient e-mail
+     * @param string|array  $to    Reciepient(s) e-mail
      * @param string  $hdrs  Mail headers (in RFC)
      * @param string  $body  Mail body (in RFC)
      * @return mixed  ID of the record where this mail has been put
@@ -407,9 +407,16 @@ class Mail_Queue extends PEAR
     {
         $ip = getenv('REMOTE_ADDR');
         $time_to_send = date("Y-m-d G:i:s", time() + $sec_to_send);
-        return $this->container->put( $time_to_send, $id_user,
-                            $ip, $from, $to, serialize($hdrs),
-                            serialize($body), $delete_after_send );
+        return $this->container->put(
+            $time_to_send,
+            $id_user,
+            $ip,
+            $from,
+            serialize($to),
+            serialize($hdrs),
+            serialize($body),
+            $delete_after_send
+        );
     }
 
     // }}}
