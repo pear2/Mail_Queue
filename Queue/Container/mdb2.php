@@ -106,7 +106,7 @@ class Mail_Queue_Container_mdb2 extends Mail_Queue_Container
     {
         $query = 'SELECT * FROM ' . $this->mail_table
                 .' WHERE sent_time IS NULL AND try_sent < '. $this->try
-                .' AND time_to_send < '.$this->db->quote(date('Y-m-d H:i:s'), 'timestamp')
+                .' AND time_to_send <= '.$this->db->quote(date('Y-m-d H:i:s'), 'timestamp')
                 .' ORDER BY time_to_send';
         $this->db->setLimit($this->limit, $this->offset);
         $res = $this->db->query($query);
