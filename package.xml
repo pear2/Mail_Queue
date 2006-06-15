@@ -32,7 +32,7 @@ every few minutes) by crontab or in other way.
   </maintainers>
   <release>
     <version>1.1.4</version>
-    <date>2005-12-08</date>
+    <date>2006-06-15</date>
     <state>stable</state>
     <license>PHP</license>
     <notes>
@@ -43,6 +43,8 @@ every few minutes) by crontab or in other way.
 - removed any MySQL-specific functions from the SQL queries
   in the DB container.
 - allow multiple recipients (Cc and Bcc) (requests #5707 and #5987)
+- fixed bug #7886: sendMailsInQueue: problem sending mails in the same second
+  they are stored (when sec_to_send = 0)
     </notes>
     <filelist>
       <dir name="/" baseinstalldir="Mail">
@@ -70,6 +72,7 @@ every few minutes) by crontab or in other way.
     </filelist>
     <deps>
       <dep type="pkg" rel="has">Mail</dep>
+      <dep type="pkg" rel="has">Mail_Mime</dep>
     </deps>
   </release>
 
