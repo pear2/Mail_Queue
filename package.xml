@@ -32,7 +32,7 @@ every few minutes) by crontab or in other way.
   </maintainers>
   <release>
     <version>1.1.4</version>
-    <date>2006-06-15</date>
+    <date>2006-08-09</date>
     <state>stable</state>
     <license>PHP</license>
     <notes>
@@ -45,6 +45,8 @@ every few minutes) by crontab or in other way.
 - allow multiple recipients (Cc and Bcc) (requests #5707 and #5987)
 - fixed bug #7886: sendMailsInQueue: problem sending mails in the same second
   they are stored (when sec_to_send = 0)
+- fixed bug #8378: disconnect from the SMTP server once it has 
+  sent all the messages, when mail_options['persist'] is set
     </notes>
     <filelist>
       <dir name="/" baseinstalldir="Mail">
