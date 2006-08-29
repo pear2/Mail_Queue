@@ -320,7 +320,7 @@ class Mail_Queue extends PEAR
                     E_USER_NOTICE);
             }
         }
-        if ($this->mail_options['persist']) {
+        if ($this->mail_options['persist'] && is_object($this->send_mail)) {
             $this->send_mail->disconnect();
         }
         return true;
