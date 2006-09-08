@@ -47,6 +47,7 @@ every few minutes) by crontab or in other way.
   they are stored (when sec_to_send = 0)
 - fixed bug #8378: disconnect from the SMTP server once it has 
   sent all the messages, when mail_options['persist'] is set
+- fixed bug #8661: wrong date() format in Mail_queue::put()
     </notes>
     <filelist>
       <dir name="/" baseinstalldir="Mail">
