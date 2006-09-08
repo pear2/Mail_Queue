@@ -409,7 +409,7 @@ class Mail_Queue extends PEAR
     function put($from, $to, $hdrs, $body, $sec_to_send=0, $delete_after_send=true, $id_user=MAILQUEUE_SYSTEM)
     {
         $ip = getenv('REMOTE_ADDR');
-        $time_to_send = date("Y-m-d G:i:s", time() + $sec_to_send);
+        $time_to_send = date("Y-m-d H:i:s", time() + $sec_to_send);
         return $this->container->put(
             $time_to_send,
             $id_user,
