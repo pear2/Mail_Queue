@@ -177,7 +177,7 @@ class Mail_Queue_Container_mdb2 extends Mail_Queue_Container
             return new Mail_Queue_Error(MAILQUEUE_ERROR_CANNOT_CONNECT,
                 $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__, $msg);
         }
-        $id = $this->db->nextId($this->sequence);
+        $id = $this->db->nextID($this->sequence);
         if (empty($id) || PEAR::isError($id)) {
             return new Mail_Queue_Error(MAILQUEUE_ERROR,
                 $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
