@@ -224,7 +224,13 @@ class Mail_Queue extends PEAR
         $container_class = 'Mail_Queue_Container_' . $container_type;
         $container_classfile = $container_type . '.php';
 
-        include_once 'Mail/Queue/Container/' . $container_classfile;
+        
+        // Attempt to include a custom version of the named class, but don't treat
+        // a failure as fatal.  The caller may have already included their own
+        // version of the named class.
+        if (!class_exists($container_class)) {
+            include_once 'Mail/Queue/Container/' . $container_classfile;
+        }
         $this->container = new $container_class($container_options);
         if(PEAR::isError($this->container)) {
             return new Mail_Queue_Error(MAILQUEUE_ERROR_CANNOT_INITIALIZE,
