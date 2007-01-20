@@ -277,7 +277,7 @@ class Mail_Queue_Container_mdb2 extends Mail_Queue_Container
     function getMailById($id)
     {
         $query = 'SELECT * FROM ' . $this->mail_table
-                .' WHERE id = '   . $this->db->quote($id, 'text');
+                .' WHERE id = '   . (int)$id;
         $row = $this->db->queryRow($query, null, MDB2_FETCHMODE_ASSOC);
         if (PEAR::isError($row) || !is_array($row)) {
             return new Mail_Queue_Error(MAILQUEUE_ERROR_QUERY_FAILED,
