@@ -320,10 +320,14 @@ class Mail_Queue extends PEAR
                     $this->deleteMail($mail->getId());
                 }
             } else {
+                //remove the problematic mail from the buffer, but don't delete
+                //it from the db: it might be a temporary issue.
+                $this->container->skip();
                 PEAR::raiseError(
                     'Error in sending mail: '.$result->getMessage(),
                     MAILQUEUE_ERROR_CANNOT_SEND_MAIL, PEAR_ERROR_TRIGGER,
-                    E_USER_NOTICE);
+                    E_USER_NOTICE
+                );
             }
         }
         if ($this->mail_options['persist'] && is_object($this->send_mail)) {

@@ -112,6 +112,23 @@ class Mail_Queue_Container
     }
 
     // }}}
+    // {{{ skip()
+
+    /**
+     * Remove the current (problematic) mail from the buffer, but don't delete
+     * it from the db: it might be a temporary issue.
+     */
+    function skip()
+    {
+        if (!empty($this->queue_data)) {
+            if (isset($this->queue_data[$this->_current_item])) {
+                unset($this->queue_data[$this->_current_item]);
+                $this->_current_item++;
+            }
+        }
+    }
+
+    // }}}
     // {{{ put()
 
     /**

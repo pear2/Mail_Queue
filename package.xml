@@ -33,7 +33,7 @@ every few minutes) by crontab or in other way.
   </maintainers>
   <release>
     <version>1.2.0</version>
-    <date>2007-01-11</date>
+    <date>2007-01-20</date>
     <state>stable</state>
     <license>PHP</license>
     <notes>
@@ -51,6 +51,12 @@ every few minutes) by crontab or in other way.
 - fixed bug #8661: wrong date() format in Mail_queue::put()
 - fixed bug #9065: MDB2 uses nextID(), not nextId()
 - implemented request #2721: you can now use your Mail_Queue Container class
+- if there's an error in sendMailsInQueue(), the problematic mail is removed
+  from the internal sending buffer, and the next mail is processed (bugs #6538,
+  #9219). NB: the mail is not removed from the db since it could be a temporary
+  issue. If you want to remove it, you can do it manually with a custom error
+  handler.
+- minor fixes
     </notes>
     <filelist>
       <dir name="/" baseinstalldir="Mail">
