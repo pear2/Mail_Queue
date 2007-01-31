@@ -56,6 +56,7 @@ mails every few minutes) by crontab or in other way.
   #9219). NB: the mail is not removed from the db since it could be a temporary
   issue. If you want to remove it, you can do it manually with a custom error
   handler.
+- added new Creole container (Randy Syring)
 - minor fixes
 - switched to package.xml v.2
  </notes>
@@ -73,6 +74,7 @@ mails every few minutes) by crontab or in other way.
    </dir> <!-- /docs -->
    <dir name="Queue">
     <dir name="Container">
+     <file baseinstalldir="Mail" name="creole.php" role="php" />
      <file baseinstalldir="Mail" name="db.php" role="php" />
      <file baseinstalldir="Mail" name="mdb.php" role="php" />
      <file baseinstalldir="Mail" name="mdb2.php" role="php" />
