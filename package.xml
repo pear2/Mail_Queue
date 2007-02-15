@@ -57,6 +57,7 @@ mails every few minutes) by crontab or in other way.
   issue. If you want to remove it, you can do it manually with a custom error
   handler.
 - added new Creole container (Randy Syring)
+- fixed bug #4092: flag a mail with setAsSent() method within the sendMail() method
 - minor fixes
 - switched to package.xml v.2
  </notes>

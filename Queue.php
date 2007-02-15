@@ -316,7 +316,7 @@ class Mail_Queue extends PEAR
 
             if (!PEAR::isError($result)) {
                 $this->container->setAsSent($mail);
-                if($mail->isDeleteAfterSend()) {
+                if ($mail->isDeleteAfterSend()) {
                     $this->deleteMail($mail->getId());
                 }
             } else {
@@ -366,10 +366,11 @@ class Mail_Queue extends PEAR
      *
      * @param object  MailBody object
      * @return mixed  True on success else pear error class
+     * @param  bool   $set_as_sent
      *
      * @access public
      */
-    function sendMail($mail)
+    function sendMail($mail, $set_as_sent=true)
     {
         $recipient = $mail->getRecipient();
         $hdrs = $mail->getHeaders();
@@ -377,7 +378,11 @@ class Mail_Queue extends PEAR
         if (empty($this->send_mail)) {
             $this->factorySendMail();
         }
-        return $this->send_mail->send($recipient, $hdrs, $body);
+        $sent = $this->send_mail->send($recipient, $hdrs, $body);
+        if ($sent and $set_as_sent) {
+            $this->container->setAsSent($mail);
+        }
+        return $sent;
     }
 
     // }}}
