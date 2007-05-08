@@ -26,7 +26,7 @@ mails every few minutes) by crontab or in other way.
   <email>quipo@php.net</email>
   <active>yes</active>
  </developer>
- <date>2007-01-31</date>
+ <date>2007-05-08</date>
  <time>15:07:07</time>
  <version>
   <release>1.2.0</release>
