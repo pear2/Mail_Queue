@@ -3,10 +3,10 @@
 http://pear.php.net/dtd/tasks-1.0.xsd
 http://pear.php.net/dtd/package-2.0
 http://pear.php.net/dtd/package-2.0.xsd">
- <name>Mail_Queue</name>
- <channel>pear.php.net</channel>
- <summary>Class for put mails in queue and send them later in background.</summary>
- <description>Class to handle mail queue managment.
+	<name>Mail_Queue</name>
+	<channel>pear.php.net</channel>
+	<summary>Class for put mails in queue and send them later in background.</summary>
+	<description>Class to handle mail queue managment.
 Wrapper for PEAR::Mail and PEAR::DB (or PEAR::MDB/MDB2).
 It can load, save and send saved mails in background and also backup some mails.
 
@@ -14,163 +14,164 @@ The Mail_Queue class puts mails in a temporary container, waiting to be fed to
 the MTA (Mail Transport Agent), and sends them later (e.g. a certain amount of
 mails every few minutes) by crontab or in other way.
  </description>
- <lead>
-  <name>Radek Maciaszek</name>
-  <user>chief</user>
-  <email>chief@php.net</email>
-  <active>yes</active>
- </lead>
- <developer>
-  <name>Lorenzo Alberton</name>
-  <user>quipo</user>
-  <email>quipo@php.net</email>
-  <active>yes</active>
- </developer>
- <date>2007-05-08</date>
- <time>15:07:07</time>
- <version>
-  <release>1.2.0</release>
-  <api>1.2.0</api>
- </version>
- <stability>
-  <release>stable</release>
-  <api>stable</api>
- </stability>
- <license uri="http://www.php.net/license">PHP</license>
- <notes>- fixed bug #2911: Using an invalid db account results 
-  in a call to undefined function
-- the DB container doesn&apos;t use DB protected methods anymore
-  (related to bug #4028)
-- removed any MySQL-specific functions from the SQL queries
-  in the DB container.
-- allow multiple recipients (Cc and Bcc) (requests #5707 and #5987)
-- fixed bug #7886: sendMailsInQueue: problem sending mails in the same second
-  they are stored (when sec_to_send = 0)
-- fixed bug #8378: disconnect from the SMTP server once it has 
-  sent all the messages, when mail_options[&apos;persist&apos;] is set
-- fixed bug #8661: wrong date() format in Mail_queue::put()
-- fixed bug #9065: MDB2 uses nextID(), not nextId()
-- implemented request #2721: you can now use your Mail_Queue Container class
-- if there&apos;s an error in sendMailsInQueue(), the problematic mail is removed
-  from the internal sending buffer, and the next mail is processed (bugs #6538,
-  #9219). NB: the mail is not removed from the db since it could be a temporary
-  issue. If you want to remove it, you can do it manually with a custom error
-  handler.
-- added new Creole container (Randy Syring)
-- fixed bug #4092: flag a mail with setAsSent() method within the sendMail() method
-- minor fixes
-- switched to package.xml v.2
- </notes>
- <contents>
-  <dir name="/">
-   <dir name="docs">
-    <file baseinstalldir="Mail" name="add_example.php" role="doc" />
-    <file baseinstalldir="Mail" name="base.php" role="doc" />
-    <file baseinstalldir="Mail" name="mdb_mail_queue_schema.xml" role="doc" />
-    <file baseinstalldir="Mail" name="mysql.sql" role="doc" />
-    <file baseinstalldir="Mail" name="pgsql.sql" role="doc" />
-    <file baseinstalldir="Mail" name="README" role="doc" />
-    <file baseinstalldir="Mail" name="send_example.php" role="doc" />
-    <file baseinstalldir="Mail" name="TODO" role="doc" />
-   </dir> <!-- /docs -->
-   <dir name="Queue">
-    <dir name="Container">
-     <file baseinstalldir="Mail" name="creole.php" role="php" />
-     <file baseinstalldir="Mail" name="db.php" role="php" />
-     <file baseinstalldir="Mail" name="mdb.php" role="php" />
-     <file baseinstalldir="Mail" name="mdb2.php" role="php" />
-    </dir> <!-- /Queue/Container -->
-    <file baseinstalldir="Mail" name="Body.php" role="php" />
-    <file baseinstalldir="Mail" name="Container.php" role="php" />
-   </dir> <!-- /Queue -->
-   <file baseinstalldir="Mail" name="Queue.php" role="php" />
-  </dir> <!-- / -->
- </contents>
- <dependencies>
-  <required>
-   <php>
-    <min>4.0.0</min>
-   </php>
-   <pearinstaller>
-    <min>1.4.0b1</min>
-   </pearinstaller>
-   <package>
-    <name>Mail</name>
-    <channel>pear.php.net</channel>
-   </package>
-   <package>
-    <name>Mail_Mime</name>
-    <channel>pear.php.net</channel>
-   </package>
-  </required>
- </dependencies>
- <phprelease />
- <changelog>
-  <release>
-   <version>
-    <release>1.1.3</release>
-    <api>1.1.3</api>
-   </version>
-   <stability>
-    <release>stable</release>
-    <api>stable</api>
-   </stability>
-   <date>2004-11-04</date>
-   <license uri="http://www.php.net/license">PHP</license>
-   <notes>- fix wrong parameter order for PEAR::raiseError() in sendMailsInQueue()
+	<lead>
+		<name>Radek Maciaszek</name>
+		<user>chief</user>
+		<email>chief@php.net</email>
+		<active>no</active>
+	</lead>
+	<lead>
+		<name>Marco Kaiser</name>
+		<user>bate</user>
+		<email>bate@php.net</email>
+		<active>yes</active>
+	</lead>
+	<lead>
+		<name>Lorenzo Alberton</name>
+		<user>quipo</user>
+		<email>quipo@php.net</email>
+		<active>yes</active>
+	</lead>
+	<date>2007-09-13</date>
+	<time>10:00:00</time>
+	<version>
+		<release>1.2.1</release>
+		<api>1.2.0</api>
+	</version>
+	<stability>
+		<release>stable</release>
+		<api>stable</api>
+	</stability>
+	<license uri="http://www.php.net/license">PHP</license>
+	<notes>rollout after some month of cvs commit and a new maintainer </notes>
+	<contents>
+		<dir name="/">
+			<dir name="docs">
+				<file baseinstalldir="Mail" name="add_example.php" role="doc"/>
+				<file baseinstalldir="Mail" name="base.php" role="doc"/>
+				<file baseinstalldir="Mail" name="mdb_mail_queue_schema.xml" role="doc"/>
+				<file baseinstalldir="Mail" name="mysql.sql" role="doc"/>
+				<file baseinstalldir="Mail" name="pgsql.sql" role="doc"/>
+				<file baseinstalldir="Mail" name="README" role="doc"/>
+				<file baseinstalldir="Mail" name="send_example.php" role="doc"/>
+				<file baseinstalldir="Mail" name="TODO" role="doc"/>
+			</dir>
+			<!-- /docs -->
+			<dir name="Queue">
+				<dir name="Container">
+					<file baseinstalldir="Mail" name="creole.php" role="php"/>
+					<file baseinstalldir="Mail" name="db.php" role="php"/>
+					<file baseinstalldir="Mail" name="mdb.php" role="php"/>
+					<file baseinstalldir="Mail" name="mdb2.php" role="php"/>
+				</dir>
+				<!-- /Queue/Container -->
+				<file baseinstalldir="Mail" name="Body.php" role="php"/>
+				<file baseinstalldir="Mail" name="Container.php" role="php"/>
+			</dir>
+			<!-- /Queue -->
+			<file baseinstalldir="Mail" name="Queue.php" role="php"/>
+		</dir>
+		<!-- / -->
+	</contents>
+	<dependencies>
+		<required>
+			<php>
+				<min>4.0.0</min>
+			</php>
+			<pearinstaller>
+				<min>1.4.0b1</min>
+			</pearinstaller>
+			<package>
+				<name>Mail</name>
+				<channel>pear.php.net</channel>
+			</package>
+			<package>
+				<name>Mail_Mime</name>
+				<channel>pear.php.net</channel>
+			</package>
+		</required>
+	</dependencies>
+	<phprelease/>
+	<changelog>
+		<release>
+			<version>
+				<release>1.1.4</release>
+				<api>1.1.3</api>
+			</version>
+			<stability>
+				<release>stable</release>
+				<api>stable</api>
+			</stability>
+			<date>2007-09-13</date>
+			<license uri="http://www.php.net/license">PHP</license>
+			<notes>new release, new maintainer
+   </notes>
+		</release>
+		<release>
+			<version>
+				<release>1.1.3</release>
+				<api>1.1.3</api>
+			</version>
+			<stability>
+				<release>stable</release>
+				<api>stable</api>
+			</stability>
+			<date>2004-11-04</date>
+			<license uri="http://www.php.net/license">PHP</license>
+			<notes>- fix wrong parameter order for PEAR::raiseError() in sendMailsInQueue()
   [bug #1990] - thanks Alan Knowles
 - some cleanup
 - php5 fix: Mail_Queue_Body::try() =&gt; _try()  [bug #2098]
    </notes>
-  </release>
-  <release>
-   <version>
-    <release>1.1.2</release>
-    <api>1.1.2</api>
-   </version>
-   <stability>
-    <release>stable</release>
-    <api>stable</api>
-   </stability>
-   <date>2004-07-22</date>
-   <license uri="http://www.php.net/license">PHP</license>
-   <notes>- Use PHP&apos;s date() function instead of a mysql-specific
+		</release>
+		<release>
+			<version>
+				<release>1.1.2</release>
+				<api>1.1.2</api>
+			</version>
+			<stability>
+				<release>stable</release>
+				<api>stable</api>
+			</stability>
+			<date>2004-07-22</date>
+			<license uri="http://www.php.net/license">PHP</license>
+			<notes>- Use PHP&apos;s date() function instead of a mysql-specific
   NOW() call in the DB container
 - Added pgsql schema in the /docs/ dir (thanks Alan Knowles)
 - Fixed integer quoting in the DB container (bug #1917) (thanks Alan Knowles)
 - DB error reporting now uses toString() (bug #1918) (thanks Alan Knowles)
    </notes>
-  </release>
-  <release>
-   <version>
-    <release>1.1.1</release>
-    <api>1.1.1</api>
-   </version>
-   <stability>
-    <release>stable</release>
-    <api>stable</api>
-   </stability>
-   <date>2004-07-22</date>
-   <license uri="http://www.php.net/license">PHP</license>
-   <notes>- Fixed a buggy implementation of the preload() method
+		</release>
+		<release>
+			<version>
+				<release>1.1.1</release>
+				<api>1.1.1</api>
+			</version>
+			<stability>
+				<release>stable</release>
+				<api>stable</api>
+			</stability>
+			<date>2004-07-22</date>
+			<license uri="http://www.php.net/license">PHP</license>
+			<notes>- Fixed a buggy implementation of the preload() method
   which was causing several problems
 - Use DB::modifyLimitQuery() instead of a mysql-specific
   LIMIT clause in the DB container
 - Added a new MDB2 container
    </notes>
-  </release>
-  <release>
-   <version>
-    <release>1.1</release>
-    <api>1.1</api>
-   </version>
-   <stability>
-    <release>stable</release>
-    <api>stable</api>
-   </stability>
-   <date>2004-03-05</date>
-   <license uri="http://www.php.net/license">PHP</license>
-   <notes>- Error management has been rewritten. New error constants are used,
+		</release>
+		<release>
+			<version>
+				<release>1.1</release>
+				<api>1.1</api>
+			</version>
+			<stability>
+				<release>stable</release>
+				<api>stable</api>
+			</stability>
+			<date>2004-03-05</date>
+			<license uri="http://www.php.net/license">PHP</license>
+			<notes>- Error management has been rewritten. New error constants are used,
   so custom error mgmt is now possible.
 - Added a &quot;pearErrorMode&quot; option to specify what to do with Pear_Error
   (was: PEAR_ERROR_PRINT by default)
@@ -184,37 +185,37 @@ mails every few minutes) by crontab or in other way.
 - Fixed: Mail_Queue_Container_mdb didn&apos;t accept a &apos;dsn&apos; as option
 - PHP 5 fixes
    </notes>
-  </release>
-  <release>
-   <version>
-    <release>1.0</release>
-    <api>1.0</api>
-   </version>
-   <stability>
-    <release>stable</release>
-    <api>stable</api>
-   </stability>
-   <date>2002-12-13</date>
-   <license uri="http://www.php.net/license">PHP</license>
-   <notes>First stable release. Added Lorenzo Alberton to the list of contributors.
+		</release>
+		<release>
+			<version>
+				<release>1.0</release>
+				<api>1.0</api>
+			</version>
+			<stability>
+				<release>stable</release>
+				<api>stable</api>
+			</stability>
+			<date>2002-12-13</date>
+			<license uri="http://www.php.net/license">PHP</license>
+			<notes>First stable release. Added Lorenzo Alberton to the list of contributors.
 Fixed getMailById() in db.php.
 Added new container: Mail_Queue_Container_mdb - Storage driver for fetching mail
 queue data from a PEAR_MDB database.
    </notes>
-  </release>
-  <release>
-   <version>
-    <release>0.9</release>
-    <api>0.9</api>
-   </version>
-   <stability>
-    <release>beta</release>
-    <api>beta</api>
-   </stability>
-   <date>2002-09-21</date>
-   <license uri="http://www.php.net/license">PHP</license>
-   <notes>This is the initial release of the Mail_Queue package.
+		</release>
+		<release>
+			<version>
+				<release>0.9</release>
+				<api>0.9</api>
+			</version>
+			<stability>
+				<release>beta</release>
+				<api>beta</api>
+			</stability>
+			<date>2002-09-21</date>
+			<license uri="http://www.php.net/license">PHP</license>
+			<notes>This is the initial release of the Mail_Queue package.
    </notes>
-  </release>
- </changelog>
+		</release>
+	</changelog>
 </package>
