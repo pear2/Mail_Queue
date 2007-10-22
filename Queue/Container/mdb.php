@@ -209,6 +209,14 @@ class Mail_Queue_Container_mdb extends Mail_Queue_Container
      */
     function _preload()
     {
+        if (!is_object($this->db) || !is_a($this->db, 'MDB_Common')) {
+            $msg = 'MDB::connect failed';
+            if (PEAR::isError($this->db)) {
+                $msg .= ': '.$this->db->getMessage();
+            }
+            return new Mail_Queue_Error(MAILQUEUE_ERROR_CANNOT_CONNECT,
+                $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__, $msg);
+        }
         $query = 'SELECT id FROM ' . $this->mail_table
                 .' WHERE sent_time IS NULL AND try_sent < '. $this->try
                 .' AND time_to_send <= '.$this->db->getTimestampValue(date("Y-m-d H:i:s"))

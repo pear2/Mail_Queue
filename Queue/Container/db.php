@@ -66,9 +66,9 @@ class Mail_Queue_Container_db extends Mail_Queue_Container
     // {{{ Mail_Queue_Container_db()
 
     /**
-     * Contructor
+     * Constructor
      *
-     * Mail_Queue_Container_db:: Mail_Queue_Container_db()
+     * Mail_Queue_Container_db()
      *
      * @param mixed $options    An associative array of option names and
      *                          their values. See DB_common::setOption
@@ -113,6 +113,14 @@ class Mail_Queue_Container_db extends Mail_Queue_Container
      */
     function _preload()
     {
+        if (!is_object($this->db) || !is_a($this->db, 'DB_Common')) {
+            $msg = 'DB::connect failed';
+            if (PEAR::isError($this->db)) {
+                $msg .= ': '.DB::errorMessage($this->db);
+            }
+            return new Mail_Queue_Error(MAILQUEUE_ERROR_CANNOT_CONNECT,
+                $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__, $msg);
+        }
         $query = sprintf("SELECT * FROM %s
                            WHERE sent_time IS NULL
                              AND try_sent < %d

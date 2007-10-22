@@ -33,10 +33,10 @@ mails every few minutes) by crontab or in other way.
 		<email>quipo@php.net</email>
 		<active>yes</active>
 	</lead>
-	<date>2007-09-13</date>
-	<time>10:00:00</time>
+	<date>2007-10-22</date>
+	<time>23:40:00</time>
 	<version>
-		<release>1.2.1</release>
+		<release>1.2.2</release>
 		<api>1.2.0</api>
 	</version>
 	<stability>
@@ -44,7 +44,9 @@ mails every few minutes) by crontab or in other way.
 		<api>stable</api>
 	</stability>
 	<license uri="http://www.php.net/license">PHP</license>
-	<notes>rollout after some month of cvs commit and a new maintainer </notes>
+	<notes>
+- fixed bug #6330: check for lost DB connection in _preload()
+    </notes>
 	<contents>
 		<dir name="/">
 			<dir name="docs">
@@ -94,6 +96,21 @@ mails every few minutes) by crontab or in other way.
 	</dependencies>
 	<phprelease/>
 	<changelog>
+        <release>
+			<version>
+				<release>1.2.2</release>
+				<api>1.2.0</api>
+			</version>
+			<stability>
+				<release>stable</release>
+				<api>stable</api>
+			</stability>
+			<date>2007-10-22</date>
+			<license uri="http://www.php.net/license">PHP</license>
+			<notes>
+- fixed bug #6330: check for lost DB connection in _preload()
+            </notes>
+		</release>
 		<release>
 			<version>
 				<release>1.2.1</release>
@@ -105,7 +122,7 @@ mails every few minutes) by crontab or in other way.
 			</stability>
 			<date>2007-09-13</date>
 			<license uri="http://www.php.net/license">PHP</license>
-			<notes>- new release, new maintainer
+			<notes>- rollout after some month of cvs commit and a new maintainer
 - fixed bug #2911: Using an invalid db account results
   in a call to undefined function
 - the DB container doesn&apos;t use DB protected methods anymore
