@@ -105,7 +105,30 @@ mails every few minutes) by crontab or in other way.
 			</stability>
 			<date>2007-09-13</date>
 			<license uri="http://www.php.net/license">PHP</license>
-			<notes>new release, new maintainer
+			<notes>- new release, new maintainer
+- fixed bug #2911: Using an invalid db account results
+  in a call to undefined function
+- the DB container doesn&apos;t use DB protected methods anymore
+  (related to bug #4028)
+- removed any MySQL-specific functions from the SQL queries
+  in the DB container.
+- allow multiple recipients (Cc and Bcc) (requests #5707 and #5987)
+- fixed bug #7886: sendMailsInQueue: problem sending mails in the same second
+  they are stored (when sec_to_send = 0)
+- fixed bug #8378: disconnect from the SMTP server once it has
+  sent all the messages, when mail_options[&apos;persist&apos;] is set
+- fixed bug #8661: wrong date() format in Mail_queue::put()
+- fixed bug #9065: MDB2 uses nextID(), not nextId()
+- implemented request #2721: you can now use your Mail_Queue Container class
+- if there&apos;s an error in sendMailsInQueue(), the problematic mail is removed
+  from the internal sending buffer, and the next mail is processed (bugs #6538,
+  #9219). NB: the mail is not removed from the db since it could be a temporary
+  issue. If you want to remove it, you can do it manually with a custom error
+  handler.
+- added new Creole container (Randy Syring)
+- fixed bug #4092: flag a mail with setAsSent() method within the sendMail() method
+- minor fixes
+- switched to package.xml v.2
    </notes>
 		</release>
 		<release>
