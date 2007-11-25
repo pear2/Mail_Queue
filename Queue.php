@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------+
 // | PEAR :: Mail :: Queue                                                |
 // +----------------------------------------------------------------------+
-// | Copyright (c) 1997-2004 The PHP Group                                |
+// | Copyright (c) 1997-2007 The PHP Group                                |
 // +----------------------------------------------------------------------+
 // | This source file is subject to version 3.0 of the PHP license,       |
 // | that is bundled with this package in the file LICENSE, and is        |
@@ -14,7 +14,7 @@
 // | license@php.net so we can mail you a copy immediately.               |
 // +----------------------------------------------------------------------+
 // | Authors: Radek Maciaszek <chief@php.net>                             |
-// |          Lorenzo Alberton <l dot alberton at quipo dot it>           |
+// |          Lorenzo Alberton <l.alberton@quipo.it>                      |
 // +----------------------------------------------------------------------+
 //
 // $Id$
@@ -330,7 +330,7 @@ class Mail_Queue extends PEAR
                 );
             }
         }
-        if ($this->mail_options['persist'] && is_object($this->send_mail)) {
+        if (!empty($this->mail_options['persist']) && is_object($this->send_mail)) {
             $this->send_mail->disconnect();
         }
         return true;
