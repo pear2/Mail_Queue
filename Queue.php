@@ -224,7 +224,6 @@ class Mail_Queue extends PEAR
         $container_class = 'Mail_Queue_Container_' . $container_type;
         $container_classfile = $container_type . '.php';
 
-        
         // Attempt to include a custom version of the named class, but don't treat
         // a failure as fatal.  The caller may have already included their own
         // version of the named class.
@@ -281,7 +280,7 @@ class Mail_Queue extends PEAR
      * internal buffer size.
      *
      * @param integer $size  Optional - internal preload buffer size
-     **/
+     */
     function setBufferSize($size = 10)
     {
         $this->container->buffer_size = $size;
@@ -304,7 +303,7 @@ class Mail_Queue extends PEAR
      *                           each mail. If mail was sent succesful it will be delete
      *                           from Mail_Queue.
      * @return mixed  True on success else MAILQUEUE_ERROR object.
-     **/
+     */
     function sendMailsInQueue($limit = MAILQUEUE_ALL, $offset = MAILQUEUE_START,
                               $try = MAILQUEUE_TRY)
     {
@@ -352,7 +351,7 @@ class Mail_Queue extends PEAR
     {
         $mail =& $this->container->getMailById($id);
         $sent = $this->sendMail($mail);
-        if ($sent and $set_as_sent) {
+        if (!PEAR::isError($sent) && $sent && $set_as_sent) {
             $this->container->setAsSent($mail);
         }
         return $sent;
@@ -379,7 +378,7 @@ class Mail_Queue extends PEAR
             $this->factorySendMail();
         }
         $sent = $this->send_mail->send($recipient, $hdrs, $body);
-        if ($sent and $set_as_sent) {
+        if (!PEAR::isError($sent) && $sent && $set_as_sent) {
             $this->container->setAsSent($mail);
         }
         return $sent;
@@ -420,7 +419,7 @@ class Mail_Queue extends PEAR
      *                or Mail_Queue_Error on error
      *
      * @access public
-     **/
+     */
     function put($from, $to, $hdrs, $body, $sec_to_send=0, $delete_after_send=true, $id_user=MAILQUEUE_SYSTEM)
     {
         $ip = getenv('REMOTE_ADDR');

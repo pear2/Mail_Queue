@@ -33,8 +33,8 @@ mails every few minutes) by crontab or in other way.
 		<email>quipo@php.net</email>
 		<active>yes</active>
 	</lead>
-	<date>2007-11-25</date>
-	<time>14:22:00</time>
+	<date>2008-03-05</date>
+	<time>12:15:00</time>
 	<version>
 		<release>1.2.2</release>
 		<api>1.2.0</api>
@@ -47,6 +47,7 @@ mails every few minutes) by crontab or in other way.
 	<notes>
 - fixed bug #6330: check for lost DB connection in _preload()
 - fixed bug #12521: NOTICE: undefined index
+- fixed bug #12768: On errors, sendMail() marks mail as sent anyway
     </notes>
 	<contents>
 		<dir name="/">
@@ -106,11 +107,12 @@ mails every few minutes) by crontab or in other way.
 				<release>stable</release>
 				<api>stable</api>
 			</stability>
-			<date>2007-11-25</date>
+			<date>2008-03-05</date>
 			<license uri="http://www.php.net/license">PHP</license>
 			<notes>
 - fixed bug #6330: check for lost DB connection in _preload()
 - fixed bug #12521: NOTICE: undefined index
+- fixed bug #12768: On errors, sendMail() marks mail as sent anyway
             </notes>
 		</release>
 		<release>
