@@ -48,6 +48,7 @@ mails every few minutes) by crontab or in other way.
 - fixed bug #6330: check for lost DB connection in _preload()
 - fixed bug #12521: NOTICE: undefined index
 - fixed bug #12768: On errors, sendMail() marks mail as sent anyway
+- better error handling in the MDB2 container
     </notes>
 	<contents>
 		<dir name="/">
