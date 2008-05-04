@@ -3,12 +3,12 @@
 // +----------------------------------------------------------------------+
 // | PEAR :: Mail :: Queue                                                |
 // +----------------------------------------------------------------------+
-// | Copyright (c) 1997-2007 The PHP Group                                |
+// | Copyright (c) 1997-2008 Radek Maciaszek, Lorenzo Alberton            |
 // +----------------------------------------------------------------------+
-// | This source file is subject to version 3.0 of the PHP license,       |
+// | This source file is subject to version 3.01 of the PHP license,      |
 // | that is bundled with this package in the file LICENSE, and is        |
 // | available at through the world-wide-web at                           |
-// | http://www.php.net/license/3_0.txt.                                  |
+// | http://www.php.net/license/3_01.txt.                                 |
 // | If you did not receive a copy of the PHP license and are unable to   |
 // | obtain it through the world-wide-web, please send a note to          |
 // | license@php.net so we can mail you a copy immediately.               |
@@ -311,14 +311,8 @@ class Mail_Queue extends PEAR
         while ($mail = $this->get()) {
             $this->container->countSend($mail);
 
-            $result = $this->sendMail($mail);
-
-            if (!PEAR::isError($result)) {
-                $this->container->setAsSent($mail);
-                if ($mail->isDeleteAfterSend()) {
-                    $this->deleteMail($mail->getId());
-                }
-            } else {
+            $result = $this->sendMail($mail, true);
+            if (PEAR::isError($result)) {
                 //remove the problematic mail from the buffer, but don't delete
                 //it from the db: it might be a temporary issue.
                 $this->container->skip();
@@ -327,6 +321,8 @@ class Mail_Queue extends PEAR
                     MAILQUEUE_ERROR_CANNOT_SEND_MAIL, PEAR_ERROR_TRIGGER,
                     E_USER_NOTICE
                 );
+            } else if ($mail->isDeleteAfterSend()) {
+                $this->deleteMail($mail->getId());
             }
         }
         if (!empty($this->mail_options['persist']) && is_object($this->send_mail)) {
@@ -350,11 +346,10 @@ class Mail_Queue extends PEAR
     function sendMailById($id, $set_as_sent=true)
     {
         $mail =& $this->container->getMailById($id);
-        $sent = $this->sendMail($mail);
-        if (!PEAR::isError($sent) && $sent && $set_as_sent) {
-            $this->container->setAsSent($mail);
+        if (PEAR::isError($mail)) {
+            return $mail;
         }
-        return $sent;
+        return $this->sendMail($mail, $set_as_sent);
     }
 
     // }}}
@@ -499,8 +494,8 @@ class Mail_Queue extends PEAR
             $value = $value->getCode();
         }
 
-        return(isset($errorMessages[$value]) ?
-           $errorMessages[$value] : $errorMessages[MAILQUEUE_ERROR]);
+        return isset($errorMessages[$value]) ?
+           $errorMessages[$value] : $errorMessages[MAILQUEUE_ERROR];
     }
 
     // }}}
