@@ -140,6 +140,7 @@ define('MAILQUEUE_ERROR_CANNOT_CONNECT',    -6);
 define('MAILQUEUE_ERROR_QUERY_FAILED',      -7);
 define('MAILQUEUE_ERROR_UNEXPECTED',        -8);
 define('MAILQUEUE_ERROR_CANNOT_SEND_MAIL',  -9);
+define('MAILQUEUE_ERROR_NO_RECIPIENT',     -10);
 
 require_once 'PEAR.php';
 require_once 'Mail.php';
@@ -367,10 +368,19 @@ class Mail_Queue extends PEAR
     function sendMail($mail, $set_as_sent=true)
     {
         $recipient = $mail->getRecipient();
+        if (empty($recipient)) {
+            return new Mail_Queue_Error('Recipient cannot be empty.',
+                MAILQUEUE_ERROR_NO_RECIPIENT);
+        }
+
         $hdrs = $mail->getHeaders();
         $body = $mail->getBody();
+
         if (empty($this->send_mail)) {
             $this->factorySendMail();
+        }
+        if (PEAR::isError($this->send_mail)) {
+            return $this->send_mail;
         }
         $sent = $this->send_mail->send($recipient, $hdrs, $body);
         if (!PEAR::isError($sent) && $sent && $set_as_sent) {
