@@ -16,25 +16,19 @@ the MTA (Mail Transport Agent), and sends them later (e.g. a certain amount of
 mails every few minutes) by crontab or in other way.
  </description>
 	<lead>
-		<name>Radek Maciaszek</name>
-		<user>chief</user>
-		<email>chief@php.net</email>
-		<active>no</active>
-	</lead>
-	<lead>
-		<name>Marco Kaiser</name>
-		<user>bate</user>
-		<email>bate@php.net</email>
-		<active>yes</active>
-	</lead>
-	<lead>
 		<name>Lorenzo Alberton</name>
 		<user>quipo</user>
 		<email>quipo@php.net</email>
 		<active>yes</active>
 	</lead>
-	<date>2008-03-05</date>
-	<time>12:15:00</time>
+        <lead>
+                <name>Till Klampaeckel</name>
+                <user>till</user>
+                <email>till@php.net</email>
+                <active>yes</active>
+        </lead>
+	<date>2008-05-07</date>
+	<time>17:20:00</time>
 	<version>
 		<release>1.2.2</release>
 		<api>1.2.0</api>
@@ -48,6 +42,7 @@ mails every few minutes) by crontab or in other way.
 - fixed bug #6330: check for lost DB connection in _preload()
 - fixed bug #12521: NOTICE: undefined index
 - fixed bug #12768: On errors, sendMail() marks mail as sent anyway
+- added additional checks for factorySendMail() returned Mail
 - better error handling in the MDB2 container
 - code cleanup
     </notes>
@@ -101,34 +96,37 @@ mails every few minutes) by crontab or in other way.
 	<phprelease/>
 	<changelog>
         <release>
-			<version>
-				<release>1.2.2</release>
-				<api>1.2.0</api>
-			</version>
-			<stability>
-				<release>stable</release>
-				<api>stable</api>
-			</stability>
-			<date>2008-03-05</date>
-			<license uri="http://www.php.net/license">PHP</license>
-			<notes>
+		<version>
+			<release>1.2.2</release>
+			<api>1.2.0</api>
+		</version>
+		<stability>
+			<release>stable</release>
+			<api>stable</api>
+		</stability>
+		<date>2008-05-07</date>
+		<license uri="http://www.php.net/license">PHP</license>
+        	<notes>
 - fixed bug #6330: check for lost DB connection in _preload()
 - fixed bug #12521: NOTICE: undefined index
 - fixed bug #12768: On errors, sendMail() marks mail as sent anyway
-            </notes>
-		</release>
-		<release>
-			<version>
-				<release>1.2.1</release>
-				<api>1.2.0</api>
-			</version>
-			<stability>
-				<release>stable</release>
-				<api>stable</api>
-			</stability>
-			<date>2007-09-13</date>
-			<license uri="http://www.php.net/license">PHP</license>
-			<notes>- rollout after some month of cvs commit and a new maintainer
+- added additional checks for factorySendMail() returned Mail
+- better error handling in the MDB2 container
+- code cleanup
+                </notes>
+	</release>
+	<release>
+		<version>
+			<release>1.2.1</release>
+			<api>1.2.0</api>
+		</version>
+		<stability>
+			<release>stable</release>
+			<api>stable</api>
+		</stability>
+		<date>2007-09-13</date>
+		<license uri="http://www.php.net/license">PHP</license>
+		<notes>- rollout after some month of cvs commit and a new maintainer
 - fixed bug #2911: Using an invalid db account results
   in a call to undefined function
 - the DB container doesn&apos;t use DB protected methods anymore
