@@ -27,6 +27,18 @@ mails every few minutes) by crontab or in other way.
                 <email>till@php.net</email>
                 <active>yes</active>
         </lead>
+        <lead>
+                <name>Radek Maciaszek</name>
+                <user>chief</user>
+                <email>chief@php.net</email>
+                <active>no</active>
+        </lead>
+        <lead>
+                <name>Marco Kaiser</name>
+                <user>bate</user>
+                <email>bate@php.net</email>
+                <active>no</active>
+        </lead>
 	<date>2008-05-07</date>
 	<time>17:20:00</time>
 	<version>
