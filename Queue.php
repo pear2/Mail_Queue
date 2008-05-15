@@ -215,15 +215,15 @@ class Mail_Queue extends PEAR
      */
     function factory($container_options, $mail_options)
     {
-        $cls = new Mail_Queue($container_options, $mail_options);
-        if ($cls->hasErrors()) {
+        $obj = new Mail_Queue($container_options, $mail_options);
+        if ($obj->hasErrors()) {
             /**
              * @see self::getErrors()
              */
             return new Mail_Queue_Error(MAILQUEUE_ERROR,
                 $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__);
         }
-        return $cls;
+        return $obj;
     }
     // }}}
 
