@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Mit XMLSpy v2007 sp2 (http://www.altova.com) von Marco Kaiser (-) bearbeitet -->
 <package packagerversion="1.5.0" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
 http://pear.php.net/dtd/tasks-1.0.xsd
 http://pear.php.net/dtd/package-2.0
@@ -107,6 +106,10 @@ The Mail_Queue class puts mails in a temporary container, waiting to be fed to t
                         <package>
                                 <name>DB</name>
                                 <channel>pear.php.net</channel>
+                        </package>
+                        <package>
+                                <name>jargon</name>
+                                <channel>pear.phpdb.org</channel>
                         </package>
                         <package>
                                 <name>MDB</name>
