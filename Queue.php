@@ -75,16 +75,17 @@ define('MAILQUEUE_TRY', 25);
 /**
  * MAILQUEUE_ERROR constants
  */
-define('MAILQUEUE_ERROR',                   -1);
-define('MAILQUEUE_ERROR_NO_DRIVER',         -2);
-define('MAILQUEUE_ERROR_NO_CONTAINER',      -3);
-define('MAILQUEUE_ERROR_CANNOT_INITIALIZE', -4);
-define('MAILQUEUE_ERROR_NO_OPTIONS',        -5);
-define('MAILQUEUE_ERROR_CANNOT_CONNECT',    -6);
-define('MAILQUEUE_ERROR_QUERY_FAILED',      -7);
-define('MAILQUEUE_ERROR_UNEXPECTED',        -8);
-define('MAILQUEUE_ERROR_CANNOT_SEND_MAIL',  -9);
-define('MAILQUEUE_ERROR_NO_RECIPIENT',     -10);
+define('MAILQUEUE_ERROR',                    -1);
+define('MAILQUEUE_ERROR_NO_DRIVER',          -2);
+define('MAILQUEUE_ERROR_NO_CONTAINER',       -3);
+define('MAILQUEUE_ERROR_CANNOT_INITIALIZE',  -4);
+define('MAILQUEUE_ERROR_NO_OPTIONS',         -5);
+define('MAILQUEUE_ERROR_CANNOT_CONNECT',     -6);
+define('MAILQUEUE_ERROR_QUERY_FAILED',       -7);
+define('MAILQUEUE_ERROR_UNEXPECTED',         -8);
+define('MAILQUEUE_ERROR_CANNOT_SEND_MAIL',   -9);
+define('MAILQUEUE_ERROR_NO_RECIPIENT',      -10);
+define('MAILQUEUE_ERROR_UNKNOWN_CONTAINER', -11);
 
 require_once 'PEAR.php';
 require_once 'Mail.php';
@@ -136,6 +137,16 @@ class Mail_Queue extends PEAR
      */
     var $pearErrorMode = PEAR_ERROR_RETURN;
 
+    /**
+     * To catch errors in construct
+     * @var array
+     * @see self::Mail_Queue()
+     * @see self::factory()
+     * @see self::hasErrors()
+     * @access private
+     */
+    var $_initErrors = array();
+
     // }}}
     // {{{ Mail_Queue
 
@@ -145,9 +156,10 @@ class Mail_Queue extends PEAR
      * @param  array $container_options  Mail_Queue container options
      * @param  array $mail_options  How send mails.
      *
-     * @return mixed  True on success else PEAR error class.
+     * @return Mail_Queue
      *
      * @access public
+     * @deprecated
      */
     function Mail_Queue($container_options, $mail_options)
     {
@@ -159,14 +171,14 @@ class Mail_Queue extends PEAR
         }
 
         if (!is_array($mail_options) || !isset($mail_options['driver'])) {
-            return new Mail_Queue_Error(MAILQUEUE_ERROR_NO_DRIVER,
-                        $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__);
+            array_push($this->_initErrors, new Mail_Queue_Error(MAILQUEUE_ERROR_NO_DRIVER,
+                $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__));
         }
         $this->mail_options = $mail_options;
 
         if (!is_array($container_options) || !isset($container_options['type'])) {
-            return new Mail_Queue_Error(MAILQUEUE_ERROR_NO_CONTAINER,
-                        $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__);
+            array_push($this->_initErrors, new Mail_Queue_Error(MAILQUEUE_ERROR_NO_CONTAINER,
+                $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__));
         }
         $container_type      = strtolower($container_options['type']);
         $container_class     = 'Mail_Queue_Container_' . $container_type;
@@ -178,15 +190,43 @@ class Mail_Queue extends PEAR
         if (!class_exists($container_class)) {
             include_once 'Mail/Queue/Container/' . $container_classfile;
         }
-        $this->container = new $container_class($container_options);
-        if(PEAR::isError($this->container)) {
-            return new Mail_Queue_Error(MAILQUEUE_ERROR_CANNOT_INITIALIZE,
-                        $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__);
+        if (!class_exists($container_class)) {
+            array_push($this->_initErrors, new Mail_Queue_Error(MAILQUEUE_ERROR_UNKNOWN_CONTAINER,
+                $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__));
+        } else {
+            $this->container = new $container_class($container_options);
+            if(PEAR::isError($this->container)) {
+                array_push($this->_initErrors, new Mail_Queue_Error(MAILQUEUE_ERROR_CANNOT_INITIALIZE,
+                    $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__));
+            }
         }
-        return true;
     }
 
+    /**
+     * Factory is used to initialize Mail_Queue, this is necessary to catch possible
+     * errors during the initialization.
+     *
+     * @param array $container_options Options for the container.
+     * @param array $mail_options Options for mail.
+     *
+     * @return mixed Mail_Queue|Mail_Queue_Error
+     * @see self::Mail_Queue()
+     * @since 1.2.3
+     */
+    function factory($container_options, $mail_options)
+    {
+        $cls = new Mail_Queue($container_options, $mail_options);
+        if ($cls->hasErrors()) {
+            /**
+             * @see self::getErrors()
+             */
+            return new Mail_Queue_Error(MAILQUEUE_ERROR,
+                $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__);
+        }
+        return $cls;
+    }
     // }}}
+
     // {{{ _Mail_Queue()
 
     /**
@@ -459,6 +499,38 @@ class Mail_Queue extends PEAR
     }
 
     // }}}
+
+    /**
+     * hasErrors() returns true/false, if self::$_initErrors are populated.
+     *
+     * @return boolean
+     * @see self::Mail_Queue
+     * @see self::$_initErrors
+     * @see self::getErrors()
+     * @since 1.2.3
+     */
+    function hasErrors()
+    {
+        if (count($this->_initErrors) > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * getErrors() returns the errors.
+     *
+     * @return array
+     * @see self::Mail_Queue
+     * @see self::$_initErrors
+     * @see self::hasErrors()
+     * @since 1.2.3
+     */
+    function getErrors()
+    {
+        return $this->_initErrors;
+    }
+
 /*
     function raiseError($msg, $code = null, $file = null, $line = null, $mode = null)
     {
