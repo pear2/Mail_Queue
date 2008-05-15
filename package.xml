@@ -81,6 +81,7 @@ mails every few minutes) by crontab or in other way.
 				<!-- /Queue/Container -->
 				<file baseinstalldir="Mail" name="Body.php" role="php"/>
 				<file baseinstalldir="Mail" name="Container.php" role="php"/>
+                                <file baseinstalldir="Mail" name="Error.php" role="php"/>
 			</dir>
 			<!-- /Queue -->
 			<file baseinstalldir="Mail" name="Queue.php" role="php"/>
