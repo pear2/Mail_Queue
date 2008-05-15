@@ -1,107 +1,51 @@
 <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
-// +----------------------------------------------------------------------+
-// | PEAR :: Mail :: Queue                                                |
-// +----------------------------------------------------------------------+
-// | Copyright (c) 1997-2008 Radek Maciaszek, Lorenzo Alberton            |
-// +----------------------------------------------------------------------+
-// | This source file is subject to version 3.01 of the PHP license,      |
-// | that is bundled with this package in the file LICENSE, and is        |
-// | available at through the world-wide-web at                           |
-// | http://www.php.net/license/3_01.txt.                                 |
-// | If you did not receive a copy of the PHP license and are unable to   |
-// | obtain it through the world-wide-web, please send a note to          |
-// | license@php.net so we can mail you a copy immediately.               |
-// +----------------------------------------------------------------------+
-// | Authors: Radek Maciaszek <chief@php.net>                             |
-// |          Lorenzo Alberton <l.alberton@quipo.it>                      |
-// +----------------------------------------------------------------------+
-//
-// $Id$
-
 /**
-* Class for handle mail queue managment.
-* Wrapper for Pear::Mail and Pear::DB.
-* Could load, save and send saved mails in background
-* and also backup some mails.
-*
-* Mail queue class put mails in a temporary
-* container waiting to be fed to the MTA (Mail Transport Agent)
-* and send them later (eg. every few minutes) by crontab or in other way.
-*
-* -------------------------------------------------------------------------
-* A basic usage example:
-* -------------------------------------------------------------------------
-*
-* $container_options = array(
-*   'type'        => 'db',
-*   'database'    => 'dbname',
-*   'phptype'     => 'mysql',
-*   'username'    => 'root',
-*   'password'    => '',
-*   'mail_table'  => 'mail_queue'
-* );
-*   //optionally, a 'dns' string can be provided instead of db parameters.
-*   //look at DB::connect() method or at DB or MDB docs for details.
-*   //you could also use mdb container instead db
-*
-* $mail_options = array(
-*   'driver'   => 'smtp',
-*   'host'     => 'your_smtp_server.com',
-*   'port'     => 25,
-*   'auth'     => false,
-*   'username' => '',
-*   'password' => ''
-* );
-*
-* $mail_queue =& new Mail_Queue($container_options, $mail_options);
-* *****************************************************************
-* // Here the code differentiates wrt you want to add an email to the queue
-* // or you want to send the emails that already are in the queue.
-* *****************************************************************
-* // TO ADD AN EMAIL TO THE QUEUE
-* *****************************************************************
-* $from             = 'user@server.com';
-* $from_name        = 'admin';
-* $recipient        = 'recipient@other_server.com';
-* $recipient_name   = 'recipient';
-* $message          = 'Test message';
-* $from_params      = empty($from_name) ? '"'.$from_name.'" <'.$from.'>' : '<'.$from.'>';
-* $recipient_params = empty($recipient_name) ? '"'.$recipient_name.'" <'.$recipient.'>' : '<'.$recipient.'>';
-* $hdrs = array( 'From'    => $from_params,
-*                'To'      => $recipient_params,
-*                'Subject' => "test message body"  );
-* $mime =& new Mail_mime();
-* $mime->setTXTBody($message);
-* $body = $mime->get();
-* $hdrs = $mime->headers($hdrs);
-*
-* // Put message to queue
-* $mail_queue->put( $from, $recipient, $hdrs, $body );
-* //Also you could put this msg in more advanced mode [look at Mail_Queue docs for details]
-* $seconds_to_send = 3600;
-* $delete_after_send = false;
-* $id_user = 7;
-* $mail_queue->put( $from, $recipient, $hdrs, $body, $seconds_to_send, $delete_after_send, $id_user );
-*
-* *****************************************************************
-* // TO SEND EMAILS IN THE QUEUE
-* *****************************************************************
-* // How many mails could we send each time
-* $max_ammount_mails = 50;
-* $mail_queue =& new Mail_Queue($container_options, $mail_options);
-* $mail_queue->sendMailsInQueue($max_ammount_mails);
-* *****************************************************************
-*
-* // for more examples look to docs directory
-*
-* // end usage example
-* -------------------------------------------------------------------------
-*
-* @version $Revision$
-* $Id$
-* @author Radek Maciaszek <chief@php.net>
-*/
+ * +----------------------------------------------------------------------+
+ * | PEAR :: Mail :: Queue                                                |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 1997-2008 Radek Maciaszek, Lorenzo Alberton            |
+ * +----------------------------------------------------------------------+
+ * | All rights reserved.                                                 |
+ * |                                                                      |
+ * | Redistribution and use in source and binary forms, with or without   |
+ * | modification, are permitted provided that the following conditions   |
+ * | are met:                                                             |
+ * |                                                                      |
+ * | * Redistributions of source code must retain the above copyright     |
+ * |   notice, this list of conditions and the following disclaimer.      |
+ * | * Redistributions in binary form must reproduce the above copyright  |
+ * |   notice, this list of conditions and the following disclaimer in    |
+ * |   the documentation and/or other materials provided with the         |
+ * |   distribution.                                                      |
+ * | * The names of its contributors may be used to endorse or promote    |
+ * |   products derived from this software without specific prior written |
+ * |   permission.                                                        |
+ * |                                                                      |
+ * | THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS  |
+ * | "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT    |
+ * | LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS    |
+ * | FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE       |
+ * | COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,  |
+ * | INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, |
+ * | BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;     |
+ * | LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER     |
+ * | CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT   |
+ * | LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN    |
+ * | ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE      |
+ * | POSSIBILITY OF SUCH DAMAGE.                                          |
+ * +----------------------------------------------------------------------+
+ * 
+ * PHP Version 4 and 5
+ *
+ * @category Mail
+ * @package  Mail_Queue
+ * @author   Radek Maciaszek <chief@php.net>
+ * @author   Lorenzo Alberton <l.alberton@quipo.it>
+ * @license  http://www.opensource.org/licenses/bsd-license.php The BSD License
+ * @version  CVS: $Id$
+ * @link     http://pear.php.net/package/Mail_Queue
+ */
 
 /**
  * This is special constant define start offset for limit sql queries to
@@ -119,7 +63,7 @@ define('MAILQUEUE_ALL', -1);
  * When you put new mail to queue you could specify user id who send e-mail.
  * Else you could use system id: MAILQUEUE_SYSTEM or user unknown id: MAILQUEUE_UNKNOWN
  */
-define('MAILQUEUE_SYSTEM',  -1);
+define('MAILQUEUE_SYSTEM', -1);
 define('MAILQUEUE_UNKNOWN', -2);
 
 /**
@@ -150,10 +94,13 @@ require_once 'Mail/mime.php';
 /**
  * Mail_Queue - base class for mail queue managment.
  *
- * @author   Radek Maciaszek <wodzu@tonet.pl>
- * @version  $Id$
+ * @category Mail
  * @package  Mail_Queue
- * @access   public
+ * @author   Radek Maciaszek <chief@php.net>
+ * @author   Lorenzo Alberton <l.alberton@quipo.it>
+ * @license  http://www.opensource.org/licenses/bsd-license.php The BSD License
+ * @version  Release: @package_version@
+ * @link     http://pear.php.net/package/Mail_Queue
  */
 class Mail_Queue extends PEAR
 {
@@ -221,8 +168,8 @@ class Mail_Queue extends PEAR
             return new Mail_Queue_Error(MAILQUEUE_ERROR_NO_CONTAINER,
                         $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__);
         }
-        $container_type = strtolower($container_options['type']);
-        $container_class = 'Mail_Queue_Container_' . $container_type;
+        $container_type      = strtolower($container_options['type']);
+        $container_class     = 'Mail_Queue_Container_' . $container_type;
         $container_classfile = $container_type . '.php';
 
         // Attempt to include a custom version of the named class, but don't treat
@@ -268,6 +215,7 @@ class Mail_Queue extends PEAR
     {
         $options = $this->mail_options;
         unset($options['driver']);
+
         $this->send_mail =& Mail::factory($this->mail_options['driver'], $options);
     }
 
@@ -428,7 +376,9 @@ class Mail_Queue extends PEAR
     function put($from, $to, $hdrs, $body, $sec_to_send=0, $delete_after_send=true, $id_user=MAILQUEUE_SYSTEM)
     {
         $ip = getenv('REMOTE_ADDR');
+
         $time_to_send = date("Y-m-d H:i:s", time() + $sec_to_send);
+
         return $this->container->put(
             $time_to_send,
             $id_user,
@@ -522,15 +472,17 @@ class Mail_Queue extends PEAR
 */
 }
 
-
-
-
 /**
  * Mail_Queue_Error implements a class for reporting error
  * messages.
  *
- * @package Mail_Queue
  * @category Mail
+ * @package  Mail_Queue
+ * @author   Radek Maciaszek <chief@php.net>
+ * @author   Lorenzo Alberton <l.alberton@quipo.it>
+ * @license  http://www.opensource.org/licenses/bsd-license.php The BSD License
+ * @version  Release: @package_version@
+ * @link     http://pear.php.net/package/Mail_Queue
  */
 class Mail_Queue_Error extends PEAR_Error
 {
