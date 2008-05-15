@@ -105,6 +105,14 @@ The Mail_Queue class puts mails in a temporary container, waiting to be fed to t
                                 <channel>pear.phpdb.org</channel>
                         </package>
                         <package>
+                                <name>DB</name>
+                                <channel>pear.php.net</channel>
+                        </package>
+                        <package>
+                                <name>MDB</name>
+                                <channel>pear.php.net</channel>
+                        </package>
+                        <package>
                                 <name>MDB2</name>
                                 <channel>pear.php.net</channel>
                         </package>
