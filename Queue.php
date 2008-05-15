@@ -87,9 +87,28 @@ define('MAILQUEUE_ERROR_CANNOT_SEND_MAIL',   -9);
 define('MAILQUEUE_ERROR_NO_RECIPIENT',      -10);
 define('MAILQUEUE_ERROR_UNKNOWN_CONTAINER', -11);
 
+/**
+ * PEAR
+ * @ignore
+ */
 require_once 'PEAR.php';
+
+/**
+ * Mail
+ * @ignore
+ */
 require_once 'Mail.php';
+
+/**
+ * Mail_mime
+ * @ignore
+ */
 require_once 'Mail/mime.php';
+
+/**
+ * Mail_Queue_Error
+ */
+require_once 'Mail/Queue/Error.php';
 
 
 /**
@@ -542,47 +561,5 @@ class Mail_Queue extends PEAR
         return $err;
     }
 */
-}
-
-/**
- * Mail_Queue_Error implements a class for reporting error
- * messages.
- *
- * @category Mail
- * @package  Mail_Queue
- * @author   Radek Maciaszek <chief@php.net>
- * @author   Lorenzo Alberton <l.alberton@quipo.it>
- * @license  http://www.opensource.org/licenses/bsd-license.php The BSD License
- * @version  Release: @package_version@
- * @link     http://pear.php.net/package/Mail_Queue
- */
-class Mail_Queue_Error extends PEAR_Error
-{
-    // {{{ constructor
-
-    /**
-     * Mail_Queue_Error constructor.
-     *
-     * @param mixed   $code      Mail_Queue error code, or string with error message.
-     * @param integer $mode      what 'error mode' to operate in
-     * @param integer $level     what error level to use for
-     *                           $mode & PEAR_ERROR_TRIGGER
-     * @param string  $debuginfo additional debug info
-     */
-    function Mail_Queue_Error($code = MAILQUEUE_ERROR, $mode = PEAR_ERROR_RETURN,
-              $level = E_USER_NOTICE,  $file=__FILE__, $line=__LINE__, $debuginfo='')
-    {
-
-        $debuginfo .= (empty($debuginfo) ? '' : ' - '). 'FILE: '.$file.', LINE: '.$line;
-        if (is_int($code)) {
-            $this->PEAR_Error('Mail Queue Error: ' . Mail_Queue::errorMessage($code),
-                              $code, $mode, $level, $debuginfo);
-        } else {
-            $this->PEAR_Error('Mail Queue Error: ' . $code, MAILQUEUE_ERROR, $mode,
-                              $level, $debuginfo);
-        }
-    }
-
-    // }}}
 }
 ?>
