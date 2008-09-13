@@ -118,7 +118,8 @@ class Mail_Queue_Container_db extends Mail_Queue_Container
         if (!empty($options['pearErrorMode'])) {
             $this->pearErrorMode = $options['pearErrorMode'];
         }
-        $this->db =& DB::connect($options['dsn'], true);
+        $dsn = array_key_exists('dsn', $options) ? $options['dsn'] : $options;
+        $this->db =& DB::connect($dsn, true);
         if (PEAR::isError($this->db)) {
             return new Mail_Queue_Error(MAILQUEUE_ERROR_CANNOT_CONNECT,
                 $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,

@@ -115,7 +115,8 @@ class Mail_Queue_Container_mdb2 extends Mail_Queue_Container
         if (!empty($options['pearErrorMode'])) {
             $this->pearErrorMode = $options['pearErrorMode'];
         }
-        $res = $this->_connect($options['dsn']);
+        $dsn = array_key_exists('dsn', $options) ? $options['dsn'] : $options;
+        $res = $this->_connect($dsn);
         if (PEAR::isError($res)) {
             return $res;
         }

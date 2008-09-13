@@ -35,8 +35,8 @@ The Mail_Queue class puts mails in a temporary container, waiting to be fed to t
                 <email>bate@php.net</email>
                 <active>no</active>
         </lead>
-	<date>2008-05-07</date>
-	<time>17:20:00</time>
+	<date>2008-09-13</date>
+	<time>19:06:00</time>
 	<version>
 		<release>1.2.3</release>
 		<api>1.2.1</api>
@@ -49,6 +49,7 @@ The Mail_Queue class puts mails in a temporary container, waiting to be fed to t
 	<notes>
 * changed license from PHP to (new and simplyfied) BSD license
 * fixed bug #7850 (introduced new method "factory" and helpers getErrors(), hasErrors())
+* fixed bug #14626: alternative array container configuration not working
 * minor CS fixes (file, class comments)
         </notes>
 	<contents>
@@ -132,11 +133,12 @@ The Mail_Queue class puts mails in a temporary container, waiting to be fed to t
                         <release>stable</release>
                         <api>stable</api>
                 </stability>
-                <date>2008-05-07</date>
+                <date>2008-09-06</date>
                 <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
                 <notes>
 * changed license from PHP to (new and simplyfied) BSD license
 * fixed bug #7850 (introduced new method "factory" and helpers getErrors(), hasErrors())
+* fixed bug #14626: alternative array container configuration not working
 * minor CS fixes (file, class comments)
                 </notes>
         </release>
