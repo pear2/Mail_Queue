@@ -51,6 +51,7 @@ The Mail_Queue class puts mails in a temporary container, waiting to be fed to t
 * fixed bug #7850 (introduced new method "factory" and helpers getErrors(), hasErrors())
 * fixed bug #14626: alternative array container configuration not working
 * minor CS fixes (file, class comments)
+* implemented #15049 (count emails in queue) in MDB2 driver
         </notes>
 	<contents>
 		<dir name="/">
