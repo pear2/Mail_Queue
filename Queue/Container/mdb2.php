@@ -395,6 +395,27 @@ class Mail_Queue_Container_mdb2 extends Mail_Queue_Container
         );
     }
 
+    /**
+     * Return the number of emails currently in the queue.
+     *
+     * @return mixed An int, or Mail_Queue_Error on failure.
+     */
+    function getQueueCount()
+    {
+        $res = $this->_checkConnection();
+        if (PEAR::isError($res)) {
+            return $res;
+        }
+        $query = 'SELECT count(*) FROM ' . $this->mail_table;
+        $count = $this->db->queryOne($query);
+        if (PEAR::isError($count)) {
+            return new Mail_Queue_Error(MAILQUEUE_ERROR_QUERY_FAILED,
+                $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
+                'MDB2: query failed - "'.$query.'" - '.$row->getMessage());
+        }
+        return (int) $count;
+    }
+
     // }}}
     // {{{ deleteMail()
 
