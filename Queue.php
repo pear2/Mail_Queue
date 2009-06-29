@@ -278,6 +278,29 @@ class Mail_Queue extends PEAR
         $this->send_mail =& Mail::factory($this->mail_options['driver'], $options);
     }
 
+    /**
+     * Returns the number of emails currently in the queue.
+     *
+     * @return int
+     */
+    function getQueueCount()
+    {
+        if (!is_a($this->container, 'mail_queue_container')) {
+            array_push(
+                $this->_initErrors,
+                new Mail_Queue_Error(
+                    MAILQUEUE_ERROR_NO_CONTAINER,
+                    $this->pearErrorMode,
+                    E_USER_ERROR,
+                    __FILE__,
+                    __LINE__
+                )
+            );
+            return 0;
+        }
+        $this->container->getQueueCount();
+    }
+
     // }}}
     // {{{ setBufferSize()
 

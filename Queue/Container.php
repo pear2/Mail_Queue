@@ -256,6 +256,11 @@ class Mail_Queue_Container
         return false;
     }
 
+    function getQueueCount()
+    {
+        return false;
+    }
+
     // }}}
     // {{{ deleteMail()
 
