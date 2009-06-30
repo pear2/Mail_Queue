@@ -45,12 +45,13 @@
  *
  * PHP Version 5
  *
- * @category Mail
- * @package  Mail_Queue
- * @author   Randy Syring <randy at rcs-comp dot com>
- * @version  CVS: $Id$
- * @license  http://www.opensource.org/licenses/bsd-license.php The BSD License
- * @link     http://pear.php.net/package/Mail_Queue
+ * @category   Mail
+ * @package    Mail_Queue
+ * @author     Randy Syring <randy at rcs-comp dot com>
+ * @version    CVS: $Id$
+ * @license    http://www.opensource.org/licenses/bsd-license.php The BSD License
+ * @link       http://pear.php.net/package/Mail_Queue
+ * @deprecated
  */
 require_once 'creole/Creole.php';
 require_once 'Mail/Queue/Container.php';
@@ -58,12 +59,13 @@ require_once 'Mail/Queue/Container.php';
 /**
  * Mail_Queue_Container_creole
  *
- * @category Mail
- * @package  Mail_Queue
- * @author   Randy Syring <randy at rcs-comp dot com>
- * @version  Release: @package_version@
- * @license  http://www.opensource.org/licenses/bsd-license.php The BSD License
- * @link     http://pear.php.net/package/Mail_Queue
+ * @category   Mail
+ * @package    Mail_Queue
+ * @author     Randy Syring <randy at rcs-comp dot com>
+ * @version    Release: @package_version@
+ * @license    http://www.opensource.org/licenses/bsd-license.php The BSD License
+ * @link       http://pear.php.net/package/Mail_Queue
+ * @deprecated
  */
 class Mail_Queue_Container_creole extends Mail_Queue_Container
 {
