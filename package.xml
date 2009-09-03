@@ -55,6 +55,8 @@ The Mail_Queue class puts mails in a temporary container, waiting to be fed to t
 * implemented #14921 (sleep in between sends to not hammer servers)
 * improvement #6456 (validate parameters)
 * fixed structure in svn
+* implemented #16064 (callback support, patch by kguest) 
+* implemented #16068 (save greeting), patch by kguest)
         </notes>
 	<contents>
 		<dir name="/">
