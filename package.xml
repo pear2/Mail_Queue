@@ -53,6 +53,8 @@ The Mail_Queue class puts mails in a temporary container, waiting to be fed to t
 * minor CS fixes (file, class comments)
 * implemented #15049 (count emails in queue) in MDB2 driver
 * implemented #14921 (sleep in between sends to not hammer servers)
+* improvement #6456 (validate parameters)
+* fixed structure in svn
         </notes>
 	<contents>
 		<dir name="/">
@@ -67,20 +69,23 @@ The Mail_Queue class puts mails in a temporary container, waiting to be fed to t
 				<file baseinstalldir="Mail" name="TODO" role="doc"/>
 			</dir>
 			<!-- /docs -->
-			<dir name="Queue">
-				<dir name="Container">
-					<file baseinstalldir="Mail" name="creole.php" role="php"/>
-					<file baseinstalldir="Mail" name="db.php" role="php"/>
-					<file baseinstalldir="Mail" name="mdb.php" role="php"/>
-					<file baseinstalldir="Mail" name="mdb2.php" role="php"/>
-				</dir>
-				<!-- /Queue/Container -->
-				<file baseinstalldir="Mail" name="Body.php" role="php"/>
-				<file baseinstalldir="Mail" name="Container.php" role="php"/>
-                                <file baseinstalldir="Mail" name="Error.php" role="php"/>
-			</dir>
-			<!-- /Queue -->
-			<file baseinstalldir="Mail" name="Queue.php" role="php"/>
+            <dir name="Mail">
+    			<dir name="Queue">
+	    			<dir name="Container">
+		    			<file baseinstalldir="Mail" name="creole.php" role="php"/>
+			    		<file baseinstalldir="Mail" name="db.php" role="php"/>
+				    	<file baseinstalldir="Mail" name="mdb.php" role="php"/>
+              		    <file baseinstalldir="Mail" name="mdb2.php" role="php"/>
+			    	</dir>
+				    <!-- /Mail/Queue/Container -->
+    				<file baseinstalldir="Mail" name="Body.php" role="php"/>
+	    			<file baseinstalldir="Mail" name="Container.php" role="php"/>
+                    <file baseinstalldir="Mail" name="Error.php" role="php"/>
+		    	</dir>
+			    <!-- /Mail/Queue -->
+                <file baseinstalldir="Mail" name="Queue.php" role="php"/>
+            </dir>
+            <!-- /Mail -->
 		</dir>
 		<!-- / -->
 	</contents>
