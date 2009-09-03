@@ -338,6 +338,13 @@ class Mail_Queue extends PEAR
     function sendMailsInQueue($limit = MAILQUEUE_ALL, $offset = MAILQUEUE_START,
                               $try = MAILQUEUE_TRY)
     {
+        if (!is_int($limit) || !is_int($offset) || !is_int($try)) {
+            return Mail_Queue::raiseError(
+                "sendMailsInQueue(): all parameters must be integer.",
+                MAILQUEUE_ERROR_UNEXPECTED
+            );
+        }
+
         $this->container->setOption($limit, $offset, $try);
         while ($mail = $this->get()) {
             $this->container->countSend($mail);
