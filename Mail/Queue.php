@@ -35,7 +35,7 @@
  * | ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE      |
  * | POSSIBILITY OF SUCH DAMAGE.                                          |
  * +----------------------------------------------------------------------+
- * 
+ *
  * PHP Version 4 and 5
  *
  * @category Mail
@@ -331,18 +331,30 @@ class Mail_Queue extends PEAR
      *                           this function.
      * @param integer $offset    Optional - you could load mails from $offset (by id)
      * @param integer $try       Optional - hoh many times mailqueu should try send
-     *                           each mail. If mail was sent succesful it will be delete
-     *                           from Mail_Queue.
+     *                           each mail. If mail was sent succesful it will be
+     *                           deleted from Mail_Queue.
+     * @param mixed   $callback  Optional, a callback (string or array) to save the
+     *                           SMTP ID and the SMTP greeting.
+     *
      * @return mixed  True on success else MAILQUEUE_ERROR object.
      */
     function sendMailsInQueue($limit = MAILQUEUE_ALL, $offset = MAILQUEUE_START,
-                              $try = MAILQUEUE_TRY)
+                              $try = MAILQUEUE_TRY, $callback = null)
     {
         if (!is_int($limit) || !is_int($offset) || !is_int($try)) {
             return Mail_Queue::raiseError(
-                "sendMailsInQueue(): all parameters must be integer.",
+                "sendMailsInQueue(): limit, offset and try must be integer.",
                 MAILQUEUE_ERROR_UNEXPECTED
             );
+        }
+
+        if ($callback !== null) {
+            if (!is_array($callback) && !is_string($callback)) {
+                return Mail_Queue::raiseError(
+                    "sendMailsInQueue(): callback must be a string or an array.",
+                    MAILQUEUE_ERROR_UNEXPECTED
+                );
+            }
         }
 
         $this->container->setOption($limit, $offset, $try);
@@ -359,8 +371,18 @@ class Mail_Queue extends PEAR
                     MAILQUEUE_ERROR_CANNOT_SEND_MAIL, PEAR_ERROR_TRIGGER,
                     E_USER_NOTICE
                 );
-            } else if ($mail->isDeleteAfterSend()) {
-                $this->deleteMail($mail->getId());
+            } else {
+                //take care of callback first, as it may need to retrieve extra data
+                //from the mail_queue table.
+                if ($callback !== null) {
+                    call_user_func($callback,
+                        array('id' => $mail->getId(),
+                              'queued_as' => $this->queued_as,
+                              'greeting'  => $this->greeting));
+                }
+                if ($mail->isDeleteAfterSend()) {
+                    $this->deleteMail($mail->getId());
+                }
             }
             if (isset($this->mail_options['delay'])
                 && $this->mail_options['delay'] > 0) {
@@ -426,6 +448,12 @@ class Mail_Queue extends PEAR
         $sent = $this->send_mail->send($recipient, $hdrs, $body);
         if (!PEAR::isError($sent) && $sent && $set_as_sent) {
             $this->container->setAsSent($mail);
+        }
+        if (isset($this->send_mail->queued_as)) {
+            $this->queued_as = $this->send_mail->queued_as;
+        }
+        if (isset($this->send_mail->greeting)) {
+            $this->greeting = $this->send_mail->greeting;
         }
         return $sent;
     }
