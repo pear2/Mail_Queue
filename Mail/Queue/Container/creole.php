@@ -211,7 +211,8 @@ class Mail_Queue_Container_creole extends Mail_Queue_Container
                 .'?)';
         try {
             $idgen = $this->db->getIdGenerator();
-            $stmt = $this->db->prepareStatement($query);
+            $stmt  = $this->db->prepareStatement($query);
+
             $stmt->setTimestamp(1, time());
             $stmt->setTimestamp(2, $time_to_send);
             $stmt->setInt(3, $id_user);
@@ -246,7 +247,9 @@ class Mail_Queue_Container_creole extends Mail_Queue_Container
             return new Mail_Queue_Error('Expected: Mail_Queue_Body class',
                 __FILE__, __LINE__);
         }
+
         $count = $mail->_try();
+
         $sql = 'UPDATE '. $this->mail_table
                 .' SET try_sent = ?'
                 .' WHERE id = ?';
