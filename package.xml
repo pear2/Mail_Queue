@@ -10,36 +10,36 @@ http://pear.php.net/dtd/package-2.0.xsd">
 Wrapper for PEAR::Mail and PEAR::DB (or PEAR::MDB/MDB2). It can load, save and send saved mails in background and also backup some mails.
 
 The Mail_Queue class puts mails in a temporary container, waiting to be fed to the MTA (Mail Transport Agent), and sends them later (e.g. a certain amount of mails every few minutes) by crontab or in other way.
- </description>
-	<lead>
+    </description>
+    <lead>
 		<name>Lorenzo Alberton</name>
 		<user>quipo</user>
 		<email>quipo@php.net</email>
 		<active>yes</active>
-	</lead>
-        <lead>
-                <name>Till Klampaeckel</name>
-                <user>till</user>
-                <email>till@php.net</email>
-                <active>yes</active>
-        </lead>
-        <lead>
-                <name>Radek Maciaszek</name>
-                <user>chief</user>
-                <email>chief@php.net</email>
-                <active>no</active>
-        </lead>
-        <lead>
-                <name>Marco Kaiser</name>
-                <user>bate</user>
-                <email>bate@php.net</email>
-                <active>no</active>
-        </lead>
-	<date>2008-09-13</date>
-	<time>19:06:00</time>
+    </lead>
+    <lead>
+        <name>Till Klampaeckel</name>
+        <user>till</user>
+        <email>till@php.net</email>
+        <active>yes</active>
+    </lead>
+    <lead>
+        <name>Radek Maciaszek</name>
+        <user>chief</user>
+        <email>chief@php.net</email>
+        <active>no</active>
+    </lead>
+    <lead>
+        <name>Marco Kaiser</name>
+        <user>bate</user>
+        <email>bate@php.net</email>
+        <active>no</active>
+    </lead>
+	<date>2009-09-04</date>
+	<time>18:20:00</time>
 	<version>
 		<release>1.2.3</release>
-		<api>1.2.1</api>
+		<api>1.2.2</api>
 	</version>
 	<stability>
 		<release>stable</release>
