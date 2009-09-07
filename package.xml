@@ -74,18 +74,18 @@ The Mail_Queue class puts mails in a temporary container, waiting to be fed to t
             <dir name="Mail">
     			<dir name="Queue">
 	    			<dir name="Container">
-		    			<file baseinstalldir="Mail" name="creole.php" role="php"/>
-			    		<file baseinstalldir="Mail" name="db.php" role="php"/>
-				    	<file baseinstalldir="Mail" name="mdb.php" role="php"/>
-              		    <file baseinstalldir="Mail" name="mdb2.php" role="php"/>
+		    			<file name="creole.php" role="php"/>
+			    		<file name="db.php" role="php"/>
+				    	<file name="mdb.php" role="php"/>
+              		    <file name="mdb2.php" role="php"/>
 			    	</dir>
 				    <!-- /Mail/Queue/Container -->
-    				<file baseinstalldir="Mail" name="Body.php" role="php"/>
-	    			<file baseinstalldir="Mail" name="Container.php" role="php"/>
-                    <file baseinstalldir="Mail" name="Error.php" role="php"/>
+    				<file name="Body.php" role="php"/>
+	    			<file name="Container.php" role="php"/>
+                    <file name="Error.php" role="php"/>
 		    	</dir>
 			    <!-- /Mail/Queue -->
-                <file baseinstalldir="Mail" name="Queue.php" role="php"/>
+                <file name="Queue.php" role="php"/>
             </dir>
             <!-- /Mail -->
 		</dir>
