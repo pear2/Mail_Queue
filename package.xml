@@ -35,10 +35,10 @@ The Mail_Queue class puts mails in a temporary container, waiting to be fed to t
         <email>bate@php.net</email>
         <active>no</active>
     </lead>
-	<date>2009-09-04</date>
+	<date>2009-09-16</date>
 	<time>18:20:00</time>
 	<version>
-		<release>1.2.3</release>
+		<release>1.2.4</release>
 		<api>1.2.2</api>
 	</version>
 	<stability>
@@ -47,16 +47,7 @@ The Mail_Queue class puts mails in a temporary container, waiting to be fed to t
 	</stability>
 	<license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
 	<notes>
-* changed license from PHP to (new and simplyfied) BSD license
-* fixed bug #7850 (introduced new method "factory" and helpers getErrors(), hasErrors())
-* fixed bug #14626: alternative array container configuration not working
-* minor CS fixes (file, class comments)
-* implemented #15049 (count emails in queue) in MDB2 driver
-* implemented #14921 (sleep in between sends to not hammer servers)
-* improvement #6456 (validate parameters)
-* fixed structure in svn
-* implemented #16064 (callback support, patch by kguest) 
-* implemented #16068 (save greeting), patch by kguest)
+* bugfix: #16609 (notice and "call to undefined function")
         </notes>
 	<contents>
 		<dir name="/">

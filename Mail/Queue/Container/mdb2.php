@@ -411,7 +411,7 @@ class Mail_Queue_Container_mdb2 extends Mail_Queue_Container
         if (PEAR::isError($count)) {
             return new Mail_Queue_Error(MAILQUEUE_ERROR_QUERY_FAILED,
                 $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
-                'MDB2: query failed - "'.$query.'" - '.$row->getMessage());
+                'MDB2: query failed - "' . $query . '" - ' . $count->getMessage());
         }
         return (int) $count;
     }

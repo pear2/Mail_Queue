@@ -379,6 +379,29 @@ class Mail_Queue_Container_db extends Mail_Queue_Container
     }
 
     // }}}
+
+
+    /**
+     * Check if there's a valid db connection
+     *
+     * @access private
+     *
+     * @return boolean|PEAR_Error on error
+     * @since  1.2.4
+     */
+    function _checkConnection()
+    {
+        if (!is_object($this->db) || !is_a($this->db, 'DB_common')) {
+            $msg = 'DB::connect failed';
+            if (PEAR::isError($this->db)) {
+                $msg .= ': '.$this->db->getMessage();
+            }
+            return new Mail_Queue_Error(MAILQUEUE_ERROR_CANNOT_CONNECT,
+                $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__, $msg);
+        }
+        return true;
+    }
+
     // {{{ deleteMail()
 
     /**
@@ -400,7 +423,7 @@ class Mail_Queue_Container_db extends Mail_Queue_Container
         if (PEAR::isError($res)) {
             return new Mail_Queue_Error(MAILQUEUE_ERROR_QUERY_FAILED,
                 $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
-                'DB::query failed - "'.$query.'" - '.$res->toString());
+                'DB::query failed - "' . $query.'" - ' . $res->getMessage());
         }
         return true;
     }
