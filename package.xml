@@ -35,8 +35,8 @@ The Mail_Queue class puts mails in a temporary container, waiting to be fed to t
         <email>bate@php.net</email>
         <active>no</active>
     </lead>
-	<date>2009-09-16</date>
-	<time>18:20:00</time>
+	<date>2009-09-17</date>
+	<time>18:00:00</time>
 	<version>
 		<release>1.2.4</release>
 		<api>1.2.2</api>
@@ -49,7 +49,7 @@ The Mail_Queue class puts mails in a temporary container, waiting to be fed to t
 	<notes>
 * bugfix: #16609 (notice and "call to undefined function")
 * bugfix: possible notice/warning about undefined class vars greeting/queued_as in Mail_Queue (patch by Ken Guest)
-        </notes>
+    </notes>
 	<contents>
 		<dir name="/">
 			<dir name="docs">
@@ -126,22 +126,38 @@ The Mail_Queue class puts mails in a temporary container, waiting to be fed to t
 	<phprelease/>
 	<changelog>
         <release>
-                <version>
-                        <release>1.2.3</release>
-                        <api>1.2.1</api>
-                </version>
-                <stability>
-                        <release>stable</release>
-                        <api>stable</api>
-                </stability>
-                <date>2008-09-06</date>
-                <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
-                <notes>
+            <version>
+                <release>1.2.4</release>
+                <api>1.2.1</api>
+            </version>
+            <stability>
+                <release>stable</release>
+                <api>stable</api>
+            </stability>
+            <date>2008-09-17</date>
+            <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+            <notes>
+* bugfix: #16609 (notice and "call to undefined function")
+* bugfix: possible notice/warning about undefined class vars greeting/queued_as in Mail_Queue (patch by Ken Guest)
+            </notes>
+        </release>
+        <release>
+            <version>
+                <release>1.2.3</release>
+                <api>1.2.1</api>
+            </version>
+            <stability>
+                <release>stable</release>
+                <api>stable</api>
+            </stability>
+            <date>2008-09-06</date>
+            <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
+            <notes>
 * changed license from PHP to (new and simplyfied) BSD license
 * fixed bug #7850 (introduced new method "factory" and helpers getErrors(), hasErrors())
 * fixed bug #14626: alternative array container configuration not working
 * minor CS fixes (file, class comments)
-                </notes>
+            </notes>
         </release>
         <release>
 		<version>
