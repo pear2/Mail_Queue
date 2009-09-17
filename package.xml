@@ -48,6 +48,7 @@ The Mail_Queue class puts mails in a temporary container, waiting to be fed to t
 	<license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
 	<notes>
 * bugfix: #16609 (notice and "call to undefined function")
+* bugfix: possible notice/warning about undefined class vars greeting/queued_as in Mail_Queue (patch by Ken Guest)
         </notes>
 	<contents>
 		<dir name="/">

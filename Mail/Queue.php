@@ -375,10 +375,18 @@ class Mail_Queue extends PEAR
                 //take care of callback first, as it may need to retrieve extra data
                 //from the mail_queue table.
                 if ($callback !== null) {
+                    $queued_as = null;
+                    $greeting  = null;
+                    if (isset($this->queued_as)) {
+                        $queued_as = $this->queued_as;
+                    }
+                    if (isset($this->greeting)) {
+                        $greeting = $this->greeting;
+                    }
                     call_user_func($callback,
                         array('id' => $mail->getId(),
-                              'queued_as' => $this->queued_as,
-                              'greeting'  => $this->greeting));
+                              'queued_as' => $queued_as,
+                              'greeting'  => $greeting));
                 }
                 if ($mail->isDeleteAfterSend()) {
                     $this->deleteMail($mail->getId());
