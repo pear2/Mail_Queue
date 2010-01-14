@@ -392,6 +392,9 @@ class Mail_Queue extends PEAR
                     $this->deleteMail($mail->getId());
                 }
             }
+
+            unset($mail);
+
             if (isset($this->mail_options['delay'])
                 && $this->mail_options['delay'] > 0) {
                 sleep($this->mail_options['delay']);
