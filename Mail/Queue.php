@@ -428,9 +428,9 @@ class Mail_Queue extends PEAR
     // {{{ sendMail()
 
     /**
-     * Send mail from MailBody object
+     * Send mail from {@link Mail_Queue_Body} object
      *
-     * @param object  MailBody object
+     * @param object  Mail_Queue_Body object
      * @return mixed  True on success else pear error class
      * @param  bool   $set_as_sent
      *
@@ -438,6 +438,15 @@ class Mail_Queue extends PEAR
      */
     function sendMail($mail, $set_as_sent=true)
     {
+        if (!is_a($mail, 'Mail_Queue_Body')) {
+            if (is_a($mail, 'Mail_Queue_Error')) {
+                return $mail;
+            }
+            return Mail_Queue_Error(
+                "Unknown object/type: " . get_class($mail),
+                MAILQUEUE_ERROR_UNEXPECTED
+            );
+        }
         $recipient = $mail->getRecipient();
         if (empty($recipient)) {
             return new Mail_Queue_Error('Recipient cannot be empty.',
