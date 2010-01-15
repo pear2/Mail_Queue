@@ -77,6 +77,8 @@ class Mail_Queue_Container_mdb2 extends Mail_Queue_Container
      */
     var $db = null;
 
+    var $errorMsg = 'MDB2::query() failed: "%s", %s';
+
     /**
      * Table for sql database
      * @var  string
@@ -144,7 +146,7 @@ class Mail_Queue_Container_mdb2 extends Mail_Queue_Container
         } elseif (is_object($db) && MDB2::isError($db)) {
             return new Mail_Queue_Error(MAILQUEUE_ERROR_CANNOT_CONNECT,
                 $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
-                'MDB2::connect failed: '. MDB2::errorMessage($this->db));
+                'MDB2::connect failed: '. $this->_getErrorMessage($this->db));
         } else {
             return new Mail_Queue_Error(MAILQUEUE_ERROR_CANNOT_CONNECT,
                 $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
@@ -168,12 +170,35 @@ class Mail_Queue_Container_mdb2 extends Mail_Queue_Container
         if (!is_object($this->db) || !is_a($this->db, 'MDB2_Driver_Common')) {
             $msg = 'MDB2::connect failed';
             if (PEAR::isError($this->db)) {
-                $msg .= ': '.$this->db->getMessage();
+                $msg .= $this->_getErrorMessage($this->db);
             }
             return new Mail_Queue_Error(MAILQUEUE_ERROR_CANNOT_CONNECT,
                 $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__, $msg);
         }
         return true;
+    }
+
+    /**
+     * Create a more useful error message from DB related errors.
+     *
+     * @access private
+     *
+     * @param PEAR_Error $errorObj A PEAR_Error object.
+     *
+     * @return string
+     */
+    function _getErrorMessage($errorObj)
+    {
+        if (!Pear::isError($errorObj)) {
+            return '';
+        }
+        $msg   = ': ' . $errorObj->getMessage();
+        $debug = $errorObj->getDebugInfo();
+
+        if (!empty($debug)) {
+            $msg .= ", DEBUG: {$debug}";
+        }
+        return $msg;
     }
 
     // }}}
@@ -200,7 +225,7 @@ class Mail_Queue_Container_mdb2 extends Mail_Queue_Container
         if (PEAR::isError($res)) {
             return new Mail_Queue_Error(MAILQUEUE_ERROR_QUERY_FAILED,
                 $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
-                'MDB2::query failed - "'.$query.'" - '.MDB2::errorMessage($res));
+                sprintf($this->errorMsg, $query, $this->_getErrorMessage($res)));
         }
 
         $this->_last_item = 0;
@@ -210,7 +235,7 @@ class Mail_Queue_Container_mdb2 extends Mail_Queue_Container
             if (!is_array($row)) {
                 return new Mail_Queue_Error(MAILQUEUE_ERROR_QUERY_FAILED,
                     $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
-                    'MDB2::query failed - "'.$query.'" - '.MDB2::errorMessage($res));
+                    sprintf($this->errorMsg, $query, $this->_getErrorMessage($res)));
             }
             $this->queue_data[$this->_last_item] = new Mail_Queue_Body(
                 $row['id'],
@@ -284,7 +309,7 @@ class Mail_Queue_Container_mdb2 extends Mail_Queue_Container
         if (PEAR::isError($res)) {
             return new Mail_Queue_Error(MAILQUEUE_ERROR_QUERY_FAILED,
                 $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
-                'MDB2::query failed - "'.$query.'" - '.$res->getMessage());
+                sprintf($this->errorMsg, $query, $this->_getErrorMessage($res)));
         }
         return $id;
     }
@@ -316,7 +341,7 @@ class Mail_Queue_Container_mdb2 extends Mail_Queue_Container
         if (PEAR::isError($res)) {
             return new Mail_Queue_Error(MAILQUEUE_ERROR_QUERY_FAILED,
                 $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
-                'MDB2::query failed - "'.$query.'" - '.MDB2::errorMessage($res));
+                sprintf($this->errorMsg, $query, $this->_getErrorMessage($res)));
         }
         return $count;
     }
@@ -350,7 +375,7 @@ class Mail_Queue_Container_mdb2 extends Mail_Queue_Container
         if (PEAR::isError($res)) {
             return new Mail_Queue_Error(MAILQUEUE_ERROR_QUERY_FAILED,
                 $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
-                'MDB2::query failed - "'.$query.'" - '.MDB2::errorMessage($res));
+                sprintf($this->errorMsg, $query, $this->_getErrorMessage($res)));
         }
         return true;
     }
@@ -377,7 +402,7 @@ class Mail_Queue_Container_mdb2 extends Mail_Queue_Container
         if (PEAR::isError($row) || !is_array($row)) {
             return new Mail_Queue_Error(MAILQUEUE_ERROR_QUERY_FAILED,
                 $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
-                'MDB2: query failed - "'.$query.'" - '.$row->getMessage());
+                sprintf($this->errorMsg, $query, $this->_getErrorMessage($row)));
         }
         return new Mail_Queue_Body(
             $row['id'],
@@ -411,7 +436,7 @@ class Mail_Queue_Container_mdb2 extends Mail_Queue_Container
         if (PEAR::isError($count)) {
             return new Mail_Queue_Error(MAILQUEUE_ERROR_QUERY_FAILED,
                 $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
-                'MDB2: query failed - "' . $query . '" - ' . $count->getMessage());
+                sprintf($this->errorMsg, $query, $this->_getErrorMessage($count)));
         }
         return (int) $count;
     }
@@ -440,7 +465,7 @@ class Mail_Queue_Container_mdb2 extends Mail_Queue_Container
         if (PEAR::isError($res)) {
             return new Mail_Queue_Error(MAILQUEUE_ERROR_QUERY_FAILED,
                 $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
-                'MDB2::query failed - "'.$query.'" - '.MDB2::errorMessage($res));
+                sprintf($this->errorMsg, $query, $this->_getErrorMessage($res)));
         }
         return true;
     }
