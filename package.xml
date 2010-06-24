@@ -49,6 +49,7 @@ The Mail_Queue class puts mails in a temporary container, waiting to be fed to t
 	<notes>
 * bugfix: #16609 (notice and "call to undefined function")
 * bugfix: possible notice/warning about undefined class vars greeting/queued_as in Mail_Queue (patch by Ken Guest)
+* bugfix: #17521 (missing return in getQueueCount) (patch by killermonk)
     </notes>
 	<contents>
 		<dir name="/">

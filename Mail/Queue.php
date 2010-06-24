@@ -298,7 +298,7 @@ class Mail_Queue extends PEAR
             );
             return 0;
         }
-        $this->container->getQueueCount();
+        return $this->container->getQueueCount();
     }
 
     // }}}
