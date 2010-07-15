@@ -414,9 +414,10 @@ class Mail_Queue extends PEAR
      *
      * @param integer $id  Mail identifier
      * @param  bool   $set_as_sent
-     * @return bool   true on success else false
+     * @return mixed  boolean: true on success else false, or PEAR_Error
      *
      * @access public
+     * @uses   self::sendMail()
      */
     function sendMailById($id, $set_as_sent=true)
     {
@@ -438,6 +439,7 @@ class Mail_Queue extends PEAR
      * @param  bool   $set_as_sent
      *
      * @access public
+     * @see    self::sendMailById()
      */
     function sendMail($mail, $set_as_sent=true)
     {
