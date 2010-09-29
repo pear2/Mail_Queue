@@ -456,62 +456,6 @@ class Mail_Queue_Container_mdb extends Mail_Queue_Container
                 $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
                 'MDB: query failed - "'.$query.'" - '.$res->getMessage());
         }
-/*
-//DISABLED (using a standard query, without LOBs special management:
-//it does not work with pgsql (there's probably a problem in the MDB pgsql driver)
-        $query = 'SELECT id, create_time, time_to_send, sent_time'
-                .', id_user, ip, sender, recipient, delete_after_send'
-                .', try_sent FROM ' . $this->mail_table
-                .' WHERE id = '     . $this->db->getTextValue($id);
-        $res = $this->db->query($query);
-        if (MDB::isError($res)) {
-            return new Mail_Queue_Error(MAILQUEUE_ERROR_QUERY_FAILED,
-                $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
-                'MDB: query failed - "'.$query.'" - '.$res->getMessage());
-        }
-        $row = $this->db->fetchRow($res, MDB_FETCHMODE_ASSOC);
-        if (!is_array($row)) {
-            return new Mail_Queue_Error(MAILQUEUE_ERROR_QUERY_FAILED,
-                $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
-                'MDB: query failed - "'.$query.'" - '.$res->getMessage());
-        }
-        //now fetch lobs...
-        foreach (array('headers','body') as $field) {
-            $query = 'SELECT '.$field.' FROM ' . $this->mail_table
-                    .' WHERE id=' . $this->db->getIntegerValue($id);
-            $res = $this->db->query($query);
-            if (MDB::isError($res)) {
-                //return new Mail_Queue_Error('MDB::query failed: '
-                //          . $result->getMessage(), __FILE__, __LINE__);
-                $row[$field] = ''; //Not sure if this is better than raising the error...
-            } else {
-                if ($this->db->endOfResult($res)) {
-                    //no rows returned
-                    $row[$field] = '';
-                } else {
-                    $clob = $this->db->fetchClob($res, 0, $field);
-                    if (MDB::isError($clob)) {
-                        return new Mail_Queue_Error(MAILQUEUE_ERROR_QUERY_FAILED,
-                            $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
-                            'MDB: query failed - "'.$query.'" - '.$clob->getMessage());
-                    }
-
-                    $row[$field] = '';
-                    while (!$this->db->endOfLOB($clob)) {
-                        if (MDB::isError($error =
-                                        $this->db->readLob($clob, $data, 8192) < 0)) {
-                            return new Mail_Queue_Error(MAILQUEUE_ERROR_QUERY_FAILED,
-                                $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
-                                'MDB: query failed - "'.$query.'" - '.$error->getMessage());
-                        }
-                        $row[$field] .= $data;
-                        unset($data);
-                    }
-                    $this->db->destroyLob($clob);
-                }
-            }
-        }
-*/
         return new Mail_Queue_Body(
             $row['id'],
             $row['create_time'],
