@@ -327,7 +327,7 @@ class Mail_Queue_Container
 
         //set buffer pointers
         $this->_current_item = 0;
-        $this->_last_item = count($this->queue_data)-1;
+        $this->_last_item    = count($this->queue_data)-1;
 
         return true;
     }
