@@ -56,9 +56,7 @@ abstract class Mail_QueueAbstract extends PHPUnit_Framework_TestCase
             'mail_table' => $this->table,
         );
 
-        $mail_opts = array(
-            'driver' => 'sendmail',
-        );
+        $mail_opts = array('driver' => 'mock');
 
         $this->queue = new Mail_Queue($container_opts, $mail_opts);
         if ($this->queue->hasErrors()) {
