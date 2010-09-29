@@ -4,10 +4,8 @@
  */
 class Mail_QueueTest extends Mail_QueueAbstract
 {
-    public function testPutGet()
+    public function testPut()
     {
-        $this->markTestIncomplete("Not yet done.");
-
         $time_to_send = 3600;
         $id_user      = 1;
         $ip           = '127.0.0.1';
@@ -16,18 +14,10 @@ class Mail_QueueTest extends Mail_QueueAbstract
         $headers      = array('X-TestSuite' => 1);
         $body         = 'Lorem ipsum';
 
-        $mailId = $this->queue->put(
-            $time_to_send,
-            $id_user,
-            $ip,
-            $sender,
-            $recipient,
-            $headers,
-            $body
-        );
+        $mailId = $this->queue->put($sender, $recipient, $headers, $body, $time_to_send=0, true, $id_user);
 
         $this->assertEquals(1, $mailId); // it's the first email, after all :-)
-        $this->assertTrue((count($this->queue->getQueueCount()) > 0));
+        $this->assertEquals(1, count($this->queue->getQueueCount()));
     }
 
     /**
