@@ -163,6 +163,9 @@ class Mail_Queue_Container_creole extends Mail_Queue_Container
             $this->queue_data = array(); //reset buffer
             while ($res->next()) {
                 $row = $res->getRow();
+
+                $delete_after_send = (bool) $row['delete_after_send'];
+
                 $this->queue_data[$this->_last_item] = new Mail_Queue_Body(
                     $row['id'],
                     $row['create_time'],
@@ -174,7 +177,7 @@ class Mail_Queue_Container_creole extends Mail_Queue_Container
                     $this->_isSerialized($row['recipient']) ? unserialize($row['recipient']) : $row['recipient'],
                     unserialize($row['headers']),
                     unserialize($row['body']),
-                    $row['delete_after_send'],
+                    $delete_after_send,
                     $row['try_sent']
                 );
                 $this->_last_item++;
@@ -336,6 +339,8 @@ class Mail_Queue_Container_creole extends Mail_Queue_Container
                 'CREOLE::query failed - "'.$sql.'" - '.$e->getMessage());
         }
 
+        $delete_after_send = (bool) $row['delete_after_send'];
+
         return new Mail_Queue_Body(
             $row['id'],
             $row['create_time'],
@@ -347,7 +352,7 @@ class Mail_Queue_Container_creole extends Mail_Queue_Container
             $this->_isSerialized($row['recipient']) ? unserialize($row['recipient']) : $row['recipient'],
             unserialize($row['headers']),
             unserialize($row['body']),
-            $row['delete_after_send'],
+            $delete_after_send,
             $row['try_sent']
         );
     }

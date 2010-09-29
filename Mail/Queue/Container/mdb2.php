@@ -420,6 +420,9 @@ class Mail_Queue_Container_mdb2 extends Mail_Queue_Container
                 $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
                 sprintf($this->errorMsg, $query, 'no such message'));
         }
+
+        $delete_after_send = (bool) $row['delete_after_send'];
+
         return new Mail_Queue_Body(
             $row['id'],
             $row['create_time'],
@@ -431,7 +434,7 @@ class Mail_Queue_Container_mdb2 extends Mail_Queue_Container
             $this->_isSerialized($row['recipient']) ? unserialize($row['recipient']) : $row['recipient'],
             unserialize($row['headers']),
             unserialize($row['body']),
-            $row['delete_after_send'],
+            $delete_after_send,
             $row['try_sent']
         );
     }
