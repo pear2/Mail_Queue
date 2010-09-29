@@ -4,29 +4,26 @@
  */
 class Mail_Queue_ContainerTest extends Mail_QueueAbstract
 {
-    public function testPutGet()
+    public function testContainerGet()
     {
-        $this->markTestIncomplete("Not yet done.");
-
         $time_to_send = 3600;
         $id_user      = 1;
-        $ip           = '127.0.0.1';
         $sender       = 'testsuite@example.org';
         $recipient    = 'testcase@example.org';
         $headers      = array('X-TestSuite' => 1);
         $body         = 'Lorem ipsum';
 
-        $mailId = $this->queue->put(
-            $time_to_send,
-            $id_user,
-            $ip,
-            $sender,
-            $recipient,
-            $headers,
-            $body
-        );
+        $mailId = $this->queue->put($sender, $recipient, $headers, $body, $time_to_send=0, true, $id_user);
 
         $message = $this->queue->container->getMailById($mailId);
-        var_dump($message);
+        $this->assertTrue(($message instanceof Mail_Queue_Body));
+
+        $this->assertEquals($mailId,    $message->getId());
+        $this->assertEquals($id_user,   $message->getIdUser());
+        $this->assertEquals('',         $message->getIp());
+        $this->assertEquals($sender,    $message->getSender());
+        $this->assertEquals($recipient, $message->getRecipient());
+        $this->assertEquals($headers,   $message->getHeaders());
+        $this->assertEquals($body,      $message->getBody());
     }
 }
