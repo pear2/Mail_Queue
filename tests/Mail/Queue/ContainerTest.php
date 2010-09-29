@@ -2,7 +2,7 @@
 /**
  * So painful.
  */
-class Mail_QueueTest extends Mail_QueueAbstract
+class Mail_Queue_ContainerTest extends Mail_QueueAbstract
 {
     public function testPutGet()
     {
@@ -24,8 +24,8 @@ class Mail_QueueTest extends Mail_QueueAbstract
             $body
         );
 
-        $this->assertEquals(1, $mailId); // it's the first email, after all :-)
-        $this->assertTrue((count($this->queue->getQueueCount()) > 0));
+        $message = $this->queue->container->getMailById($mailId);
+        var_dump($message);
     }
 
     /**
