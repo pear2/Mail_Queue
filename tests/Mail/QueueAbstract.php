@@ -5,6 +5,11 @@
 abstract class Mail_QueueAbstract extends PHPUnit_Framework_TestCase
 {
     /**
+     * @var string $db Name of the database file.
+     */
+    protected $db = 'mailqueueTestSuite';
+
+    /**
      * @var string $dsn String to connect to sqlite.
      */
     protected $dsn;
@@ -40,9 +45,9 @@ abstract class Mail_QueueAbstract extends PHPUnit_Framework_TestCase
             $this->skip("MDB2's sqlite driver is necessary to run these tests: pear install MDB2#sqlite");
         }
 
-        $this->dsn = 'sqlite:///' . __DIR__ . '/mailqueueTestSuite?mode=0644';
+        $this->dsn = 'sqlite:///' . __DIR__ . "/{$this->db}?mode=0644";
 
-        $this->setUpDatabase();
+        $this->setUpDatabase($this->dsn);
 
         $container_opts = array(
             'type'       => 'mdb2',
@@ -75,18 +80,26 @@ abstract class Mail_QueueAbstract extends PHPUnit_Framework_TestCase
     {
         $mdb2 = MDB2::connect($this->dsn);
         $mdb2->query("DROP TABLE '{$this->table}'");
+        $mdb2->disconnect();
+
+        $this->queue->container->db->disconnect();
+        unset($this->queue);
+
+        @unlink(__DIR__ . "/{$this->db}");
     }
 
     /**
      * Create the table.
      *
+     * @param string $dsn The DSN.
+     *
      * @return void
      * @see    self::setUp()
      * @see    self::tearDown()
      */
-    protected function setUpDatabase()
+    protected function setUpDatabase($dsn)
     {
-        $mdb2 = MDB2::connect($this->dsn);
+        $mdb2 = MDB2::connect($dsn);
         if (MDB2::isError($mdb2)) {
             $this->fail($mdb2->getDebugInfo());
         }

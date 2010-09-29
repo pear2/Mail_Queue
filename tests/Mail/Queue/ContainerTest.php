@@ -6,6 +6,8 @@ class Mail_Queue_ContainerTest extends Mail_QueueAbstract
 {
     public function testPutGet()
     {
+        $this->markTestIncomplete("Not yet done.");
+
         $time_to_send = 3600;
         $id_user      = 1;
         $ip           = '127.0.0.1';
@@ -26,17 +28,5 @@ class Mail_Queue_ContainerTest extends Mail_QueueAbstract
 
         $message = $this->queue->container->getMailById($mailId);
         var_dump($message);
-    }
-
-    /**
-     * This should return a MDB2_Error
-     */
-    public function testSendMailByIdWithInvalidId()
-    {
-        $randomId = rand(1, 12);
-        $status   = $this->queue->sendMailById($randomId);
-
-        $this->assertContains('no such message', $status->getDebugInfo());
-        $this->assertTrue(($status instanceof Mail_Queue_Error));
     }
 }
