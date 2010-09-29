@@ -27,6 +27,19 @@ abstract class Mail_QueueAbstract extends PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
+        if (!extension_loaded('sqlite')) {
+            $this->skip("You need ext/sqlite to run this test suite.");
+        }
+        include_once "MDB2.php";
+        include_once "MDB2/Driver/sqlite.php";
+
+        if (!class_exists('MDB2')) {
+            $this->skip("MDB2 is necessary to run these tests: pear install MDB2");
+        }
+        if (!class_exists('MDB2_Driver_sqlite')) {
+            $this->skip("MDB2's sqlite driver is necessary to run these tests: pear install MDB2#sqlite");
+        }
+
         $this->dsn = 'sqlite:///' . __DIR__ . '/mailqueueTestSuite?mode=0644';
 
         $this->setUpDatabase();
