@@ -13,7 +13,7 @@ class Mail_Queue_ContainerTest extends Mail_QueueAbstract
         $headers      = array('X-TestSuite' => 1);
         $body         = 'Lorem ipsum';
 
-        $mailId = $this->queue->put($sender, $recipient, $headers, $body, $time_to_send=0, true, $id_user);
+        $mailId = $this->queue->put($sender, $recipient, $headers, $body, 0, true, $id_user);
 
         $message = $this->queue->container->getMailById($mailId);
         $this->assertTrue(($message instanceof Mail_Queue_Body));
@@ -25,5 +25,6 @@ class Mail_Queue_ContainerTest extends Mail_QueueAbstract
         $this->assertEquals($recipient, $message->getRecipient());
         $this->assertEquals($headers,   $message->getHeaders());
         $this->assertEquals($body,      $message->getBody());
+        $this->assertTrue($message->isDeleteAfterSend());
     }
 }
