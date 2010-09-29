@@ -123,6 +123,13 @@ class Mail_Queue_Container
         if (PEAR::isError($err = $this->preload())) {
             return $err;
         }
+        if ($err !== true) {
+            // limit met
+            return new Mail_Queue_Error(MAILQUEUE_ERROR_CANNOT_INITIALIZE,
+                $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
+                'Cannot preload items: limit');
+        }
+
         if (empty($this->queue_data)) {
             return false;
         }
@@ -283,7 +290,9 @@ class Mail_Queue_Container
      * Preload mail to queue.
      * The buffer size can be set in the options.
      *
-     * @return mixed  True on success else Mail_Queue_Error object.
+     * @return mixed True on success, false when the limit is met, else
+     *               Mail_Queue_Error object.
+     *
      * @access private
      */
     function preload()
@@ -293,7 +302,7 @@ class Mail_Queue_Container
         }
 
         if (!$this->limit) {
-            return true;   //limit reached
+            return false; //limit reached
         }
 
         $bkp_limit = $this->limit;
