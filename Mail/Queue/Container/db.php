@@ -90,6 +90,14 @@ class Mail_Queue_Container_db extends Mail_Queue_Container
     var $sequence = null;
 
     // }}}
+    // {{{ __construct()
+
+    function __construct($options)
+    {
+        return $this->Mail_Queue_Container_db($options);
+    }
+
+    // }}}
     // {{{ Mail_Queue_Container_db()
 
     /**

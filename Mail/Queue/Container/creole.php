@@ -91,6 +91,14 @@ class Mail_Queue_Container_creole extends Mail_Queue_Container
     var $constructor_error = null;
 
     // }}}
+    // {{{ __construct()
+
+    function __construct($options)
+    {
+        return $this->Mail_Queue_Container_creole($options);
+    }
+
+    // }}}
     // {{{ Mail_Queue_Container_Creole()
 
     /**
