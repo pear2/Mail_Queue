@@ -389,27 +389,29 @@ class Mail_Queue extends PEAR
                     MAILQUEUE_ERROR_CANNOT_SEND_MAIL, PEAR_ERROR_TRIGGER,
                     E_USER_NOTICE
                 );
-            } else {
-                //take care of callback first, as it may need to retrieve extra data
-                //from the mail_queue table.
-                if ($callback !== null) {
-                    $queued_as = null;
-                    $greeting  = null;
-                    if (isset($this->queued_as)) {
-                        $queued_as = $this->queued_as;
-                    }
-                    if (isset($this->greeting)) {
-                        $greeting = $this->greeting;
-                    }
-                    call_user_func($callback,
-                        array('id' => $mail->getId(),
-                              'queued_as' => $queued_as,
-                              'greeting'  => $greeting));
+                continue;
+            }
+
+            //take care of callback first, as it may need to retrieve extra data
+            //from the mail_queue table.
+            if ($callback !== null) {
+                $queued_as = null;
+                $greeting  = null;
+                if (isset($this->queued_as)) {
+                    $queued_as = $this->queued_as;
                 }
-                if ($mail->isDeleteAfterSend()) {
-                    $status = $this->deleteMail($mail->getId());
-                    var_dump($status);
+                if (isset($this->greeting)) {
+                    $greeting = $this->greeting;
                 }
+                call_user_func($callback,
+                    array('id' => $mail->getId(),
+                          'queued_as' => $queued_as,
+                          'greeting'  => $greeting));
+            }
+
+            // delete email from queue?
+            if ($mail->isDeleteAfterSend()) {
+                $status = $this->deleteMail($mail->getId());
             }
 
             unset($mail);
