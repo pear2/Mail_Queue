@@ -407,10 +407,15 @@ class Mail_Queue_Container_mdb2 extends Mail_Queue_Container
         $query = 'SELECT * FROM ' . $this->mail_table
                 .' WHERE id = '   . (int)$id;
         $row = $this->db->queryRow($query, null, MDB2_FETCHMODE_ASSOC);
-        if (PEAR::isError($row) || !is_array($row)) {
+        if (PEAR::isError($row)) {
             return new Mail_Queue_Error(MAILQUEUE_ERROR_QUERY_FAILED,
                 $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
                 sprintf($this->errorMsg, $query, $this->_getErrorMessage($row)));
+        }
+        if (!is_array($row)) {
+            return new Mail_Queue_Error(MAILQUEUE_ERROR_QUERY_FAILED,
+                $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__,
+                sprintf($this->errorMsg, $query, 'no such message'));
         }
         return new Mail_Queue_Body(
             $row['id'],

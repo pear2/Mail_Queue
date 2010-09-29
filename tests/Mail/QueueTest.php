@@ -9,8 +9,10 @@ class Mail_QueueTest extends Mail_QueueAbstract
      */
     public function testSendMailByIdWithInvalidId()
     {
-        $randomId = rand(0, 12);
+        $randomId = rand(1, 12);
         $status   = $this->queue->sendMailById($randomId);
+
+        $this->assertContains('no such message', $status->getDebugInfo());
         $this->assertTrue(($status instanceof Mail_Queue_Error));
     }
 }
