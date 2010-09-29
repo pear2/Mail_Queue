@@ -167,6 +167,14 @@ class Mail_Queue extends PEAR
     var $_initErrors = array();
 
     // }}}
+    // {{{ __construct
+
+    function __construct($container_options, $mail_options)
+    {
+        return $this->Mail_Queue($container_options, $mail_options);
+    }
+
+    // }}}
     // {{{ Mail_Queue
 
     /**
@@ -213,6 +221,9 @@ class Mail_Queue extends PEAR
             array_push($this->_initErrors, new Mail_Queue_Error(MAILQUEUE_ERROR_UNKNOWN_CONTAINER,
                 $this->pearErrorMode, E_USER_ERROR, __FILE__, __LINE__));
         } else {
+
+            unset($container_options['type']);
+
             $this->container = new $container_class($container_options);
             if(PEAR::isError($this->container)) {
                 array_push($this->_initErrors, new Mail_Queue_Error(MAILQUEUE_ERROR_CANNOT_INITIALIZE,
