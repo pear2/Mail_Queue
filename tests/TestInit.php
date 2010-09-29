@@ -7,6 +7,8 @@ if (version_compare(PHP_VERSION, '5.3.0', '<')) {
     exit(1);
 }
 
+require_once 'MDB2.php';
+
 class TestInit
 {
     public static function autoload($className)

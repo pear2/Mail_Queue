@@ -35,6 +35,7 @@ abstract class Mail_QueueAbstract extends PHPUnit_Framework_TestCase
         if (!extension_loaded('sqlite')) {
             $this->skip("You need ext/sqlite to run this test suite.");
         }
+/*
         include_once "MDB2.php";
         include_once "MDB2/Driver/sqlite.php";
 
@@ -44,7 +45,7 @@ abstract class Mail_QueueAbstract extends PHPUnit_Framework_TestCase
         if (!class_exists('MDB2_Driver_sqlite')) {
             $this->skip("MDB2's sqlite driver is necessary to run these tests: pear install MDB2#sqlite");
         }
-
+*/
         $this->dsn = 'sqlite:///' . __DIR__ . "/{$this->db}?mode=0644";
 
         $this->setUpDatabase($this->dsn);
