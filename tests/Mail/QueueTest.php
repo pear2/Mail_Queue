@@ -6,6 +6,8 @@ class Mail_QueueTest extends Mail_QueueAbstract
 {
     public function testPutGet()
     {
+        $this->markTestIncomplete("Not yet done.");
+
         $time_to_send = 3600;
         $id_user      = 1;
         $ip           = '127.0.0.1';
