@@ -256,7 +256,6 @@ class Mail_Queue extends PEAR
         return $obj;
     }
     // }}}
-
     // {{{ _Mail_Queue()
 
     /**
@@ -268,6 +267,14 @@ class Mail_Queue extends PEAR
     function _Mail_Queue()
     {
         unset($this);
+    }
+
+    // }}}
+    // {{{ __destruct
+
+    function __destruct()
+    {
+        $this->_Mail_Queue();
     }
 
     // }}}
@@ -400,7 +407,8 @@ class Mail_Queue extends PEAR
                               'greeting'  => $greeting));
                 }
                 if ($mail->isDeleteAfterSend()) {
-                    $this->deleteMail($mail->getId());
+                    $status = $this->deleteMail($mail->getId());
+                    var_dump($status);
                 }
             }
 
