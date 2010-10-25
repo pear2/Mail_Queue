@@ -31,8 +31,8 @@ The Mail_Queue class puts mails in a temporary container, waiting to be fed to t
   <email>bate@php.net</email>
   <active>no</active>
  </lead>
- <date>2010-10-25</date>
- <time>21:38:12</time>
+ <date>2010-10-26</date>
+ <time>00:15:51</time>
  <version>
   <release>1.2.4</release>
   <api>1.2.2</api>
@@ -43,19 +43,10 @@ The Mail_Queue class puts mails in a temporary container, waiting to be fed to t
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
  <notes>
-* bugfix: #16609 (notice and &quot;call to undefined function&quot;)
-* bugfix: possible notice/warning about undefined class vars greeting/queued_as in Mail_Queue (patch by Ken Guest)
-* bugfix: #17521 (missing return in getQueueCount) (patch by killermonk)
-* Bug #16580 
-* Bug #16995 	mail stops sending from queue intermiddently
-* Bug #16997 	bad error checking
-* Doc Bug #17316 	documentation re callbacks
-Doc Bug #17598 	Wrong return description for sendMailById()
-Bug #17898 	sendMailById() causes Fatal Error on nonexistant id
-QA release
+Bug #17991 	Package installed in wrong directory
  </notes>
  <contents>
-  <dir baseinstalldir="Mail" name="/">
+  <dir baseinstalldir="/" name="/">
    <file baseinstalldir="Mail" md5sum="8c598fc6e30f201865220c539e46a78f" name="docs/add_example.php" role="doc" />
    <file baseinstalldir="Mail" md5sum="15b03e126909147ff27d9050daaf78de" name="docs/base.php" role="doc" />
    <file baseinstalldir="Mail" md5sum="efabd375ac99c09662e53cc07f891dac" name="docs/mdb_mail_queue_schema.xml" role="doc" />
@@ -322,19 +313,10 @@ queue data from a PEAR_MDB database.
     <release>stable</release>
     <api>stable</api>
    </stability>
-   <date>2010-10-25</date>
+   <date>2010-10-26</date>
    <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
    <notes>
-* bugfix: #16609 (notice and &quot;call to undefined function&quot;)
-* bugfix: possible notice/warning about undefined class vars greeting/queued_as in Mail_Queue (patch by Ken Guest)
-* bugfix: #17521 (missing return in getQueueCount) (patch by killermonk)
-* Bug #16580 
-* Bug #16995 	mail stops sending from queue intermiddently
-* Bug #16997 	bad error checking
-* Doc Bug #17316 	documentation re callbacks
-Doc Bug #17598 	Wrong return description for sendMailById()
-Bug #17898 	sendMailById() causes Fatal Error on nonexistant id
-QA release
+Bug #17991 	Package installed in wrong directory
    </notes>
   </release>
  </changelog>
