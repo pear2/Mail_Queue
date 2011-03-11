@@ -376,7 +376,7 @@ class Mail_Queue extends PEAR
         }
 
         $this->container->setOption($limit, $offset, $try);
-        while ($mail = $this->get() && !Pear::isError($mail)) {
+        while ($mail = $this->get() && !PEAR::isError($mail)) {
             $this->container->countSend($mail);
 
             $result = $this->sendMail($mail, true);
@@ -421,6 +421,12 @@ class Mail_Queue extends PEAR
                 sleep($this->mail_options['delay']);
             }
         }
+
+        // most likely from breaking the loop
+        if (isset($mail) && PEAR:isError($mail)) {
+            return $mail;
+        }
+
         if (!empty($this->mail_options['persist']) && is_object($this->send_mail)) {
             $this->send_mail->disconnect();
         }
