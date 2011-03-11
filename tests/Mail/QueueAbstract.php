@@ -71,7 +71,7 @@ abstract class Mail_QueueAbstract extends PHPUnit_Framework_TestCase
         $mdb2->query("DROP TABLE '{$this->table}'");
         $mdb2->disconnect();
 
-        $this->queue->container->db->disconnect();
+        //$this->queue->container->db->disconnect();
         unset($this->queue);
 
         @unlink(__DIR__ . "/{$this->db}");
