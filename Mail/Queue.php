@@ -376,7 +376,7 @@ class Mail_Queue extends PEAR
         }
 
         $this->container->setOption($limit, $offset, $try);
-        while ($mail = $this->get() && !PEAR::isError($mail)) {
+        while (($mail = $this->get()) && !PEAR::isError($mail)) {
             $this->container->countSend($mail);
 
             $result = $this->sendMail($mail, true);
