@@ -423,7 +423,7 @@ class Mail_Queue extends PEAR
         }
 
         // most likely from breaking the loop
-        if (isset($mail) && PEAR:isError($mail)) {
+        if (isset($mail) && PEAR::isError($mail)) {
             return $mail;
         }
 
