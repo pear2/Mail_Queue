@@ -107,7 +107,9 @@ abstract class Mail_QueueAbstract extends PHPUnit_Framework_TestCase
                 'type' => 'timestamp',
             ),
             'time_to_send' => array(
-                'type' => 'timestamp',
+                'type'    => 'timestamp',
+                'notnull' => 1,
+                'default' => 0,
             ),
             'sent_time' => array(
                 'type' => 'timestamp',
@@ -133,12 +135,16 @@ abstract class Mail_QueueAbstract extends PHPUnit_Framework_TestCase
                 'type' => 'text',
             ),
             'try_sent' => array(
-                'type'   => 'integer',
-                'length' => 2,
+                'type'    => 'integer',
+                'length'  => 2,
+                'notnull' => 1,
+                'default' => 0,
             ),
             'delete_after_send' => array(
-                'type'   => 'integer',
-                'length' => '1',
+                'type'    => 'integer',
+                'length'  => '1',
+                'notnull' => 1,
+                'default' => 0,
             ),
         );
 
