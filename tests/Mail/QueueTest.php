@@ -39,7 +39,7 @@ class Mail_QueueTest extends Mail_QueueAbstract
      */
     public function testSendMailsInQueue()
     {
-        $this->markTestIncomplete("Doesn't send yet, need to doublecheck my table definition.");
+        //$this->markTestIncomplete("Doesn't send yet, need to doublecheck my table definition.");
 
         $id_user      = 1;
         $sender       = 'testsuite@example.org';
@@ -48,6 +48,10 @@ class Mail_QueueTest extends Mail_QueueAbstract
         $body         = 'Lorem ipsum';
 
         $mailId1 = $this->queue->put($sender, $recipient, $headers, $body);
+        if (PEAR::isError($mailId1)) {
+            $this->fail("Queueing first mail failed: {$mailId1->getMessage()}");
+            return;
+        }
 
         $id_user      = 1;
         $sender       = 'testsuite@example.org';
@@ -56,14 +60,29 @@ class Mail_QueueTest extends Mail_QueueAbstract
         $body         = 'Lorem ipsum sit dolor';
 
         $mailId2 = $this->queue->put($sender, $recipient, $headers, $body);
+        if (PEAR::isError($mailId2)) {
+            $this->fail("Queueing first mail failed: {$mailId2->getMessage()}");
+            return;
+        }
 
-        $this->assertEquals(2, $this->queue->getQueueCount());
+        $queueCount = $this->queue->getQueueCount();
+        if ($this->queue->hasErrors()) {
+            $fail = '';
+            foreach ($this->queue->getErrors() as $error) {
+                $fail .= $error->getMessage() . ", ";
+            }
+            $this->fail("Errors from getQueueCount: {$fail}");
+            return;
+        }
+        $this->assertEquals(2, $queueCount, "Failed to count 2 messages.");
 
         $status = $this->queue->sendMailsInQueue();
         if (Pear::isError($status)) {
             $this->fail("Error sending emails: {$status->getMessage()}.");
+            return;
         }
+
         $this->assertTrue($status);
-        $this->assertEquals(0, $this->queue->getQueueCount());
+        $this->assertEquals(0, $this->queue->getQueueCount(), "Mails did not get removed?");
     }
 }
