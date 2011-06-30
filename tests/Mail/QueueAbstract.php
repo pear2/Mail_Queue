@@ -34,6 +34,7 @@ abstract class Mail_QueueAbstract extends PHPUnit_Framework_TestCase
     {
         if (!extension_loaded('sqlite')) {
             $this->markTestSkipped("You need ext/sqlite to run this test suite.");
+            return;
         }
 
         $this->dsn = 'sqlite:///' . __DIR__ . "/{$this->db}?mode=0644";
@@ -46,6 +47,9 @@ abstract class Mail_QueueAbstract extends PHPUnit_Framework_TestCase
             'mail_table' => $this->table,
         );
 
+        /**
+         * @see Mail_mock
+         */
         $mail_opts = array('driver' => 'mock');
 
         $this->queue = new Mail_Queue($container_opts, $mail_opts);
@@ -74,7 +78,7 @@ abstract class Mail_QueueAbstract extends PHPUnit_Framework_TestCase
         //$this->queue->container->db->disconnect();
         unset($this->queue);
 
-        @unlink(__DIR__ . "/{$this->db}");
+        unlink(__DIR__ . "/{$this->db}");
     }
 
     /**
@@ -89,40 +93,104 @@ abstract class Mail_QueueAbstract extends PHPUnit_Framework_TestCase
     protected function setUpDatabase($dsn)
     {
         $mdb2 = MDB2::connect($dsn);
-        if (MDB2::isError($mdb2)) {
-            $this->fail($mdb2->getDebugInfo());
-        }
+        $this->handlePearError($mdb2, "DB connection init");
 
-        /**
-         * @desc An associative array with col/type and index.
-         */
+        $status = $mdb2->loadModule('Manager');
+        $this->handlePearError($status, "Loading manager module");
+
         $cols = array(
-            'id INTEGER'                => 'PRIMARY KEY',
-            'create_time DATETIME'      => '',
-            'time_to_send DATETIME'     => 'KEY',
-            'sent_time DATETIME'        => '',
-            'id_user INTEGER'           => 'KEY',
-            'ip VARCHAR'                => '',
-            'sender VARCHAR'            => '',
-            'recipient TEXT'            => '',
-            'headers TEXT'              => '',
-            'body TEXT'                 => '',
-            'try_sent INTEGER'          => '',
-            'delete_after_send INTEGER' => '',
+            'id' => array(
+                 'type'   => 'integer',
+                 'length' => 2,
+            ),
+            'create_time' => array(
+                'type' => 'timestamp',
+            ),
+            'time_to_send' => array(
+                'type' => 'timestamp',
+            ),
+            'sent_time' => array(
+                'type' => 'timestamp',
+            ),
+            'id_user' => array(
+                'type' => 'integer',
+            ),
+            'ip' => array(
+                'type'   => 'text',
+                'length' => '15',
+            ),
+            'sender' => array(
+                'type'   => 'text',
+                'length' => 100,
+            ),
+            'recipient' => array(
+                'type' => 'text',
+            ),
+            'headers' => array(
+                'type' => 'text',
+            ),
+            'body' => array(
+                'type' => 'text',
+            ),
+            'try_sent' => array(
+                'type'   => 'integer',
+                'length' => 2,
+            ),
+            'delete_after_send' => array(
+                'type'   => 'integer',
+                'length' => '1',
+            ),
         );
 
-        $sql  = "CREATE TABLE '{$this->table}' (";
-        foreach ($cols as $col => $idx) {
-            $sql .= trim("{$col} {$idx}");
-            $sql .= ',';
-        }
-        $sql = substr($sql, 0, -1) . ");";
+        $status = $mdb2->manager->createTable($this->table, $cols);
+        $this->handlePearError($status, "Create table");
 
-        $status = $mdb2->exec($sql);
-        if (MDB2::isError($status)) {
-            $this->fail($status->getDebugInfo());
-        }
+        $status = $mdb2->manager->createConstraint(
+            $this->table,
+            'idx',
+            array(
+                'primary' => 0,
+                'fields'  => array(
+                    'id' => array(),
+                ),
+            )
+        );
+        $this->handlePearError($status, "Create primary key");
 
+        $status = $mdb2->manager->createIndex(
+            $this->table,
+            't2s',
+            array('fields' => array(
+                'time_to_send' => array())
+            )
+        );
+        $this->handlePearError($status, "Index on time_to_send");
+
+        $status = $mdb2->manager->createIndex(
+            $this->table,
+            'idu',
+            array('fields' => array(
+                'id_user' => array())
+            )
+        );
+        $this->handlePearError($status, 'Index on id_user');
         $mdb2->disconnect();
+    }
+
+    /**
+     * A small wrapper to handle PEAR_Error, possibly.
+     *
+     * @param mixed  $err    PEAR_Error, or MDB2_OK
+     * @param string $action Whatever we were doing to make {@link self::fail()}
+     *                       more descriptive.
+     *
+     * @return void
+     */
+    protected function handlePearError($err, $action)
+    {
+        if (PEAR::isError($err)) {
+            $this->fail("{$action}: {$status->getDebugInfo()}");
+            return;
+        }
     }
 }
