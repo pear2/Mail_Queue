@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package packagerversion="1.9.1" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+<package packagerversion="1.9.3" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
  <name>Mail_Queue</name>
  <channel>pear.php.net</channel>
  <summary>Class for put mails in queue and send them later in background.</summary>
@@ -10,7 +10,7 @@ The Mail_Queue class puts mails in a temporary container, waiting to be fed to t
  <lead>
   <name>Lorenzo Alberton</name>
   <user>quipo</user>
-  <email>quipo@php.net</email>
+  <email>l.alberton@quipo.it</email>
   <active>yes</active>
  </lead>
  <lead>
@@ -22,7 +22,7 @@ The Mail_Queue class puts mails in a temporary container, waiting to be fed to t
  <lead>
   <name>Radek Maciaszek</name>
   <user>chief</user>
-  <email>chief@php.net</email>
+  <email>radek.maciaszek@gmail.com</email>
   <active>no</active>
  </lead>
  <lead>
@@ -31,10 +31,10 @@ The Mail_Queue class puts mails in a temporary container, waiting to be fed to t
   <email>bate@php.net</email>
   <active>no</active>
  </lead>
- <date>2010-10-26</date>
- <time>01:14:16</time>
+ <date>2011-06-30</date>
+ <time>15:24:00</time>
  <version>
-  <release>1.2.6</release>
+  <release>1.2.7</release>
   <api>1.2.2</api>
  </version>
  <stability>
@@ -43,32 +43,47 @@ The Mail_Queue class puts mails in a temporary container, waiting to be fed to t
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
  <notes>
-Bug #17993 	Package installed in wrong directory
+* Implement Feature #18256: Addition to Mail Queue Tutorial [quipo]
+ * Implement Feature #18038: Reaching the set limit should not generate an error [till]
  </notes>
  <contents>
   <dir baseinstalldir="/" name="/">
-   <file baseinstalldir="/" md5sum="8c598fc6e30f201865220c539e46a78f" name="docs/add_example.php" role="doc" />
-   <file baseinstalldir="/" md5sum="15b03e126909147ff27d9050daaf78de" name="docs/base.php" role="doc" />
-   <file baseinstalldir="/" md5sum="efabd375ac99c09662e53cc07f891dac" name="docs/mdb_mail_queue_schema.xml" role="doc" />
-   <file baseinstalldir="/" md5sum="e5a3a2a3864ba31eae795f1fe19168e8" name="docs/mysql.sql" role="doc" />
-   <file baseinstalldir="/" md5sum="12aa942db92d3de26baf9e3014cff456" name="docs/pgsql.sql" role="doc" />
-   <file baseinstalldir="/" md5sum="ba157529073f10c4ca3ae1448f4dfb68" name="docs/README" role="doc" />
-   <file baseinstalldir="/" md5sum="1e6d4a0c63baa9928694c79e52e05f95" name="docs/send_example.php" role="doc" />
-   <file baseinstalldir="/" md5sum="81368437d669d13c0b827e4b0e01413a" name="docs/TODO" role="doc" />
-   <file baseinstalldir="/" md5sum="92726cf03c243915de5572511f2b0be3" name="Mail/Queue.php" role="php" />
-   <file baseinstalldir="/" md5sum="450cf0d5980d2920de4b95fe583f0b4e" name="Mail/Queue/Body.php" role="php" />
-   <file baseinstalldir="/" md5sum="c43653c01e5695916a9c309a44a85ad8" name="Mail/Queue/Container.php" role="php" />
-   <file baseinstalldir="/" md5sum="d7a68febd3c392172616f0740862650f" name="Mail/Queue/Error.php" role="php" />
-   <file baseinstalldir="/" md5sum="4460ea10ccbfc2d76ff17dbb098b4667" name="Mail/Queue/Container/creole.php" role="php" />
-   <file baseinstalldir="/" md5sum="e1a50e20df4b887cd3d6f0a988bdcb11" name="Mail/Queue/Container/db.php" role="php" />
-   <file baseinstalldir="/" md5sum="103d9348b67ac1f24b9ab9375b16df4d" name="Mail/Queue/Container/mdb.php" role="php" />
-   <file baseinstalldir="/" md5sum="a6e7c792b5f3274811d44a63978ab383" name="Mail/Queue/Container/mdb2.php" role="php" />
-   <file baseinstalldir="/" md5sum="43ab41be9ded804f55c10628eb46756e" name="tests/phpunit.xml" role="test" />
-   <file baseinstalldir="/" md5sum="4947b6145cfb9e14441d1bb89668bf62" name="tests/TestInit.php" role="test" />
-   <file baseinstalldir="/" md5sum="4a15e494a7e3c021b05d7041718d5817" name="tests/Mail/QueueAbstract.php" role="test" />
-   <file baseinstalldir="/" md5sum="f3a9c919616fa5ad2f2056ec89c2f137" name="tests/Mail/QueueTest.php" role="test" />
-   <file baseinstalldir="/" md5sum="57857f9ef7b987896a4ad38078431cb0" name="tests/Mail/Queue/ContainerTest.php" role="test" />
-  </dir>
+   <dir name="docs">
+    <file baseinstalldir="/" name="add_example.php" role="doc" />
+    <file baseinstalldir="/" name="base.php" role="doc" />
+    <file baseinstalldir="/" name="mdb_mail_queue_schema.xml" role="doc" />
+    <file baseinstalldir="/" name="mysql.sql" role="doc" />
+    <file baseinstalldir="/" name="pgsql.sql" role="doc" />
+    <file baseinstalldir="/" name="README" role="doc" />
+    <file baseinstalldir="/" name="send_example.php" role="doc" />
+    <file baseinstalldir="/" name="TODO" role="doc" />
+   </dir> <!-- /docs -->
+   <dir name="Mail">
+    <dir name="Queue">
+     <dir name="Container">
+      <file baseinstalldir="/" name="creole.php" role="php" />
+      <file baseinstalldir="/" name="db.php" role="php" />
+      <file baseinstalldir="/" name="mdb.php" role="php" />
+      <file baseinstalldir="/" name="mdb2.php" role="php" />
+     </dir> <!-- /Mail/Queue/Container -->
+     <file baseinstalldir="/" name="Body.php" role="php" />
+     <file baseinstalldir="/" name="Container.php" role="php" />
+     <file baseinstalldir="/" name="Error.php" role="php" />
+    </dir> <!-- /Mail/Queue -->
+    <file baseinstalldir="/" name="Queue.php" role="php" />
+   </dir> <!-- /Mail -->
+   <dir name="tests">
+    <dir name="Mail">
+     <dir name="Queue">
+      <file baseinstalldir="/" name="ContainerTest.php" role="test" />
+     </dir> <!-- /tests/Mail/Queue -->
+     <file baseinstalldir="/" name="QueueAbstract.php" role="test" />
+     <file baseinstalldir="/" name="QueueTest.php" role="test" />
+    </dir> <!-- /tests/Mail -->
+    <file baseinstalldir="/" name="phpunit.xml" role="test" />
+    <file baseinstalldir="/" name="TestInit.php" role="test" />
+   </dir> <!-- /tests -->
+  </dir> <!-- / -->
  </contents>
  <dependencies>
   <required>
