@@ -225,9 +225,12 @@ class Mail_Queue_Container_mdb2 extends Mail_Queue_Container
             return $res;
         }
         $query = 'SELECT * FROM ' . $this->mail_table
-                .' WHERE sent_time IS NULL AND try_sent < '. $this->try
-                .' AND time_to_send <= '.$this->db->quote(date('Y-m-d H:i:s'), 'timestamp')
-                .' ORDER BY time_to_send';
+                . ' WHERE'
+                . ' sent_time is NULL AND'
+                . ' try_sent < '. $this->db->quote($this->try, 'integer') . ' AND'
+                . ' time_to_send <= '.$this->db->quote(date('Y-m-d H:i:s'), 'timestamp')
+                . ' ORDER BY time_to_send';
+
         $this->db->setLimit($this->limit, $this->offset);
         $res = $this->db->query($query);
         if (PEAR::isError($res)) {
@@ -238,6 +241,7 @@ class Mail_Queue_Container_mdb2 extends Mail_Queue_Container
 
         $this->_last_item = 0;
         $this->queue_data = array(); //reset buffer
+
         while ($row = $res->fetchRow(MDB2_FETCHMODE_ASSOC)) {
             //var_dump($row['headers']);
             if (!is_array($row)) {
