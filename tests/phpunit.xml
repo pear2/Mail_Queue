@@ -1,4 +1,4 @@
-<phpunit bootstrap="./TestInit.php" colors="true">
+<phpunit bootstrap="./TestInit.php" colors="true" verbose="true">
     <testsuite name="Mail_Queue Test Suite">
         <directory>./Mail</directory>
     </testsuite>

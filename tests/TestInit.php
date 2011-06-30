@@ -9,7 +9,7 @@ if (version_compare(PHP_VERSION, '5.3.0', '<')) {
 
 require_once 'MDB2.php';
 
-class TestInit
+class MailQueueTestInit
 {
     public static function autoload($className)
     {
@@ -17,4 +17,4 @@ class TestInit
         return include $file;
     }
 }
-spl_autoload_register(array('TestInit', 'autoload'));
+spl_autoload_register(array('MailQueueTestInit', 'autoload'));
