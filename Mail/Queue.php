@@ -376,7 +376,14 @@ class Mail_Queue extends PEAR
         }
 
         $this->container->setOption($limit, $offset, $try);
-        while (($mail = $this->get()) && !PEAR::isError($mail)) {
+        while ($mail = $this->get()) {
+            if (PEAR::isError($mail)) {
+                array_push(
+                    $this->_initErrors,
+                    $mail
+                );
+                break;
+            }
             $this->container->countSend($mail);
 
             $result = $this->sendMail($mail, true);
@@ -412,6 +419,12 @@ class Mail_Queue extends PEAR
             // delete email from queue?
             if ($mail->isDeleteAfterSend()) {
                 $status = $this->deleteMail($mail->getId());
+                if (Pear::isError($status)) {
+                    array_push(
+                        $this->_initErrors,
+                        $status
+                    );
+                }
             }
 
             unset($mail);
