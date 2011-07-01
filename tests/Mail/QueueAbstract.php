@@ -195,7 +195,7 @@ abstract class Mail_QueueAbstract extends PHPUnit_Framework_TestCase
     protected function handlePearError($err, $action)
     {
         if (PEAR::isError($err)) {
-            $this->fail("{$action}: {$status->getDebugInfo()}");
+            $this->fail("{$action}: {$err->getDebugInfo()}");
             return;
         }
     }
