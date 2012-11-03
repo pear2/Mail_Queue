@@ -20,7 +20,7 @@ class Mail_Queue_ContainerTest extends Mail_QueueAbstract
         }
 
         $message = $this->queue->container->getMailById($mailId);
-        $this->assertTrue(($message instanceof Mail_Queue_Body));
+        $this->assertTrue(($message instanceof PEAR2\Mail\Queue\Body));
 
         $this->assertEquals($mailId,    $message->getId());
         $this->assertEquals($id_user,   $message->getIdUser());

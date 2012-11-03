@@ -36,7 +36,7 @@
  * | POSSIBILITY OF SUCH DAMAGE.                                          |
  * +----------------------------------------------------------------------+
  *
- * PHP Version 4 and 5
+ * PHP Version 5.3
  *
  * @category Mail
  * @package  Mail_Queue
@@ -47,8 +47,12 @@
  * @link     http://pear.php.net/package/Mail_Queue
  */
 
+namespace PEAR2\Mail\Queue;
+
+use PEAR2\Mail\Queue;
+
 /**
- * Mail_Queue_Body contains mail data
+ * Body contains mail data
  *
  * @category Mail
  * @package  Mail_Queue
@@ -58,7 +62,8 @@
  * @version  Release: @package_version@
  * @link     http://pear.php.net/package/Mail_Queue
 */
-class Mail_Queue_Body {
+class Body
+{
 
     /**
      * Ident
@@ -95,7 +100,7 @@ class Mail_Queue_Body {
      *
      * @var string
      */
-    var $id_user = Mail_Queue::SYSTEM;
+    var $id_user = Queue::SYSTEM;
 
     /**
      * use IP
@@ -147,7 +152,7 @@ class Mail_Queue_Body {
     var $delete_after_send = true;
 
     /**
-     * Mail_Queue_Body::Mail_Queue_Body() constructor
+     * constructor
      *
      * @param integer $id Mail ident
      * @param string $create_time  Create time
@@ -165,7 +170,7 @@ class Mail_Queue_Body {
      *
      * @access public
      */
-    function Mail_Queue_Body($id, $create_time, $time_to_send, $sent_time, $id_user,
+    public function __construct($id, $create_time, $time_to_send, $sent_time, $id_user,
                        $ip, $sender, $recipient, $headers, $body,
                        $delete_after_send=true, $try_sent=0)
     {
@@ -184,7 +189,7 @@ class Mail_Queue_Body {
     }
 
     /**
-     * Mail_Queue_Body::getId()
+     * getId()
      *
      * @return integer  Sender id
      * @access public
@@ -197,7 +202,7 @@ class Mail_Queue_Body {
     /**
      * Return mail create time.
      *
-     * Mail_Queue_Body::getCreateTime()
+     * getCreateTime()
      *
      * @return string  Mail create time
      * @access public
@@ -210,7 +215,7 @@ class Mail_Queue_Body {
     /**
      * Return time to send mail.
      *
-     * Mail_Queue_Body::getTimeToSend()
+     * getTimeToSend()
      *
      * @return string  Time to send
      * @access public
@@ -223,7 +228,7 @@ class Mail_Queue_Body {
     /**
      * Return mail sent time (if sended) else false.
      *
-     * Mail_Queue_Body::getSentTime()
+     * getSentTime()
      *
      * @return mixed  String sent time or false if mail not was sent yet
      * @access public
@@ -236,7 +241,7 @@ class Mail_Queue_Body {
     /**
      * Return sender id.
      *
-     * Mail_Queue_Body::getIdUser()
+     * getIdUser()
      *
      * @return integer  Sender id
      * @access public
@@ -249,7 +254,7 @@ class Mail_Queue_Body {
     /**
      * Return sender ip.
      *
-     * Mail_Queue_Body::getIp()
+     * getIp()
      *
      * @return string  IP
      * @access public
@@ -262,7 +267,7 @@ class Mail_Queue_Body {
     /**
      * Return sender e-mail.
      *
-     * Mail_Queue_Body::getSender()
+     * getSender()
      *
      * @return string E-mail
      * @access public
@@ -275,7 +280,7 @@ class Mail_Queue_Body {
     /**
      * Return recipient e-mail.
      *
-     * Mail_Queue_Body::getRecipient()
+     * getRecipient()
      *
      * @return string|array E-mail(s)
      * @access public
@@ -295,7 +300,7 @@ class Mail_Queue_Body {
     /**
      * Return mail headers (in RFC)
      *
-     * Mail_Queue_Body::getHeaders()
+     * getHeaders()
      *
      * @return mixed array|string headers
      * @access public
@@ -315,7 +320,7 @@ class Mail_Queue_Body {
     /**
      * Return mail body (in RFC)
      *
-     * Mail_Queue_Body::getBody()
+     * getBody()
      *
      * @return string  Body
      * @access public
@@ -328,7 +333,7 @@ class Mail_Queue_Body {
     /**
      * Return how many times mail was try to sent.
      *
-     * Mail_Queue_Body::getTrySent()
+     * getTrySent()
      *
      * @return integer  How many times mail was sent
      * @access public
@@ -354,7 +359,7 @@ class Mail_Queue_Body {
     /**
      * Increase and return try_sent
      *
-     * Mail_Queue_Body::_try()
+     * _try()
      *
      * @return integer  How many times mail was sent
      * @access public
@@ -364,4 +369,4 @@ class Mail_Queue_Body {
         return ++$this->try_sent;
     }
 }
-?>
+

@@ -1,4 +1,7 @@
 <?php
+
+use PEAR2\Mail\Queue;
+
 /**
  * Base class for all tests.
  */
@@ -55,7 +58,7 @@ abstract class Mail_QueueAbstract extends PHPUnit_Framework_TestCase
          */
         $mail_opts = array('driver' => 'mock');
 
-        $this->queue = new Mail_Queue($container_opts, $mail_opts);
+        $this->queue = new Queue($container_opts, $mail_opts);
         if ($this->queue->hasErrors()) {
             $errors = $this->queue->getErrors();
             $fail   = "The following errors occurred:\n";

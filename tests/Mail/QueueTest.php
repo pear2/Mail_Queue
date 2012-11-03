@@ -26,7 +26,7 @@ class Mail_QueueTest extends Mail_QueueAbstract
     /**
      * This should return a MDB2_Error
      *
-     * @expectedException Mail_Queue_Exception
+     * @expectedException PEAR2\Mail\Queue\Exception
      */
     public function testSendMailByIdWithInvalidId()
     {
@@ -41,8 +41,6 @@ class Mail_QueueTest extends Mail_QueueAbstract
      */
     public function testSendMailsInQueue()
     {
-        //$this->markTestIncomplete("Doesn't send yet, need to doublecheck my table definition.");
-
         $id_user      = 1;
         $sender       = 'testsuite@example.org';
         $recipient    = 'testcase@example.org';

@@ -47,10 +47,9 @@
  * @link     http://pear.php.net/package/Mail_Queue
  */
 
-/**
- * Mail_Queue_Body
- */
-require_once 'Mail/Queue/Body.php';
+namespace PEAR2\Mail\Queue;
+
+use PEAR2\Mail\Queue;
 
 /**
  * Mail_Queue_Container - base class for MTA queue.
@@ -64,7 +63,7 @@ require_once 'Mail/Queue/Body.php';
  * @version  Release: @package_version@
  * @link     http://pear.php.net/package/Mail_Queue
  */
-abstract class Mail_Queue_Container
+abstract class Container
 {
     // {{{ class vars
 
@@ -106,17 +105,17 @@ abstract class Mail_Queue_Container
     /**
      * Get next mail from queue. When exclude first time preload all queue
      *
-     * @return Mail_Queue_Body
-     * @throws Mail_Queue_Exception
+     * @return Body
+     * @throws Exception
      */
     public function get()
     {
         $err = $this->preload();
         if ($err !== true) {
             // limit met
-            throw new Mail_Queue_Exception(
+            throw new Exception(
                 'Cannot preload items: limit',
-                Mail_Queue::ERROR_CANNOT_INITIALIZE
+                Queue::ERROR_CANNOT_INITIALIZE
             );
         }
 
@@ -125,9 +124,9 @@ abstract class Mail_Queue_Container
         }
         if (!isset($this->queue_data[$this->_current_item])) {
             //unlikely...
-            throw new Mail_Queue_Exception(
+            throw new Exception(
                 'No item: '.$this->_current_item.' in queue!',
-                Mail_Queue::ERROR_CANNOT_INITIALIZE
+                Queue::ERROR_CANNOT_INITIALIZE
             );
         }
 
@@ -191,8 +190,8 @@ abstract class Mail_Queue_Container
      *
      * @access public
      **/
-    function setOption($limit = Mail_Queue::ALL, $offset = Mail_Queue::START,
-                        $try = Mail_Queue::RETRY, $force_preload = false)
+    function setOption($limit = Queue::ALL, $offset = Queue::START,
+                        $try = Queue::RETRY, $force_preload = false)
     {
         $this->limit         = $limit;
         $this->offset        = $offset;
@@ -206,10 +205,11 @@ abstract class Mail_Queue_Container
     /**
      * Check how many times mail was sent.
      *
-     * @param object   MailBody
+     * @param Body $mail object
+     *
      * @return mixed  Integer or false if error.
      */
-    abstract function countSend(Mail_Queue_Body $mail);
+    abstract function countSend(Body $mail);
 
     // }}}
     // {{{ setAsSent()
@@ -217,11 +217,11 @@ abstract class Mail_Queue_Container
     /**
      * Set mail as already sent.
      *
-     * @param object MailBody object
+     * @param Body $mail object
+     *
      * @return bool
-     * @access public
      */
-    abstract function setAsSent(Mail_Queue_Body $mail);
+    abstract function setAsSent(Body $mail);
 
     // }}}
     // {{{ getMailById()
@@ -256,7 +256,7 @@ abstract class Mail_Queue_Container
      * The buffer size can be set in the options.
      *
      * @return boolean True on success, false when the limit is met
-     * @throws Mail_Queue_Exception
+     * @throws Exception
      */
     protected function preload()
     {
@@ -271,7 +271,7 @@ abstract class Mail_Queue_Container
         $bkp_limit = $this->limit;
 
         //set buffer size
-        if ($bkp_limit == Mail_Queue::ALL) {
+        if ($bkp_limit == Queue::ALL) {
             $this->limit = $this->buffer_size;
         } else {
             $this->limit = min($this->buffer_size, $this->limit);
@@ -280,8 +280,8 @@ abstract class Mail_Queue_Container
         $this->_preload();
 
         //restore limit
-        if ($bkp_limit == Mail_Queue::ALL) {
-            $this->limit = Mail_Queue::ALL;
+        if ($bkp_limit == Queue::ALL) {
+            $this->limit = Queue::ALL;
         } else {
             $this->limit = $bkp_limit - count($this->queue_data);
         }
