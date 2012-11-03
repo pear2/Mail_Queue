@@ -282,8 +282,6 @@ class Queue
    /**
      * Send mails fom queue.
      *
-     * PEAR2\Mail\Queue::sendMailsInQueue()
-     *
      * @param integer $limit     Optional - max limit mails send.
      *                           This is the max number of emails send by
      *                           this function.
@@ -296,9 +294,9 @@ class Queue
      *
      * @return mixed  True on success else PEAR2\Mail\Queue::ERROR object.
      */
-    function sendMailsInQueue($limit = self::ALL, $offset = self::START,
-                              $try = self::RETRY, $callback = null)
-    {
+    public function sendMailsInQueue(
+        $limit = self::ALL, $offset = self::START, $try = self::RETRY, $callback = null
+    ) {
         if (!is_int($limit) || !is_int($offset) || !is_int($try)) {
             throw new Exception(
                 "sendMailsInQueue(): limit, offset and try must be integer.",
@@ -317,7 +315,6 @@ class Queue
 
         $this->container->setOption($limit, $offset, $try);
         while ($mail = $this->get()) {
-
             if (false === $mail) {
                 break;
             }
