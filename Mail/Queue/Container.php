@@ -172,17 +172,8 @@ abstract class Mail_Queue_Container
      * @return bool True on success
      * @access public
      **/
-/*
-    function put($time_to_send, $id_user, $ip, $from, $to, $hdrs, $body, $delete_after_send)
-    {
-        $this->_last_item = count($this->queue_data);
-		$this->queue_data[$this->_last_item] = new Mail_Queue_Body($id, date("d-m-y G:i:s"),
-                    $time_to_send, null, $id_user,
-                    $ip, $sender, $recipient, unserialize($headers),
-                    unserialize($body), $delete_after_send, 0);
-        return true;
-    }
-*/
+    abstract function put($time_to_send, $id_user, $ip, $from, $to, $hdrs, $body, $delete_after_send);
+
     // }}}
     // {{{ setOption()
 
