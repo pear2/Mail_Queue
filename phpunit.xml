@@ -1,0 +1,6 @@
+<phpunit bootstrap="./tests/TestInit.php" colors="true" verbose="true" debug="true">
+    <testsuite name="Mail_Queue Test Suite">
+        <file>./tests/Mail/QueueTest.php</file>
+        <file>./test/Mail/Queue/ContainerTest.php</file>
+    </testsuite>
+</phpunit>

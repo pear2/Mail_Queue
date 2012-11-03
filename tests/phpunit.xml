@@ -1,7 +1,0 @@
-<phpunit bootstrap="./TestInit.php" colors="true" verbose="true">
-    <testsuite name="Mail_Queue Test Suite">
-        <file>./Mail/QueueTest.php</file>
-        <file>./Mail/QueueMock.php</file>
-        <file>./Mail/Queue/ContainerTest.php</file>
-    </testsuite>
-</phpunit>
