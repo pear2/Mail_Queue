@@ -1,6 +1,5 @@
 <?php
-
-require_once "Mail/Queue.php";
+require_once "PEAR2/Mail/Queue.php";
 
 $db_options['type']       = 'db';
 $db_options['dsn']        = 'mysql://user:password@host/database';
@@ -13,4 +12,3 @@ $mail_options['auth']     = false;
 $mail_options['username'] = '';
 $mail_options['password'] = '';
 
-?>
