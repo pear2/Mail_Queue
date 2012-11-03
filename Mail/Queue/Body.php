@@ -95,7 +95,7 @@ class Mail_Queue_Body {
      *
      * @var string
      */
-    var $id_user = MAILQUEUE_SYSTEM;
+    var $id_user = Mail_Queue::SYSTEM;
 
     /**
      * use IP
