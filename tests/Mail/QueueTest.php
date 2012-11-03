@@ -6,7 +6,6 @@ class Mail_QueueTest extends Mail_QueueAbstract
 {
     public function testPut()
     {
-        $time_to_send = 3600;
         $id_user      = 1;
         $ip           = '127.0.0.1';
         $sender       = 'testsuite@example.org';
@@ -14,7 +13,7 @@ class Mail_QueueTest extends Mail_QueueAbstract
         $headers      = array('X-TestSuite' => 1);
         $body         = 'Lorem ipsum';
 
-        $mailId = $this->queue->put($sender, $recipient, $headers, $body, $time_to_send=0, true, $id_user);
+        $mailId = $this->queue->put($sender, $recipient, $headers, $body, 0, true, $id_user);
         if (!is_numeric($mailId)) {
             $this->handlePearError($mailId, "Could not save email.");
         }
