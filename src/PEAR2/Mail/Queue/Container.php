@@ -141,7 +141,7 @@ abstract class Container
      * Remove the current (problematic) mail from the buffer, but don't delete
      * it from the db: it might be a temporary issue.
      */
-    function skip()
+    public function skip()
     {
         if (!empty($this->queue_data)) {
             if (isset($this->queue_data[$this->_current_item])) {
@@ -169,6 +169,10 @@ abstract class Container
      * @return bool True on success
      **/
     abstract function put($time_to_send, $id_user, $ip, $from, $to, $hdrs, $body, $delete_after_send);
+
+    // }}}
+    // {{{ _preload()
+    abstract protected function _preload();
 
     // }}}
     // {{{ setOption()

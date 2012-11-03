@@ -232,8 +232,7 @@ class mdb2 extends Container
         $this->_last_item = 0;
         $this->queue_data = array(); //reset buffer
 
-        while ($row = $res->fetchRow(MDB2_FETCHMODE_ASSOC)) {
-            //var_dump($row['headers']);
+        while ($row = $res->fetchRow(\MDB2_FETCHMODE_ASSOC)) {
             if (!is_array($row)) {
                 throw new Exception(
                     sprintf($this->errorMsg, $query, $this->_getErrorMessage($res)),
@@ -393,8 +392,12 @@ class mdb2 extends Container
     {
         $this->_checkConnection();
 
-        $query = 'SELECT * FROM ' . $this->mail_table
-                .' WHERE id = '   . (int)$id;
+        $query = sprintf(
+            'SELECT * FROM %s WHERE id = %d',
+            $this->mail_table,
+            (int) $id
+        );
+
         $row = $this->db->queryRow($query, null, MDB2_FETCHMODE_ASSOC);
         if (PearMDB2::isError($row)) {
             throw new Exception(
