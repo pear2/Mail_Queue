@@ -24,6 +24,8 @@
         }
     ],
     "require": {
-        "pear-pear/MDB2": "2.5.0b5"
+        "pear-pear/MDB2": "2.5.0b5",
+        "pear-pear/Mail": "*",
+        "pear-pear/Mail_Mime": "*"
     }
 }
