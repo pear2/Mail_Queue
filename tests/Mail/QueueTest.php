@@ -15,6 +15,9 @@ class Mail_QueueTest extends Mail_QueueAbstract
         $body         = 'Lorem ipsum';
 
         $mailId = $this->queue->put($sender, $recipient, $headers, $body, $time_to_send=0, true, $id_user);
+        if (!is_numeric($mailId)) {
+            $this->handlePearError($mailId, "Could not save email.");
+        }
 
         $this->assertEquals(1, $mailId); // it's the first email, after all :-)
         $this->assertEquals(1, count($this->queue->getQueueCount()));
@@ -22,14 +25,13 @@ class Mail_QueueTest extends Mail_QueueAbstract
 
     /**
      * This should return a MDB2_Error
+     *
+     * @expectedException Mail_Queue_Exception
      */
     public function testSendMailByIdWithInvalidId()
     {
         $randomId = rand(1, 12);
         $status   = $this->queue->sendMailById($randomId);
-
-        $this->assertContains('no such message', $status->getDebugInfo());
-        $this->assertTrue(($status instanceof Mail_Queue_Error));
     }
 
     /**
@@ -48,7 +50,7 @@ class Mail_QueueTest extends Mail_QueueAbstract
         $body         = 'Lorem ipsum';
 
         $mailId1 = $this->queue->put($sender, $recipient, $headers, $body);
-        if (PEAR::isError($mailId1)) {
+        if ($mailId1 instanceof PEAR_Error) {
             $this->fail("Queueing first mail failed: {$mailId1->getMessage()}");
             return;
         }
@@ -60,7 +62,7 @@ class Mail_QueueTest extends Mail_QueueAbstract
         $body         = 'Lorem ipsum sit dolor';
 
         $mailId2 = $this->queue->put($sender, $recipient, $headers, $body);
-        if (PEAR::isError($mailId2)) {
+        if ($mailId2 instanceof PEAR_Error) {
             $this->fail("Queueing first mail failed: {$mailId2->getMessage()}");
             return;
         }
@@ -77,7 +79,7 @@ class Mail_QueueTest extends Mail_QueueAbstract
         $this->assertEquals(2, $queueCount, "Failed to count 2 messages.");
 
         $status = $this->queue->sendMailsInQueue();
-        if (Pear::isError($status)) {
+        if ($status instanceof PEAR_Error) {
             $this->fail("Error sending emails: {$status->getMessage()}.");
             return;
         }

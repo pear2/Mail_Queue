@@ -5,11 +5,6 @@
 abstract class Mail_QueueAbstract extends PHPUnit_Framework_TestCase
 {
     /**
-     * @var string $db Name of the database file.
-     */
-    protected $db = 'mailqueueTestSuite';
-
-    /**
      * @var string $dsn String to connect to sqlite.
      */
     protected $dsn;
@@ -18,6 +13,11 @@ abstract class Mail_QueueAbstract extends PHPUnit_Framework_TestCase
      * @var Mail_Queue $queue
      */
     protected $queue;
+
+    /**
+     * @var MDB2
+     */
+    protected $mdb2;
 
     /**
      * @var string $table The table name.
@@ -37,13 +37,16 @@ abstract class Mail_QueueAbstract extends PHPUnit_Framework_TestCase
             return;
         }
 
-        $this->dsn = 'sqlite:///' . __DIR__ . "/{$this->db}?mode=0644";
+        $this->dsn = 'sqlite:///:memory:';
 
-        $this->setUpDatabase($this->dsn);
+        $this->mdb2 = MDB2::connect($this->dsn);
+        $this->handlePearError($this->mdb2, "DB connection init");
+
+        $this->setUpDatabase();
 
         $container_opts = array(
             'type'       => 'mdb2',
-            'dsn'        => $this->dsn,
+            'dsn'        => $this->mdb2,
             'mail_table' => $this->table,
         );
 
@@ -71,31 +74,30 @@ abstract class Mail_QueueAbstract extends PHPUnit_Framework_TestCase
      */
     public function tearDown()
     {
-        $mdb2 = MDB2::connect($this->dsn);
-        $mdb2->query("DROP TABLE '{$this->table}'");
-        $mdb2->disconnect();
+        if ($this->mdb2 instanceof MDB2_Error) {
+            var_dump($mdb2); exit;
+        }
+        if ($this->mdb2 === null) {
+            return;
+        }
+        $this->mdb2->loadModule('manager');
+        $this->mdb2->dropTable($this->table);
+        $this->mdb2->disconnect();
 
         //$this->queue->container->db->disconnect();
         unset($this->queue);
-
-        unlink(__DIR__ . "/{$this->db}");
     }
 
     /**
      * Create the table.
      *
-     * @param string $dsn The DSN.
-     *
      * @return void
      * @see    self::setUp()
      * @see    self::tearDown()
      */
-    protected function setUpDatabase($dsn)
+    protected function setUpDatabase()
     {
-        $mdb2 = MDB2::connect($dsn);
-        $this->handlePearError($mdb2, "DB connection init");
-
-        $status = $mdb2->loadModule('Manager');
+        $status = $this->mdb2->loadModule('Manager');
         $this->handlePearError($status, "Loading manager module");
 
         $cols = array(
@@ -148,10 +150,10 @@ abstract class Mail_QueueAbstract extends PHPUnit_Framework_TestCase
             ),
         );
 
-        $status = $mdb2->manager->createTable($this->table, $cols);
+        $status = $this->mdb2->manager->createTable($this->table, $cols);
         $this->handlePearError($status, "Create table");
 
-        $status = $mdb2->manager->createConstraint(
+        $status = $this->mdb2->manager->createConstraint(
             $this->table,
             'idx',
             array(
@@ -163,7 +165,7 @@ abstract class Mail_QueueAbstract extends PHPUnit_Framework_TestCase
         );
         $this->handlePearError($status, "Create primary key");
 
-        $status = $mdb2->manager->createIndex(
+        $status = $this->mdb2->manager->createIndex(
             $this->table,
             't2s',
             array('fields' => array(
@@ -172,15 +174,15 @@ abstract class Mail_QueueAbstract extends PHPUnit_Framework_TestCase
         );
         $this->handlePearError($status, "Index on time_to_send");
 
-        $status = $mdb2->manager->createIndex(
+        $status = $this->mdb2->manager->createIndex(
             $this->table,
             'idu',
             array('fields' => array(
                 'id_user' => array())
             )
         );
+
         $this->handlePearError($status, 'Index on id_user');
-        $mdb2->disconnect();
     }
 
     /**
@@ -194,7 +196,7 @@ abstract class Mail_QueueAbstract extends PHPUnit_Framework_TestCase
      */
     protected function handlePearError($err, $action)
     {
-        if (PEAR::isError($err)) {
+        if (MDB2::isError($err)) {
             $this->fail("{$action}: {$err->getDebugInfo()}");
             return;
         }

@@ -13,6 +13,9 @@ class MailQueueTestInit
 {
     public static function autoload($className)
     {
+        if (strpos($className, 'Mail') !== 0) {
+            return;
+        }
         $file = str_replace('_', '/', $className) . '.php';
         return include $file;
     }

@@ -24,7 +24,7 @@ class Mail_QueueMock extends Mail_QueueAbstract
 
         $this->queueMock->expects($this->once())
             ->method('get')
-            ->will($this->returnValue(Pear::raiseError("OH NOEZ")));
+            ->will($this->returnValue(new Pear_Error("OH NOEZ")));
     }
 
     /**

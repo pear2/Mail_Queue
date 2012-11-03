@@ -14,6 +14,10 @@ class Mail_Queue_ContainerTest extends Mail_QueueAbstract
         $body         = 'Lorem ipsum';
 
         $mailId = $this->queue->put($sender, $recipient, $headers, $body, 0, true, $id_user);
+        if (!is_numeric($mailId)) {
+            $this->fail("Could not save email.");
+            return;
+        }
 
         $message = $this->queue->container->getMailById($mailId);
         $this->assertTrue(($message instanceof Mail_Queue_Body));
