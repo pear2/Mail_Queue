@@ -110,11 +110,7 @@ abstract class Container
     {
         $err = $this->preload();
         if ($err !== true) {
-            // limit met
-            throw new Exception(
-                'Cannot preload items: limit',
-                Queue::ERROR_CANNOT_INITIALIZE
-            );
+            return false;
         }
 
         if (empty($this->queue_data)) {

@@ -23,6 +23,45 @@ class Mail_QueueTest extends Mail_QueueAbstract
     }
 
     /**
+     * Arrays with from, to, headers, body and when to send (= now).
+     *
+     * @return void
+     */
+    public function testLimit()
+    {
+        $emails = array(
+            array('from@example.org', 'to@example.org', array('X-Test' => 'yes'), 'Hello World', 0),
+            array('from@example.org', 'to@example.org', array('X-Test' => 'yes'), 'Hello World', 0),
+            array('from@example.org', 'to@example.org', array('X-Test' => 'yes'), 'Hello World', 0),
+            array('from@example.org', 'to@example.org', array('X-Test' => 'yes'), 'Hello World', 0),
+            array('from@example.org', 'to@example.org', array('X-Test' => 'yes'), 'Hello World', 0),
+            array('from@example.org', 'to@example.org', array('X-Test' => 'yes'), 'Hello World', 0),
+            array('from@example.org', 'to@example.org', array('X-Test' => 'yes'), 'Hello World', 0),
+            array('from@example.org', 'to@example.org', array('X-Test' => 'yes'), 'Hello World', 0),
+            array('from@example.org', 'to@example.org', array('X-Test' => 'yes'), 'Hello World', 0),
+            array('from@example.org', 'to@example.org', array('X-Test' => 'yes'), 'Hello World', 0),
+            array('from@example.org', 'to@example.org', array('X-Test' => 'yes'), 'Hello World', 0),
+            array('from@example.org', 'to@example.org', array('X-Test' => 'yes'), 'Hello World', 0),
+            array('from@example.org', 'to@example.org', array('X-Test' => 'yes'), 'Hello World', 0),
+            array('from@example.org', 'to@example.org', array('X-Test' => 'yes'), 'Hello World', 0),
+            array('from@example.org', 'to@example.org', array('X-Test' => 'yes'), 'Hello World', 0),
+        );
+
+        foreach ($emails as $email) {
+            $id = call_user_func_array(array($this->queue, 'put'), $email);
+            $this->assertInternalType('int', $id);
+        }
+        $this->assertEquals(count($emails), $this->queue->getQueueCount());
+
+        $this->queue->setBufferSize(2);
+        $this->assertTrue($this->queue->sendMailsInQueue(12));
+
+        $this->assertEquals(3, $this->queue->getQueueCount());
+
+        $this->assertFalse($this->queue->hasErrors());
+    }
+
+    /**
      * This should return a MDB2_Error
      *
      * @expectedException PEAR2\Mail\Queue\Exception
