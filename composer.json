@@ -1,0 +1,29 @@
+{
+    "name": "pear2/mail_queue",
+    "description": "A library to queue and send emails in PHP.",
+    "license": "BSD-2-Clause",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "Radek Maciaszek",
+            "email": "chief@php.net"
+        },
+        {
+            "name": "Lorenzo Alberton",
+            "email": "l.alberton@quipo.it"
+        },
+        {
+            "name": "till",
+            "email": "till@php.net"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "pear",
+            "url": "http://pear.php.net/"
+        }
+    ],
+    "require": {
+        "pear-pear/MDB2": "2.5.0b5"
+    }
+}
