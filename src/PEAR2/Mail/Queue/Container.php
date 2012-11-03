@@ -72,32 +72,30 @@ abstract class Container
      *
      * @var array
      */
-    var $queue_data = array();
+    public $queue_data = array();
 
     /**
      * Key for current mail in queue
      *
      * @var integer
-     * @access private
      */
-    var $_current_item = 0;
+    protected $_current_item = 0;
 
     /**
      * Key for last mail in queue
      *
      * @var integer
-     * @access private
      */
-	var $_last_item = 0;
+    protected $_last_item = 0;
 
     /**
      * Options
      */
-    var $limit;
-    var $offset;
-    var $try;
-    var $force_preload;
-    var $buffer_size = 10; //number of mails in the queue
+    public $limit;
+    public $offset;
+    public $try;
+    public $force_preload;
+    public $buffer_size = 10; //number of mails in the queue
 
     // }}}
     // {{{ get()
@@ -169,7 +167,6 @@ abstract class Container
      * @param string $hdrs  Mail headers (in RFC)
      * @param string $body  Mail body (in RFC)
      * @return bool True on success
-     * @access public
      **/
     abstract function put($time_to_send, $id_user, $ip, $from, $to, $hdrs, $body, $delete_after_send);
 
@@ -187,10 +184,8 @@ abstract class Container
      *                       each mail
      * @param boolean  $force_preload  Optional - FIXME
      * @return void
-     *
-     * @access public
-     **/
-    function setOption($limit = Queue::ALL, $offset = Queue::START,
+     */
+    public function setOption($limit = Queue::ALL, $offset = Queue::START,
                         $try = Queue::RETRY, $force_preload = false)
     {
         $this->limit         = $limit;
@@ -231,7 +226,6 @@ abstract class Container
      *
      * @param integer $id  Mail ID
      * @return mixed  Mail object or false on error.
-     * @access public
      */
     abstract function getMailById($id);
 
@@ -301,9 +295,8 @@ abstract class Container
      *
      * @param string $string
      * @return boolean
-     * @access protected
      */
-    function _isSerialized($string)
+    protected function _isSerialized($string)
     {
         if (!is_string($string) || strlen($string) < 4) {
             return false;
@@ -323,7 +316,5 @@ abstract class Container
         //serialized array?
         return preg_match('/^a:\d+\:\{(.*)\}$/', $string);
     }
-
     // }}}
 }
-

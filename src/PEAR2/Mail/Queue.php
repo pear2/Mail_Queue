@@ -207,7 +207,6 @@ class Queue
      * PEAR2\Mail\Queue desctructor
      *
      * @return void
-     * @access public
      */
     public function __destruct()
     {
@@ -222,8 +221,7 @@ class Queue
      * types see Mail::factory()
      *
      * @return void
-     *
-     * @access public
+     * @throws Exception
      */
     public function factorySendMail()
     {
@@ -396,10 +394,9 @@ class Queue
      * @param  bool   $set_as_sent
      * @return mixed  boolean: true on success else false, or PEAR_Error
      *
-     * @access public
      * @uses   self::sendMail()
      */
-    function sendMailById($id, $set_as_sent=true)
+    public function sendMailById($id, $set_as_sent=true)
     {
         $mail = $this->container->getMailById($id);
         if ($mail instanceof PEAR_Error) {
@@ -540,7 +537,6 @@ class Queue
      * @param   int     $value error code
      * @return  string  error message, or false if the error code was
      *                  not recognized
-     * @access public
      */
     public static function errorMessage($value)
     {

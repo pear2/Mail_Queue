@@ -166,9 +166,7 @@ class Body
      * @param string $body Mail body (in RFC)
      * @param integer $try_sent  How many times mail was sent
      *
-     * @return void
-     *
-     * @access public
+     * @return Body
      */
     public function __construct($id, $create_time, $time_to_send, $sent_time, $id_user,
                        $ip, $sender, $recipient, $headers, $body,
@@ -192,9 +190,8 @@ class Body
      * getId()
      *
      * @return integer  Sender id
-     * @access public
      */
-    function getId()
+    public function getId()
     {
         return $this->id;
     }
@@ -205,9 +202,8 @@ class Body
      * getCreateTime()
      *
      * @return string  Mail create time
-     * @access public
      */
-    function getCreateTime()
+    public function getCreateTime()
     {
         return $this->create_time;
     }
@@ -218,9 +214,8 @@ class Body
      * getTimeToSend()
      *
      * @return string  Time to send
-     * @access public
      */
-    function getTimeToSend()
+    public function getTimeToSend()
     {
         return $this->time_to_send;
     }
@@ -231,9 +226,8 @@ class Body
      * getSentTime()
      *
      * @return mixed  String sent time or false if mail not was sent yet
-     * @access public
      */
-    function getSentTime()
+    public function getSentTime()
     {
         return empty($this->sent_time) ? false : $this->sent_time;
     }
@@ -244,9 +238,8 @@ class Body
      * getIdUser()
      *
      * @return integer  Sender id
-     * @access public
      */
-    function getIdUser()
+    public function getIdUser()
     {
         return $this->id_user;
     }
@@ -257,9 +250,8 @@ class Body
      * getIp()
      *
      * @return string  IP
-     * @access public
      */
-    function getIp()
+    public function getIp()
     {
         return stripslashes($this->ip);
     }
@@ -270,9 +262,8 @@ class Body
      * getSender()
      *
      * @return string E-mail
-     * @access public
      */
-    function getSender()
+    public function getSender()
     {
         return stripslashes($this->sender);
     }
@@ -283,9 +274,8 @@ class Body
      * getRecipient()
      *
      * @return string|array E-mail(s)
-     * @access public
      */
-    function getRecipient()
+    public function getRecipient()
     {
         if (is_array($this->recipient)) {
             $tmp_recipients = array();
@@ -303,9 +293,8 @@ class Body
      * getHeaders()
      *
      * @return mixed array|string headers
-     * @access public
      */
-    function getHeaders()
+    public function getHeaders()
     {
         if (is_array($this->headers)) {
             $tmp_headers = array();
@@ -323,9 +312,8 @@ class Body
      * getBody()
      *
      * @return string  Body
-     * @access public
      */
-    function getBody()
+    public function getBody()
     {
         return stripslashes($this->body);
     }
@@ -336,9 +324,8 @@ class Body
      * getTrySent()
      *
      * @return integer  How many times mail was sent
-     * @access public
      */
-    function getTrySent()
+    public function getTrySent()
     {
         return $this->try_sent;
     }
@@ -349,9 +336,8 @@ class Body
      * MailBody::isDeleteAfterSend()
      *
      * @return bool  True if must be delete else false.
-     * @access public
      */
-    function isDeleteAfterSend()
+    public function isDeleteAfterSend()
     {
         return $this->delete_after_send;
     }
@@ -362,9 +348,8 @@ class Body
      * _try()
      *
      * @return integer  How many times mail was sent
-     * @access public
      */
-    function _try()
+    public function _try()
     {
         return ++$this->try_sent;
     }

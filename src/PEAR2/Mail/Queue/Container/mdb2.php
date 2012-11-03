@@ -93,9 +93,9 @@ class mdb2 extends Container
      *
      * @param array $options    An associative array of connection option.
      *
-     * @access public
+     * @return mdb2
      */
-    function __construct(array $options)
+    public function __construct(array $options)
     {
         if (!isset($options['dsn'])) {
             throw new Exception(
@@ -164,18 +164,17 @@ class mdb2 extends Container
     /**
      * Check if there's a valid db connection
      *
-     * @return boolean|PEAR_Error on error
+     * @return boolean
+     * @throws Exception
      */
-    function _checkConnection() {
+    protected function _checkConnection()
+    {
         if (!is_object($this->db) || !is_a($this->db, 'MDB2_Driver_Common')) {
             $msg = 'MDB2::connect failed';
             if (PearMDB2::isError($this->db)) {
                 $msg .= $this->_getErrorMessage($this->db);
             }
-            throw new Exception(
-                $msg,
-                Queue::ERROR_CANNOT_CONNECT
-            );
+            throw new Exception($msg, Queue::ERROR_CANNOT_CONNECT);
         }
         return true;
     }
@@ -183,13 +182,11 @@ class mdb2 extends Container
     /**
      * Create a more useful error message from DB related errors.
      *
-     * @access private
-     *
      * @param PEAR_Error $errorObj A PEAR_Error object.
      *
      * @return string
      */
-    function _getErrorMessage($errorObj)
+    protected function _getErrorMessage($errorObj)
     {
         if (!PearMDB2::isError($errorObj)) {
             return '';
