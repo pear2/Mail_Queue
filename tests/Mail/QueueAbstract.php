@@ -184,7 +184,6 @@ abstract class Mail_QueueAbstract extends PHPUnit_Framework_TestCase
                 'id_user' => array())
             )
         );
-
         $this->handlePearError($status, 'Index on id_user');
     }
 
