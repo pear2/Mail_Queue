@@ -1,0 +1,13 @@
+language: php
+
+php:
+  - 5.3
+  - 5.4
+
+before_script:
+  - wget http://getcomposer.org/composer.phar -O ./composer.phar
+  - chmod +x composer.phar
+  - ./composer.phar install --prefer-dist
+  - gem install colored -v=1.2
+
+script: phpunit
