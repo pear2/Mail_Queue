@@ -14,8 +14,14 @@ The API is very similar except for:
 
 Until I get to PEAR2, just use composer.
 
+## WIP
+
+topics/doctrine
+
+ * add a container for Doctrine2 ORM
+ * run CI testing on travis
+
 ## TODO
 
- * add a container for Doctrine2 (ORM or DBAL?)
  * add support for Swiftmailer
  * investigate better queues than RDBMS

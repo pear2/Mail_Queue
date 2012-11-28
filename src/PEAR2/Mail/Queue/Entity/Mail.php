@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Mail
 {
-    
+
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -77,9 +77,17 @@ class Mail
     private $deleteAfterSend;
 
     /**
-     * @ORM\Column(name="try_sent", type="integer", nullable=true)
+     * @ORM\Column(name="try_sent", type="integer", options={"default" = 0})
      */
     private $trySent;
+
+    /**
+     * construct
+     */
+    public function __construct()
+    {
+        $this->trySent = 0;
+    }
 
     /**
      * Magic getter to expose protected properties.

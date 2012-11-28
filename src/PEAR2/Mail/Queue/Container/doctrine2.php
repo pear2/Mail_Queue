@@ -53,6 +53,7 @@ use PEAR2\Mail\Queue\Exception;
 use PEAR2\Mail\Queue;
 use PEAR2\Mail\Queue\Body;
 use PEAR2\Mail\Queue\Entity\Mail;
+use PEAR2\Mail\Queue\Entity\Repository\MailRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Persistence\PersistentObject;
@@ -77,15 +78,22 @@ use Doctrine\Common\Annotations\AnnotationReader;
 class Doctrine2 extends Container
 {
 
+    var $errorMsg = 'doctrine failed: "%s", %s';
+
     /**
      * @var Doctrine\ORM\EntityManager
      */
     protected $em;
 
     /**
-     * @var Entity Classname
+     * @var Mail Mail
      */
     protected $entity;
+
+    /**
+     * @var MailRepository MailRepository
+     */
+    protected $repo;
 
     /**
      * @var
@@ -115,11 +123,18 @@ class Doctrine2 extends Container
 
         if (isset($options['em'])) {
             $this->em = $options['em'];
+            //$this->init($options['em']);
         } else {
             $this->em = $this->getEntityManager();
         }
 
+        //var_dump($this->em->getConfiguration()->getMetadataDriverImpl());
+        //exit;
+        //$this->em->getConfiguration()->setMetadataDriverImpl()
+
         $this->setOption();
+        $this->repo = $this->em->getRepository('PEAR2\Mail\Queue\Entity\Mail');
+
     }
 
     /**
@@ -127,13 +142,42 @@ class Doctrine2 extends Container
      *
      * @return void
      */
-    protected function init()
+    protected function init($em = null, $entity = null)
     {
+
+        //use injected entity
+        if(isset($entity)){
+
+        }else{
+
+        }
+
+        //use injected em
+        if(isset($em)){
+
+        }else{
+
+        }
+
+        if(isset($em)
+        &&  'Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain' == get_class($em->getConfiguration()->getMetadataDriverImpl())
+        ){
+            foreach($em->getConfiguration()->getMetadataDriverImpl()->getDrivers() as $driver){
+                if(in_array('',$driver->getAllClassNames())){
+
+                }
+
+            }
+        }
 
         $config = new Configuration();
         $cache = new $this->config['cacheImplementation'];
+
+        $mappingDriverChain = new \Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain();
+
         $entityFolder = __DIR__ . '/../Entity';
         $driverImpl = $config->newDefaultAnnotationDriver($entityFolder);
+
 
         AnnotationReader::addGlobalIgnoredName('package_version');
         $annotationReader = new AnnotationReader;
@@ -147,6 +191,7 @@ class Doctrine2 extends Container
             array($entityFolder) // paths to look in
         );
 
+        //$mappingDriverChain->addDriver($annotationDriver, 'PEAR2\Mail\Queue\Entity');
 
         $config->setMetadataDriverImpl($annotationDriver);
         $config->setMetadataCacheImpl($cache);
@@ -169,7 +214,7 @@ class Doctrine2 extends Container
     /**
      * Get the Doctrine EntityManager
      *
-     * @return Doctrine\ORM\EntityManager
+     * @return \Doctrine\ORM\EntityManager
      */
     public function getEntityManager()
     {
@@ -201,7 +246,32 @@ class Doctrine2 extends Container
      */
     protected function _preload()
     {
-        // TODO: Implement _preload() method.
+        $queueCollection = $this->repo->preload($this->limit, $this->offset,$this->try);
+
+        $this->_last_item = 0;
+        $this->queue_data = array(); //reset buffer
+
+        foreach($queueCollection as $mail){
+            $delete_after_send = (bool) $mail->__get('deleteAfterSend');
+
+            $this->queue_data[$this->_last_item] = new Body(
+                $mail->getId(),
+                $mail->getCreateTime(),
+                $mail->getTimeToSend(),
+                $mail->getSentTime(),
+                $mail->getIdUser(),
+                $mail->getIp(),
+                $mail->getSender(),
+                $this->_isSerialized($mail->getRecipient()) ? unserialize($mail->getRecipient()) : $mail->getRecipient(),
+                unserialize($mail->getHeaders()),
+                unserialize($mail->getBody()),
+                $delete_after_send,
+                $mail->getTrySent()
+            );
+            $this->_last_item++;
+        }
+
+        return true;
     }
 
     /**
@@ -239,8 +309,6 @@ class Doctrine2 extends Container
         $this->em->flush();
 
         return $queueRecord->__get('id');
-
-        // TODO: Implement put() method.
     }
 
     /**
@@ -252,6 +320,24 @@ class Doctrine2 extends Container
      */
     public function countSend(Body $mail)
     {
+        $count = $mail->_try();
+
+        $mailRecord = $this->repo->find($mail->getId());
+
+        if (null == $mailRecord) {
+            throw new Exception(
+                sprintf($this->errorMsg, $mail->getId(), 'no message with id'),
+                Queue::ERROR_QUERY_FAILED
+            );
+        }
+
+        $mailRecord->__set('trySent',$count);
+        $this->em->persist($mailRecord);
+        $this->em->flush();
+
+
+        return $count;
+
         // TODO: Implement countSend() method.
     }
 
@@ -264,8 +350,22 @@ class Doctrine2 extends Container
      */
     public function setAsSent(Body $mail)
     {
-        // TODO: Implement setAsSent() method.
-        return $this;
+        $mailRecord = $this->repo->find($mail->getId());
+
+        if (null == $mailRecord) {
+            throw new Exception(
+                sprintf($this->errorMsg, $mail->getId(), 'no message with id'),
+                Queue::ERROR_QUERY_FAILED
+            );
+        }
+
+        $now = new \DateTime();
+        $mailRecord->__set('sentTime',$now);
+
+        $this->em->persist($mailRecord);
+        $this->em->flush();
+
+        return true;
 
     }
 
@@ -278,8 +378,7 @@ class Doctrine2 extends Container
      */
     public function getMailById($id)
     {
-        $repo = $this->em->getRepository('PEAR2\Mail\Queue\Entity\Mail');
-        $mailRecord = $repo->find($id);
+        $mailRecord = $this->repo->find($id);
 
         if (null == $mailRecord) {
             throw new Exception(
@@ -312,6 +411,9 @@ class Doctrine2 extends Container
      */
     public function getQueueCount()
     {
+        $count = $this->repo->getQueueCount();
+        return (int) $count;
+
         // TODO: Implement getQueueCount() method.
     }
 
@@ -324,6 +426,18 @@ class Doctrine2 extends Container
      */
     public function deleteMail($id)
     {
-        // TODO: Implement deleteMail() method.
+        $mailRecord = $this->repo->find($id);
+
+        if (null == $mailRecord) {
+            throw new Exception(
+                sprintf($this->errorMsg, $id, 'no message with id'),
+                Queue::ERROR_QUERY_FAILED
+            );
+        }
+
+        $this->em->remove($mailRecord);
+        $this->em->flush();
+
+        return true;
     }
 }

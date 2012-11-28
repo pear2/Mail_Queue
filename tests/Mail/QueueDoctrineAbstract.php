@@ -7,6 +7,7 @@ use PEAR2\Mail\Queue;
  */
 abstract class Mail_QueueDoctrineAbstract extends PHPUnit_Framework_TestCase
 {
+    protected $container;
     /**
      * @var Doctrine\ORM\EntityManager
      */
@@ -40,6 +41,7 @@ abstract class Mail_QueueDoctrineAbstract extends PHPUnit_Framework_TestCase
         );
 
         $doctrineDriver = new PEAR2\Mail\Queue\Container\doctrine2(array('doctrine' => $doctrineConfig));
+        $this->container = $doctrineDriver;
 
         $this->em = $doctrineDriver->getEntityManager();
 
@@ -98,4 +100,7 @@ abstract class Mail_QueueDoctrineAbstract extends PHPUnit_Framework_TestCase
         unset($this->queue);
     }
 
+    public function getContainer(){
+           return $this->container;
+    }
 }
