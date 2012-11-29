@@ -54,12 +54,6 @@ use PEAR2\Mail\Queue;
 use PEAR2\Mail\Queue\Body;
 use PEAR2\Mail\Queue\Entity\Mail;
 use PEAR2\Mail\Queue\Entity\Repository\MailRepository;
-use Doctrine\ORM\EntityManager;
-use Doctrine\Common\Annotations\AnnotationRegistry;
-use Doctrine\Common\Persistence\PersistentObject;
-use Doctrine\ORM\Configuration;
-
-use Doctrine\Common\Annotations\AnnotationReader;
 
 /**
  * Storage driver for fetching mail queue data with Doctrine2
@@ -107,108 +101,20 @@ class Doctrine2 extends Container
      *
      * @param array $options An associative array of connection option.
      *
-     * @return hmmm
      */
     public function __construct(array $options)
     {
 
-        if (!isset($options['doctrine'])) {
+        if (!isset($options['doctrine_em'])) {
             throw new Exception(
-                'No doctrine config specified!',
+                'No doctrine entity manager specified!',
                 Queue::ERROR_NO_OPTIONS
             );
         }
-
-        $this->config = $options['doctrine'];
-
-        if (isset($options['em'])) {
-            $this->em = $options['em'];
-            //$this->init($options['em']);
-        } else {
-            $this->em = $this->getEntityManager();
-        }
-
-        //var_dump($this->em->getConfiguration()->getMetadataDriverImpl());
-        //exit;
-        //$this->em->getConfiguration()->setMetadataDriverImpl()
+        $this->em = $options['doctrine_em'];
 
         $this->setOption();
         $this->repo = $this->em->getRepository('PEAR2\Mail\Queue\Entity\Mail');
-
-    }
-
-    /**
-     * Setup Doctrine Class Loaders & EntityManager
-     *
-     * @return void
-     */
-    protected function init($em = null, $entity = null)
-    {
-
-        //use injected entity
-        if(isset($entity)){
-
-        }else{
-
-        }
-
-        //use injected em
-        if(isset($em)){
-
-        }else{
-
-        }
-
-        if(isset($em)
-        &&  'Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain' == get_class($em->getConfiguration()->getMetadataDriverImpl())
-        ){
-            foreach($em->getConfiguration()->getMetadataDriverImpl()->getDrivers() as $driver){
-                if(in_array('',$driver->getAllClassNames())){
-
-                }
-
-            }
-        }
-
-        $config = new Configuration();
-        $cache = new $this->config['cacheImplementation'];
-
-        $mappingDriverChain = new \Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain();
-
-        $entityFolder = __DIR__ . '/../Entity';
-        $driverImpl = $config->newDefaultAnnotationDriver($entityFolder);
-
-
-        AnnotationReader::addGlobalIgnoredName('package_version');
-        $annotationReader = new AnnotationReader;
-        $cachedAnnotationReader = new \Doctrine\Common\Annotations\CachedReader(
-            $annotationReader, // use reader
-            $cache // and a cache driver
-        );
-
-        $annotationDriver = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver(
-            $cachedAnnotationReader, // our cached annotation reader
-            array($entityFolder) // paths to look in
-        );
-
-        //$mappingDriverChain->addDriver($annotationDriver, 'PEAR2\Mail\Queue\Entity');
-
-        $config->setMetadataDriverImpl($annotationDriver);
-        $config->setMetadataCacheImpl($cache);
-        $config->setQueryCacheImpl($cache);
-        $config->setProxyDir(__DIR__ . '/../Proxy');
-        $config->setProxyNamespace($this->config['proxy']['namespace']);
-        $config->setAutoGenerateProxyClasses($this->config['autoGenerateProxyClasses']);
-
-        $connectionConfig = $this->config['connection'];
-
-        $this->em = EntityManager::create(
-            $connectionConfig,
-            $config
-        );
-
-        PersistentObject::setObjectManager($this->em);
-        return;
     }
 
     /**

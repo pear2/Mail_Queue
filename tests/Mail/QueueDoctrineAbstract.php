@@ -1,6 +1,11 @@
 <?php
 
 use PEAR2\Mail\Queue;
+use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Annotations\AnnotationRegistry;
+use Doctrine\Common\Persistence\PersistentObject;
+use Doctrine\ORM\Configuration;
+use Doctrine\Common\Annotations\AnnotationReader;
 
 /**
  * Base class for all Doctrine related tests.
@@ -26,21 +31,47 @@ abstract class Mail_QueueDoctrineAbstract extends PHPUnit_Framework_TestCase
     public function setUp()
     {
 
-        $doctrineConfig = array(
-            'cacheImplementation' => 'Doctrine\Common\Cache\ArrayCache',
-            'connection' => array(
-                'driver' => 'pdo_sqlite',
-                'dbname' => '',
-                'user' => '',
-                'host' => '',
-                'password' => '',
-                'memory' => true
-            ),
-            'autoGenerateProxyClasses' => 1,
-            'proxy' => array('namespace' => 'Proxy')
+        $config = new Configuration();
+        $cache = new \Doctrine\Common\Cache\ArrayCache();
+        $config->newDefaultAnnotationDriver();
+
+        AnnotationReader::addGlobalIgnoredName('package_version');
+        $annotationReader = new AnnotationReader;
+        $cachedAnnotationReader = new \Doctrine\Common\Annotations\CachedReader(
+            $annotationReader, // use reader
+            $cache // and a cache driver
         );
 
-        $doctrineDriver = new PEAR2\Mail\Queue\Container\doctrine2(array('doctrine' => $doctrineConfig));
+        $annotationDriver = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver(
+            $cachedAnnotationReader//, // our cached annotation reader
+            //array($entityFolder) // paths to look in
+        );
+
+        //$mappingDriverChain->addDriver($annotationDriver, 'PEAR2\Mail\Queue\Entity');
+
+        $config->setMetadataDriverImpl($annotationDriver);
+        $config->setMetadataCacheImpl($cache);
+        $config->setQueryCacheImpl($cache);
+        $config->setProxyDir(__DIR__ . '/../Proxy');
+        $config->setProxyNamespace('testProxy');
+        $config->setAutoGenerateProxyClasses(1);
+
+        $connectionConfig = array(
+            'driver'   => 'pdo_sqlite',
+                'dbname'   => '',
+                'user'     => '',
+                'host'     => '',
+                'password' => '',
+                'memory'    => true
+
+        );
+
+        $this->em = EntityManager::create(
+            $connectionConfig,
+            $config
+        );
+
+        $doctrineDriver = new PEAR2\Mail\Queue\Container\doctrine2(array('doctrine_em' => $this->em));
         $this->container = $doctrineDriver;
 
         $this->em = $doctrineDriver->getEntityManager();
@@ -50,8 +81,7 @@ abstract class Mail_QueueDoctrineAbstract extends PHPUnit_Framework_TestCase
 
         $container_opts = array(
             'type' => 'doctrine2',
-            'doctrine' => $doctrineConfig,
-            'em'    => $this->em
+            'doctrine_em' => $this->em
         );
 
         /**
