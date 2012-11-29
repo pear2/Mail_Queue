@@ -44,10 +44,7 @@ abstract class Mail_QueueDoctrineAbstract extends PHPUnit_Framework_TestCase
 
         $annotationDriver = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver(
             $cachedAnnotationReader//, // our cached annotation reader
-            //array($entityFolder) // paths to look in
         );
-
-        //$mappingDriverChain->addDriver($annotationDriver, 'PEAR2\Mail\Queue\Entity');
 
         $config->setMetadataDriverImpl($annotationDriver);
         $config->setMetadataCacheImpl($cache);
