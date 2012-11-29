@@ -7,6 +7,7 @@ if (version_compare(PHP_VERSION, '5.3.0', '<')) {
     exit(1);
 }
 
+require_once __DIR__ . '/../vendor/autoload.php';
 require_once 'MDB2.php';
 
 class MailQueueTestInit

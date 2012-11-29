@@ -25,7 +25,9 @@
     ],
     "require": {
         "pear-pear/MDB2": "2.5.0b5",
+        "pear-pear/MDB2_Driver_sqlite": "*",
         "pear-pear/Mail": "*",
-        "pear-pear/Mail_Mime": "*"
+        "pear-pear/Mail_Mime": "*",
+        "doctrine/orm": "2.4.x-dev"
     }
 }
