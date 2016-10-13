@@ -437,7 +437,7 @@ class Queue
             );
         }
         $sent = $this->send_mail->send($recipient, $hdrs, $body);
-        if (($sent instanceof PEAR_Error) && $sent && $set_as_sent) {
+        if (!($sent instanceof PEAR_Error) && $sent && $set_as_sent) {
             $this->container->setAsSent($mail);
         }
         if (isset($this->send_mail->queued_as)) {
